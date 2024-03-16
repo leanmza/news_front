@@ -1,0 +1,84 @@
+header {
+  background-color: rgb(245, 68, 68);
+  min-height: 80px;
+  max-height: 120px;
+  justify-content: center;
+  display: flex;
+}
+.navbar {
+  background-color: rgb(245, 68, 68) !important;
+}
+
+.divHeader {
+  align-items: center;
+  max-width: 1200px;
+  width: 100vw;
+}
+
+.divLogo {
+  display: flex;
+  justify-content: center;
+  padding-left: 12px;
+}
+
+.link:link,
+.link:visited,
+.link:active {
+  text-decoration: none;
+  color: #fff !important;
+}
+
+.dropdown-menu {
+  background-color: rgb(245, 68, 68) !important;
+}
+
+.nav-link {
+  overflow: hidden;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+.nav-link:hover {
+  opacity: 0.7;
+  transition: opacity 0.5s ease;
+}
+
+.logoHeader {
+  max-height: 100px;
+}
+
+.profilePicture {
+  background-color: white;
+  width: 60px; /* ajustar según el tamaño deseado */
+  height: 60px; /* ajustar según el tamaño deseado */
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.btnDashboard {
+  font-size: 14px !important;
+  padding: 4px 6px !important;
+}
+
+.searchBar {
+  background-color: transparent !important;
+  color: white !important ;
+}
+
+.searchBar:focus {
+  box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 0px 1px !important;
+  border-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.form-control::placeholder {
+  color: white !important;
+}
+
+.linkLog {
+  padding-left: 10px !important;
+}
+
+.iconLog {
+  padding-right: 5px;
+}

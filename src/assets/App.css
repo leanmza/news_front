@@ -1,0 +1,21 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  color: black;
+} */
+
+.divMain {
+  max-width: 1400px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.colCard {
+  margin-bottom: 20px;
+}
+
+
