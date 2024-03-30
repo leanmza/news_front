@@ -82,3 +82,14 @@ header {
 .iconLog {
   padding-right: 5px;
 }
+
+.categorias{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.divLogin{
+  display: flex;
+  justify-content: end;
+}
+

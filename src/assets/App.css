@@ -8,7 +8,7 @@
 
 .divMain {
   max-width: 1400px;
-  display: grid;
+  display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 32px;
@@ -17,5 +17,7 @@
 .colCard {
   margin-bottom: 20px;
 }
+
+
 
 

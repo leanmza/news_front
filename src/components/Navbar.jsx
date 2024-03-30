@@ -12,16 +12,15 @@ const Navbar = () => {
             <div className="divLogo col-4 col-md-1">
             <Link to='/'><img
                             src={logo}
-                            class="logoHeader"
+                            className="logoHeader"
                             alt="logo"
                             />
             </Link>        
             </div>
-            
-
+       
             <div className="divMenu col-lg-7 col-md-9">
-              <div className="row rowCategorías">
-                <ul className="nav">
+              <div className="row rowCategorias">
+                <ul className="nav categorias">
                   <li>  
                     <Link to="/mendoza" className="link">MENDOZA</Link>
                   </li>
@@ -57,9 +56,8 @@ const Navbar = () => {
                 />
               </form>
             </div>
-       
-
-          <div className="login">
+ 
+          <div className="divLogin col-2">
             <Link to='/login' className="link">
                      <span className="spanLogin"> Iniciar Sesión</span></Link>
           </div>

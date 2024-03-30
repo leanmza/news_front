@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import PublicationForm from './components/PublicationForm';
 
 function App() {
   const [publicaciones, setPublicaciones] = useState([
@@ -23,6 +24,7 @@ function App() {
 <Routes>
   <Route path='/' element={<Dashboard publicaciones={publicaciones}/>}></Route>
   <Route path='/login' element={<Login/>}></Route>
+  <Route path='/publication/create' element={<PublicationForm/>}></Route>
 
 
 </Routes>

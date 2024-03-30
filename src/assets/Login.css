@@ -1,0 +1,67 @@
+.divBanner {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .bannerLogin {
+    font-size: 2em;
+    text-align: center;
+    font-weight: 700;
+    padding: 20px 0 20px;
+    border: solid 2px rgb(245, 68, 68);
+    min-width: 450px;
+    max-width: 500px;
+    border-radius: 6px;
+    background-color: white;
+    color: #3c3c3c !important;
+  }
+  
+  .bannerLogin > span {
+    font-weight: 900;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    color: rgb(245, 68, 68);
+    height: 1.25em;
+    vertical-align: bottom;
+    overflow: hidden;
+  }
+  .bannerLogin > span > span {
+    display: block;
+    animation: animateWords 5s infinite ease;
+  }
+  
+  @keyframes animateWords {
+    0% {
+      transform: translateY(0%);
+    }
+  
+    33% {
+      transform: translateY(-100%);
+    }
+  
+    66% {
+      transform: translateY(-200%);
+    }
+  
+    100% {
+      transform: translateY(-300%);
+    }
+  }
+  @keyframes animateWords {
+    0% {
+      transform: translateY(0%);
+    }
+  
+    33% {
+      transform: translateY(-100%);
+    }
+  
+    66% {
+      transform: translateY(-200%);
+    }
+  
+    100% {
+      transform: translateY(-300%);
+    }
+  }

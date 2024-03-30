@@ -5,7 +5,7 @@ import Card from "./Card";
 const Dashboard = ({ publicaciones }) => {
   return (
     <div className="container-fluid divMain">
-      <div class="row row-cols-1">
+      <div className="row row-cols-1">
           {publicaciones.map((item) => (
             <Card
               key={item.id}
