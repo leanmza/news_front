@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import "../assets/PublicationForm.css";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import axios from "axios";
+import { useLocalState } from "../util/useLocalStorage";
 
 const PublicationForm = () => {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [category, setCategory] = useState("");
-  const [subscriberContent, setSubscriberContent] = useState("");
-
   const [categories, setCategories] = useState([]);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    body: "",
+    category: "",
+    subscriberContent: "",
+    // images:[],
+  });
 
   useEffect(() => {
     fetchCategories();
@@ -24,37 +28,64 @@ const PublicationForm = () => {
     }
   };
 
-  function sendPublication(e) {
-    e.preventDefault();
+  const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
 
-    const publicationData = new FormData();
-    publicationData.append("title", title);
-    publicationData.append("body", body);
-    publicationData.append("category", category);
-    publicationData.append("subscriberContent", subscriberContent);
-  
-    const requestData = new FormData();
-    requestData.append("publication", publicationData); // Asigna el nombre 'publication' a la parte de la solicitud
+    const inputValue = type === 'checkbox' ? checked : value;
+    setFormData({
+      ...formData,
+      [name]: inputValue,
+    });
+  };
 
-    console.log(requestData);
-    fetch("http://localhost:8080/api/publication/create", {
-      
-      method: "POST",
-      body: requestData,
-      headers: {
-        'Content-Type': 'multipart/form-data; boundary=boundary',
-      },
-   
-    })
-      .then((response) => {
-        if (response.status === 200) window.location.href = "/";
-        else return Promise.reject("Hubo un error al enviar los datos");
-      })
-
-      .catch((message) => {
-        alert(message);
-      });
+  function eliminarComillas(cadena) {
+    return cadena.replace(/"/g, "");
   }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const jwtToken = eliminarComillas(localStorage.getItem("jwt"));
+
+    const config = {
+      headers: { Authorization: `Bearer ${jwtToken}` },
+    };
+
+    const formDataToSend = new FormData();
+    // formData.images.forEach(image => {
+    //   formDataToSend.append('images', image);
+    // });
+    Object.keys(formData).forEach((key) => {
+      if (key !== "images") {
+        formDataToSend.append(key, formData[key]);
+      }
+    });
+
+    console.log(config);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/publication/create",
+        formData,
+        config,
+        {}
+      );
+
+      console.log("response.data" + response.data);
+    } catch (error) {
+      console.error("Hubo un error al enviar los datos del formulario:", error);
+    }
+
+    console.log(formData);
+
+    setFormData({
+      title: "",
+      body: "",
+      category: "",
+      subscriberContent: "",
+      // images:[],
+    });
+  };
 
   return (
     <div className="rowForm">
@@ -72,8 +103,8 @@ const PublicationForm = () => {
               className="form-control form-control-lg"
               placeholder="Título"
               name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={formData.title}
+              onChange={handleInputChange}
             />
           </FloatingLabel>
         </div>
@@ -91,8 +122,8 @@ const PublicationForm = () => {
               rows="15"
               className="form-control form-control-lg inputBody"
               placeholder="Cuerpo de la noticia"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
+              value={formData.body}
+              onChange={handleInputChange}
             ></textarea>
           </FloatingLabel>
         </div>
@@ -104,8 +135,8 @@ const PublicationForm = () => {
                 id="category"
                 className="form-control form-control-lg"
                 name="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={formData.category}
+                onChange={handleInputChange}
               >
                 <option value="">Elegir una categoría</option>
                 {categories.map((item) => (
@@ -126,8 +157,8 @@ const PublicationForm = () => {
                 className="form-check-input"
                 name="subscriberContent"
                 autoComplete="off"
-                value={subscriberContent}
-                onChange={(e) => setsubscriberContent(e.target.value)}
+                value={formData.subscriberContent}
+                onChange={handleInputChange}
               />
             </label>
           </div>
@@ -151,7 +182,7 @@ const PublicationForm = () => {
             type="submit"
             className="btn btn-primary btn-lg btnSubmit"
             id="btnSubmit"
-            onClick={sendPublication}
+            onClick={handleSubmit}
           >
             Guardar Noticia
           </button>
