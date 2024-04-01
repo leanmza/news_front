@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../assets/PublicationForm.css";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import axios from "axios";
-import { useLocalState } from "../util/useLocalStorage";
+
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -32,6 +32,7 @@ const PublicationForm = () => {
     const { name, value, type, checked } = event.target;
 
     const inputValue = type === 'checkbox' ? checked : value;
+    
     setFormData({
       ...formData,
       [name]: inputValue,
@@ -48,8 +49,11 @@ const PublicationForm = () => {
     const jwtToken = eliminarComillas(localStorage.getItem("jwt"));
 
     const config = {
-      headers: { Authorization: `Bearer ${jwtToken}` },
+      headers: { Authorization: `Bearer ${jwtToken}`,
+      "Content-Type": "multipart/form-data" },
     };
+
+   
 
     const formDataToSend = new FormData();
     // formData.images.forEach(image => {
@@ -62,12 +66,14 @@ const PublicationForm = () => {
     });
 
     console.log(config);
+    console.log(formDataToSend);
 
     try {
       const response = await axios.post(
         "http://localhost:8080/api/publication/create",
-        formData,
+        formDataToSend,
         config,
+      
         {}
       );
 
@@ -77,6 +83,7 @@ const PublicationForm = () => {
     }
 
     console.log(formData);
+    console.log(formImage);
 
     setFormData({
       title: "",
@@ -85,7 +92,9 @@ const PublicationForm = () => {
       subscriberContent: "",
       // images:[],
     });
+
   };
+
 
   return (
     <div className="rowForm">
@@ -163,7 +172,7 @@ const PublicationForm = () => {
             </label>
           </div>
 
-          {/* <div className="form-outline mb-2 col-5">
+          <div className="form-outline mb-2 col-5">
             <label className="form-label">
               Subir imagen
               <input
@@ -171,10 +180,12 @@ const PublicationForm = () => {
                 id="image"
                 className="form-control form-control-lg"
                 placeholder="Subir imagen"
-                name="imageFile"
+                name="image"
+                value={formData.images}
+                onChange={handleInputChange}
               />
             </label>
-          </div> */}
+          </div>
         </div>
 
         <div className="text-center text-lg-start mt-2 pt-2">
