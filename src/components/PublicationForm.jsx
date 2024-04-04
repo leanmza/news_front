@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../assets/PublicationForm.css";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 import axios from "axios";
-
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
-
-  const [formData, setFormData] = useState({
+  const [publi, setFormData] = useState({
     title: "",
     body: "",
     category: "",
     subscriberContent: "",
-    // images:[],
   });
+
+  // const [formImg, setFormImg] = useState({
+  //   images: [],
+  // });
 
   useEffect(() => {
     fetchCategories();
@@ -22,183 +22,118 @@ const PublicationForm = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/categories");
-      setCategories(response.data.categories);
+      setCategories(response.data.categories); // Asumiendo que response.data es un array de categorías
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error("Error en la carga de categorias", error);
     }
   };
 
-  const handleInputChange = (event) => {
+  function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
 
-    const inputValue = type === 'checkbox' ? checked : value;
-    
+    const inputValue = type === "checkbox" ? checked : value;
+
     setFormData({
-      ...formData,
+      ...publi,
       [name]: inputValue,
     });
-  };
+  }
+
+  // const handleImageForm = (event) => {
+  //   const files = event.target.files;
+  //   let imageFiles = [];
+  //   for (let i = 0; i < files.length; i++) {
+  //     imageFiles.push(files[i]);
+  //   }
+  //   setFormImg({
+  //     ...formImg,
+  //     images: imageFiles,
+  //   });
+  // };
 
   function eliminarComillas(cadena) {
     return cadena.replace(/"/g, "");
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const jwtToken = eliminarComillas(localStorage.getItem("jwt"));
+    const token = eliminarComillas(localStorage.getItem("jwt"));
 
-    const config = {
-      headers: { Authorization: `Bearer ${jwtToken}`,
-      "Content-Type": "multipart/form-data" },
-    };
+    const data = JSON.stringify(publi);
 
-   
-
-    const formDataToSend = new FormData();
-    // formData.images.forEach(image => {
-    //   formDataToSend.append('images', image);
-    // });
-    Object.keys(formData).forEach((key) => {
-      if (key !== "images") {
-        formDataToSend.append(key, formData[key]);
-      }
-    });
-
-    console.log(config);
-    console.log(formDataToSend);
+    console.log(data);
 
     try {
       const response = await axios.post(
         "http://localhost:8080/api/publication/create",
-        formDataToSend,
-        config,
-      
-        {}
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
 
-      console.log("response.data" + response.data);
+      console.log(response);
     } catch (error) {
-      console.error("Hubo un error al enviar los datos del formulario:", error);
+      console.error("Hubo un error", error);
     }
-
-    console.log(formData);
-    console.log(formImage);
-
-    setFormData({
-      title: "",
-      body: "",
-      category: "",
-      subscriberContent: "",
-      // images:[],
-    });
-
   };
 
-
   return (
-    <div className="rowForm">
-      <h1>NUEVA PUBLICACIÓN</h1>
-      <form className="form">
-        <div className="form-outline mb-3 col-12">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Título"
-            className="mb-3"
-          >
-            <input
-              type="text"
-              id="title"
-              className="form-control form-control-lg"
-              placeholder="Título"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-            />
-          </FloatingLabel>
-        </div>
-
-        <div className="form-outline mb-3 col-12">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Texto de la publicación"
-            className="mb-3"
-          >
-            <textarea
-              name="body"
-              id="body"
-              cols="30"
-              rows="15"
-              className="form-control form-control-lg inputBody"
-              placeholder="Cuerpo de la noticia"
-              value={formData.body}
-              onChange={handleInputChange}
-            ></textarea>
-          </FloatingLabel>
-        </div>
-
-        <div className="row rowDataForm">
-          <div className="form-outline mb-2 col-3">
-            <FloatingLabel controlId="floatingSelect" label="Categoría">
-              <select
-                id="category"
-                className="form-control form-control-lg"
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-              >
-                <option value="">Elegir una categoría</option>
-                {categories.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </FloatingLabel>
-          </div>
-
-          <div className="form-outline mb-2 col-3  divCheckbox">
-            <label className="form-check-label">
-              ¿Exclusivo suscritores?
-              <input
-                type="checkbox"
-                id="subscriberContent"
-                className="form-check-input"
-                name="subscriberContent"
-                autoComplete="off"
-                value={formData.subscriberContent}
-                onChange={handleInputChange}
-              />
-            </label>
-          </div>
-
-          <div className="form-outline mb-2 col-5">
-            <label className="form-label">
-              Subir imagen
-              <input
-                type="file"
-                id="image"
-                className="form-control form-control-lg"
-                placeholder="Subir imagen"
-                name="image"
-                value={formData.images}
-                onChange={handleInputChange}
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="text-center text-lg-start mt-2 pt-2">
-          <button
-            type="submit"
-            className="btn btn-primary btn-lg btnSubmit"
-            id="btnSubmit"
-            onClick={handleSubmit}
-          >
-            Guardar Noticia
-          </button>
-        </div>
-      </form>
+    <div>
+      <div>
+        <label htmlFor="title">Titulo</label>
+        <input type="text" name="title" id="title" onChange={handleInputForm} />
+      </div>
+      <div>
+        <label htmlFor="body">Cuerpo del articulo</label>
+        <textarea
+          name="body"
+          id="body"
+          cols="60"
+          rows="10"
+          onChange={handleInputForm}
+        ></textarea>
+      </div>
+      <div>
+        <label htmlFor="category">Categoria</label>
+        <select name="category" id="category" onChange={handleInputForm}>
+          <option value="">Elegir una categoria</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label htmlFor="subscriberContent">¿Exclusivo para suscriptores?</label>
+        <input
+          type="checkbox"
+          name="subscriberContent"
+          id="subscriberContent"
+          onChange={handleInputForm}
+        />
+      </div>
+      <div>
+        <label htmlFor="image">Cargar imagenes</label>
+        <input
+          type="file"
+          name="image"
+          id="image"
+          accept="image/*"
+          multiple
+          onChange={handleImageForm}
+        />
+      </div>
+      <div>
+        <button type="submit" onClick={handleSubmit}>
+          Guardar Publicación
+        </button>
+      </div>
     </div>
   );
 };
