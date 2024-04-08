@@ -11,9 +11,9 @@ const PublicationForm = () => {
     subscriberContent: "",
   });
 
-  // const [formImg, setFormImg] = useState({
-  //   images: [],
-  // });
+  const [formImg, setFormImg] = useState({
+    images: [],
+  });
 
   useEffect(() => {
     fetchCategories();
@@ -39,17 +39,19 @@ const PublicationForm = () => {
     });
   }
 
-  // const handleImageForm = (event) => {
-  //   const files = event.target.files;
-  //   let imageFiles = [];
-  //   for (let i = 0; i < files.length; i++) {
-  //     imageFiles.push(files[i]);
-  //   }
-  //   setFormImg({
-  //     ...formImg,
-  //     images: imageFiles,
-  //   });
-  // };
+  const handleImageForm = (event) => {
+    const files = event.target.files;
+    let imageFiles = [];
+    for (let i = 0; i < files.length; i++) {
+      imageFiles.push(files[i]);
+    }
+    setFormImg({
+      ...formImg,
+      images: imageFiles,
+    });
+  };
+
+
 
   function eliminarComillas(cadena) {
     return cadena.replace(/"/g, "");
@@ -60,23 +62,30 @@ const PublicationForm = () => {
 
     const token = eliminarComillas(localStorage.getItem("jwt"));
 
-    const data = JSON.stringify(publi);
-
-    console.log(data);
+    console.log(formImg);
+    const publication = new FormData();
+    formImg.images.forEach(image => {
+      publication.append('images', image);
+    });
+    publication.append('publication', new Blob([JSON.stringify(publi)], {type: 'application/json'}));
+ 
+  
+    console.log(publication);
 
     try {
       const response = await axios.post(
         "http://localhost:8080/api/publication/create",
-        data,
+        publication,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Accept': 'application/json' ,
           },
         }
       );
-
       console.log(response);
+      window.location.href = "/";
+     
     } catch (error) {
       console.error("Hubo un error", error);
     }
