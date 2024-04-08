@@ -3,8 +3,6 @@ import standardImg from "../assets/img/standard-image.jpg";
 import Card from "./Card";
 
 const Dashboard = ({ publicaciones }) => {
-  console.log("Dashboard");
-  console.log(publicaciones);
 
   return (
     <div className="container-fluid divMain">

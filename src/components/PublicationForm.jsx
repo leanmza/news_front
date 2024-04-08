@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/PublicationForm.css";
 import axios from "axios";
+import { FloatingLabel, Form } from "react-bootstrap";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -51,8 +52,6 @@ const PublicationForm = () => {
     });
   };
 
-
-
   function eliminarComillas(cadena) {
     return cadena.replace(/"/g, "");
   }
@@ -64,12 +63,14 @@ const PublicationForm = () => {
 
     console.log(formImg);
     const publication = new FormData();
-    formImg.images.forEach(image => {
-      publication.append('images', image);
+    formImg.images.forEach((image) => {
+      publication.append("images", image);
     });
-    publication.append('publication', new Blob([JSON.stringify(publi)], {type: 'application/json'}));
- 
-  
+    publication.append(
+      "publication",
+      new Blob([JSON.stringify(publi)], { type: "application/json" })
+    );
+
     console.log(publication);
 
     try {
@@ -79,69 +80,101 @@ const PublicationForm = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Accept': 'application/json' ,
+            Accept: "application/json",
           },
         }
       );
       console.log(response);
       window.location.href = "/";
-     
     } catch (error) {
       console.error("Hubo un error", error);
     }
   };
 
   return (
-    <div>
-      <div>
-        <label htmlFor="title">Titulo</label>
-        <input type="text" name="title" id="title" onChange={handleInputForm} />
-      </div>
-      <div>
-        <label htmlFor="body">Cuerpo del articulo</label>
-        <textarea
-          name="body"
-          id="body"
-          cols="60"
-          rows="10"
-          onChange={handleInputForm}
-        ></textarea>
-      </div>
-      <div>
-        <label htmlFor="category">Categoria</label>
-        <select name="category" id="category" onChange={handleInputForm}>
-          <option value="">Elegir una categoria</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="subscriberContent">¿Exclusivo para suscriptores?</label>
-        <input
-          type="checkbox"
-          name="subscriberContent"
-          id="subscriberContent"
-          onChange={handleInputForm}
-        />
-      </div>
-      <div>
-        <label htmlFor="image">Cargar imagenes</label>
-        <input
-          type="file"
-          name="image"
-          id="image"
-          accept="image/*"
-          multiple
-          onChange={handleImageForm}
-        />
-      </div>
-      <div>
-        <button type="submit" onClick={handleSubmit}>
-          Guardar Publicación
-        </button>
+    <div className="container-fluid form">
+      
+      <h1 className="titulo col-12">Nueva Publicación</h1>
+      <div className="col-md-10 col-lg-8">
+        <form>
+          <div>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Título"
+              className="mb-3"
+            >
+              <Form.Control
+                type="text"
+                placeholder="Título"
+                name="title"
+                onChange={handleInputForm}
+              />
+            </FloatingLabel>
+          </div>
+          <div>
+            <FloatingLabel
+              controlId="floatingTextarea2"
+              label="Cuerpo del articulo"
+              className="mb-3"
+            >
+              <Form.Control
+                as="textarea"
+                placeholder="Cuerpo del artículo"
+                style={{ height: "300px" }}
+                onChange={handleInputForm}
+              />
+            </FloatingLabel>
+          </div>
+          <div className="row dataComplementary">
+
+            <div className="col-md-3">
+              <FloatingLabel controlId="floatingSelect" label="Categoría">
+                <Form.Select
+                  aria-label="Floating label select example"
+                  name="category"
+                  onChange={handleInputForm}
+                >
+                  <option>Elegir una categoría</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </FloatingLabel>
+            </div>
+            <div className="col-md-4 divSubscribers">
+              <Form.Check
+                name="subscriberContent"
+                label="¿Exclusivo para suscriptores?"
+                onChange={handleInputForm}
+              />
+            </div>
+            <div className="col-md-5">
+ 
+                <FloatingLabel controlId="floatingFile" label="Imágenes">
+                  <Form.Control
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageForm}
+                  />
+                </FloatingLabel>
+     
+            </div>
+
+          </div>
+          <div className="divButton">
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg btnSubmit"
+              onClick={handleSubmit}
+            >
+              Guardar Publicación
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

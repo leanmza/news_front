@@ -29,8 +29,6 @@ function App() {
     }
   };
 
-  console.log("publicaciones en app");
-  console.log(publicaciones);
   return (
     <>
       <BrowserRouter>

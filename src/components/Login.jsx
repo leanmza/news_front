@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocalState } from "../util/useLocalStorage";
 import "../assets/Login.css";
 import BannerLogin from "./BannerLogin";
+import { FloatingLabel, Form } from "react-bootstrap";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -46,29 +47,36 @@ const Login = () => {
         <div className="col-sm-9 col-md-8 col-lg-6 col-xl-5 col-xxl-4  offset-xl-2">
           <form onSubmit={handleSubmit} className="form" id="formLogin">
             <div className="form-outline mb-4">
-              <input
-                type="email"
-                id="email"
-                className="form-control form-control-lg"
-                placeholder="Email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <label className="form-label">Email</label>
+            <FloatingLabel
+            controlId="floatingInput"
+            label="Email"
+            className="mb-3"
+          >
+            <Form.Control
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </FloatingLabel>
             </div>
 
             <div className="form-outline mb-3">
-              <input
-                type="password"
-                id="password"
-                className="form-control form-control-lg"
-                placeholder="Contraseña"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <label className="form-label">Contraseña</label>
+            <FloatingLabel
+            controlId="floatingInput"
+            label="Contraseña"
+            className="mb-3"
+          >
+            <Form.Control
+              type="password"
+              placeholder="Contraseña"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FloatingLabel>
+
             </div>
 
             <div className="text-center text-lg-start mt-4 pt-2">
