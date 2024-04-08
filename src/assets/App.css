@@ -5,7 +5,9 @@
   text-align: center;
   color: black;
 } */
-
+body {
+  font-family: "Roboto", sans-serif !important;
+}
 .divMain {
   max-width: 1400px;
   display: flex;

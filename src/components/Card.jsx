@@ -19,6 +19,11 @@ const Card = ({
         <img className="card-img-top cardImg" alt="..." src={image} />
 
         <div className="card-img-overlay">
+          {subscriberContent && ( // Verifica si subscriberContent es true
+            <span className="subscriber-content-info">
+              Exclusivo suscriptores
+            </span>
+          )}
           <Link to="/" {...category} className="link">
             <h6 className="card-category">{category}</h6>
           </Link>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import standardImg from "../assets/img/standard-image.jpg";
 import Card from "./Card";
 
 const Dashboard = ({ publicaciones }) => {
+
 
   return (
     <div className="container-fluid divMain">
