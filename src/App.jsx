@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import "./assets/App.css";
 import axios from "axios";
-
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PublicationForm from "./components/PublicationForm";
+import PublicationDetail from "./components/PublicationDetail";
+import PublicationAdmin from "./components/PublicationAdmin";
 
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -42,6 +43,18 @@ function App() {
           <Route
             path="/publication/create"
             element={<PublicationForm />}
+          ></Route>
+          <Route
+            path="/publication/:id"
+            element={<PublicationDetail />}
+          ></Route>
+          <Route
+            path="/category/:category"
+            element={<Dashboard publicaciones={publicaciones} />}
+          ></Route>
+          <Route
+            path="/publication/admin"
+            element={<PublicationAdmin publicaciones={publicaciones} />}
           ></Route>
         </Routes>
       </BrowserRouter>

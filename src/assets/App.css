@@ -10,7 +10,7 @@ body {
 }
 .divMain {
   max-width: 1400px;
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
   margin-top: 32px;

@@ -46,6 +46,7 @@
 
 .subscriber-content-info {
   color: gold;
+  text-shadow: 1px 1px 2px black;
   font-size: 0.8rem;
   font-weight: 500;
   font-style: italic;

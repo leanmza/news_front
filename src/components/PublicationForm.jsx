@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/PublicationForm.css";
 import axios from "axios";
-import { FloatingLabel, Form } from "react-bootstrap";
+import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -15,6 +15,8 @@ const PublicationForm = () => {
   const [formImg, setFormImg] = useState({
     images: [],
   });
+
+  const [loading, setLoading] = useState(false); // Estado para controlar la visibilidad del preloader
 
   useEffect(() => {
     fetchCategories();
@@ -59,6 +61,8 @@ const PublicationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     const token = eliminarComillas(localStorage.getItem("jwt"));
 
     console.log(formImg);
@@ -88,12 +92,13 @@ const PublicationForm = () => {
       window.location.href = "/";
     } catch (error) {
       console.error("Hubo un error", error);
+    } finally {
+      setLoading(false); // Ocultar preloader al finalizar la solicitud
     }
   };
 
   return (
     <div className="container-fluid form">
-      
       <h1 className="titulo col-12">Nueva Publicación</h1>
       <div className="col-md-10 col-lg-8">
         <form>
@@ -126,7 +131,6 @@ const PublicationForm = () => {
             </FloatingLabel>
           </div>
           <div className="row dataComplementary">
-
             <div className="col-md-3">
               <FloatingLabel controlId="floatingSelect" label="Categoría">
                 <Form.Select
@@ -151,19 +155,16 @@ const PublicationForm = () => {
               />
             </div>
             <div className="col-md-5">
- 
-                <FloatingLabel controlId="floatingFile" label="Imágenes">
-                  <Form.Control
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageForm}
-                  />
-                </FloatingLabel>
-     
+              <FloatingLabel controlId="floatingFile" label="Imágenes">
+                <Form.Control
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageForm}
+                />
+              </FloatingLabel>
             </div>
-
           </div>
           <div className="divButton">
             <button
@@ -174,6 +175,13 @@ const PublicationForm = () => {
               Guardar Publicación
             </button>
           </div>
+          {loading && (
+            <div className="text-center mt-3">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Guardando publicación</span>
+              </Spinner>
+            </div>
+          )}
         </form>
       </div>
     </div>

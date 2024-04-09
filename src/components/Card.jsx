@@ -12,7 +12,7 @@ const Card = ({
   subscriberContent,
   visualizations,
   image,
-}) => {
+}) => {   
   return (
     <div className="col-12 col-sm-6 col-md-4 col-lg-3 colCard">
       <div className="card h-100">
@@ -28,7 +28,7 @@ const Card = ({
             <h6 className="card-category">{category}</h6>
           </Link>
 
-          <Link to={id} className="link">
+          <Link to={`/publication/${id}`} className="link">
             <h2 className="card-title">{title}</h2>
           </Link>
         </div>

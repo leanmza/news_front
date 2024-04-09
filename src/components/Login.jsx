@@ -45,7 +45,7 @@ const Login = () => {
           <BannerLogin></BannerLogin>
         </div>
         <div className="col-sm-9 col-md-8 col-lg-6 col-xl-5 col-xxl-4  offset-xl-2">
-          <form onSubmit={handleSubmit} className="form" id="formLogin">
+          <form onSubmit={handleSubmit}  id="formLogin">
             <div className="form-outline mb-4">
             <FloatingLabel
             controlId="floatingInput"
