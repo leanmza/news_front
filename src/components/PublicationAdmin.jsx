@@ -2,9 +2,12 @@ import React from "react";
 
 const PublicationAdmin = ({publicaciones}) => {
     console.log(publicaciones);
+
+
+    
   return (
     <div>
-      <table className="table row-col-12 table-light newsTable" id="newsTable">
+      <table className="table row-col-12 table-light newsTable" id="newsTable" >
         <thead>
           <tr className="row-col-12 titulosTabla">
             <th scope="col" className="col-2">

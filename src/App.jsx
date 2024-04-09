@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PublicationForm from "./components/PublicationForm";
 import PublicationDetail from "./components/PublicationDetail";
 import PublicationAdmin from "./components/PublicationAdmin";
+import PublicationEdit from "./components/PublicationEdit";
 
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -55,6 +56,10 @@ function App() {
           <Route
             path="/publication/admin"
             element={<PublicationAdmin publicaciones={publicaciones} />}
+          ></Route>
+          <Route
+            path="/publication/edit/:id"
+            element={<PublicationEdit  />}
           ></Route>
         </Routes>
       </BrowserRouter>
