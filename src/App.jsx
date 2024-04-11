@@ -17,11 +17,6 @@ function App() {
     fetchPublications();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(fetchPublications, 10000); // Realiza la consulta cada 10 segundos
-    return () => clearInterval(interval); // Limpia el intervalo cuando se desmonta el componente
-  }, [publicaciones]);
-
   const fetchPublications = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/publication");
@@ -30,6 +25,18 @@ function App() {
       console.error("Error en la carga de categorías", error);
     }
   };
+
+  const deletePublication = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/publication/${id}`);
+      await fetchPublications();
+      console.log(response)
+    } catch (error) {
+      console.error("Error en la carga de categorias", error);
+
+    }
+  
+  }
 
   return (
     <>
@@ -55,11 +62,12 @@ function App() {
           ></Route>
           <Route
             path="/publication/admin"
-            element={<PublicationAdmin publicaciones={publicaciones} />}
+            element={<PublicationAdmin publicaciones={publicaciones} 
+            deletePublication={deletePublication} />}
           ></Route>
           <Route
             path="/publication/edit/:id"
-            element={<PublicationEdit  />}
+            element={<PublicationEdit/>}
           ></Route>
         </Routes>
       </BrowserRouter>

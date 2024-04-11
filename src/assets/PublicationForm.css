@@ -33,3 +33,21 @@
 .titulo{
   text-align: center;
 }
+
+.imgEditForm{
+  height: auto;
+  width: 100%;
+}
+
+.dataComplementary{
+  padding-bottom: 20px;
+}
+
+.rowImagenes{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.cargaImg{
+  padding-top: 20px;
+}

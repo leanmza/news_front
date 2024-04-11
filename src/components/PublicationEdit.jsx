@@ -5,7 +5,7 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import "../assets/PublicationForm.css";
 
 const PublicationEdit = () => {
- const { id } = useParams();
+  const { id } = useParams();
 
   const [publicacion, setPublicacion] = useState({
     title: "",
@@ -15,9 +15,6 @@ const PublicationEdit = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-
-
- 
 
   useEffect(() => {
     fetchPublicacion(id);
@@ -49,7 +46,7 @@ const PublicationEdit = () => {
   };
 
   function handleInputForm(event) {
-    const { name, value, type, checked,  } = event.target;
+    const { name, value, type, checked } = event.target;
 
     const inputValue = type === "checkbox" ? checked : value;
 
@@ -75,6 +72,21 @@ const PublicationEdit = () => {
     return cadena.replace(/"/g, "");
   }
 
+  console.log("publicacion");
+  console.log(publicacion);
+
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...publicacion.images];
+    updatedImages.splice(index, 1);
+    setPublicacion({
+      ...publicacion,
+      images: updatedImages,
+    });
+  };
+
+  console.log("publicacion");
+  console.log(publicacion);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,8 +102,6 @@ const PublicationEdit = () => {
       new Blob([JSON.stringify(publicacion)], { type: "application/json" })
     );
 
-    console.log(publication);
-
     try {
       const response = await axios.patch(
         `http://localhost:8080/api/publication/${id}`,
@@ -104,7 +114,7 @@ const PublicationEdit = () => {
         }
       );
       console.log(response);
-      window.location.href = "/";
+      window.location.href = `/publication/${id}`;
     } catch (error) {
       console.error("Hubo un error", error);
     }
@@ -129,7 +139,6 @@ const PublicationEdit = () => {
                 label="Título"
                 className="mb-3"
               >
-                
                 <Form.Control
                   type="text"
                   placeholder="Título"
@@ -181,25 +190,37 @@ const PublicationEdit = () => {
                   onChange={handleInputForm}
                 />
               </div>
-              <div className="col-md-5">
-                <FloatingLabel controlId="floatingFile" label="Imágenes">
-                  <Form.Control
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageForm}
-                  />
-                </FloatingLabel>
-              </div>
             </div>
+            <div className="row rowImagenes">
+              {publicacion.images.map((image, index) => (
+                <div className="col-lg-4" key={index}>
+                  <img src={image} alt="" className="imgEditForm" />
+                  <i
+                    className="fa-solid fa-trash-can link"
+                    onClick={() => handleDeleteImage(index)}
+                  ></i>
+                </div>
+              ))}
+            </div>
+            <div className="col-md-5 cargaImg">
+              <FloatingLabel controlId="floatingFile" label="Cargar imágenes">
+                <Form.Control
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageForm}
+                />
+              </FloatingLabel>
+            </div>
+
             <div className="divButton">
               <button
                 type="submit"
                 className="btn btn-primary btn-lg btnSubmit"
                 onClick={handleSubmit}
               >
-                Guardar Publicación
+                Guardar Cambios
               </button>
             </div>
           </form>
