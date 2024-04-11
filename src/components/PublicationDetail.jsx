@@ -9,6 +9,7 @@ const PublicationDetail = () => {
   const [publicacion, setPublicacion] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  //Seteo index para el carrousel
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex) => {
@@ -16,6 +17,22 @@ const PublicationDetail = () => {
   };
 
   const { id } = useParams();
+
+  //Configuro el header de la solicitud
+  const headers = {
+    headers: {
+      Accept: "application/json",
+    },
+  };
+
+  //Obtengo el token
+  let token = localStorage.getItem("jwt");
+  
+  if (token !== null) {
+    token = token.replace(/"/g, "");
+    headers.headers.Authorization = `Bearer ${token}`; // Agrego el token al Authorization del headers
+  }
+
 
   useEffect(() => {
     fetchPublicacion(id);
@@ -25,10 +42,10 @@ const PublicationDetail = () => {
     try {
       console.log("try");
       const response = await axios.get(
-        `http://localhost:8080/api/publication/${id}`
+        `http://localhost:8080/api/publication/${id}`,
+        headers
       );
 
-      console.log(response.data);
       setPublicacion(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -36,8 +53,6 @@ const PublicationDetail = () => {
     }
   };
 
-  console.log("publicacion");
-  console.log(publicacion);
 
   if (isLoading) {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
@@ -47,7 +62,10 @@ const PublicationDetail = () => {
     <div>
       <div className="container-fluid divNews">
         <div className="categoryDiv">
-          <Link to={`/category/${publicacion.category.name}`} className="linkDetail">
+          <Link
+            to={`/category/${publicacion.category.name}`}
+            className="linkDetail"
+          >
             <h6>{publicacion.category.name}</h6>
           </Link>
         </div>

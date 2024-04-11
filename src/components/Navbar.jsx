@@ -2,23 +2,18 @@ import React, { useEffect, useState } from "react";
 import "../assets/Navbar.css";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo-news.png";
-import axios from "axios";
+import { getCategories } from "../util/getCategories";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      await getCategories(setCategories);
+    };
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/categories");
-      setCategories(response.data.categories); // Asumiendo que response.data es un array de categorías
-    } catch (error) {
-      console.error("Error en la carga de categorias", error);
-    }
-  };
   return (
     <div>
       <header>
@@ -35,7 +30,8 @@ const Navbar = () => {
                 <ul className="nav categorias">
                   {categories.map((category) => (
                     <li>
-                      <Link to={`/category/${category.name}`}
+                      <Link
+                        to={`/category/${category.name}`}
                         className="link"
                         key={category.id}
                         value={category.name}
@@ -44,7 +40,7 @@ const Navbar = () => {
                       </Link>
                     </li>
                   ))}
-                
+
                   <li>
                     <Link to="/publication/create" className="link">
                       Cargar

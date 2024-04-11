@@ -3,23 +3,11 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "../assets/PublicationForm.css";
+import { getCategories } from "../util/getCategories";
 
 const PublicationEdit = () => {
   const { id } = useParams();
-
-  const [publicacion, setPublicacion] = useState({
-    title: "",
-    body: "",
-    category: "",
-    subscriberContent: "",
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    fetchPublicacion(id);
-    fetchCategories();
-  }, [id]);
+  console.log(id);
 
   const fetchPublicacion = async (id) => {
     try {
@@ -36,14 +24,35 @@ const PublicationEdit = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/categories");
-      setCategories(response.data.categories); // Asumiendo que response.data es un array de categorías
-    } catch (error) {
-      console.error("Error en la carga de categorias", error);
-    }
+  const [publicacion, setPublicacion] = useState({
+    title: "",
+    body: "",
+    category: "",
+    subscriberContent: "",
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+
+  const token = eliminarComillas(localStorage.getItem("jwt"));
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      await getCategories(setCategories);
+    };
+    fetchPublicacion(id);
+    fetchCategories();
+  }, []);
+
+  function eliminarComillas(cadena) {
+    return cadena.replace(/"/g, "");
+  }
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
@@ -68,10 +77,6 @@ const PublicationEdit = () => {
     });
   };
 
-  function eliminarComillas(cadena) {
-    return cadena.replace(/"/g, "");
-  }
-
   console.log("publicacion");
   console.log(publicacion);
 
@@ -90,8 +95,6 @@ const PublicationEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = eliminarComillas(localStorage.getItem("jwt"));
-
     // console.log(formImg);
     const publication = new FormData();
     // formImg.images.forEach((image) => {
@@ -106,14 +109,9 @@ const PublicationEdit = () => {
       const response = await axios.patch(
         `http://localhost:8080/api/publication/${id}`,
         publication,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
+        headers
       );
-      console.log(response);
+      console.log(response.data, " publicación editada");
       window.location.href = `/publication/${id}`;
     } catch (error) {
       console.error("Hubo un error", error);

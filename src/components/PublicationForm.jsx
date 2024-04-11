@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../assets/PublicationForm.css";
 import axios from "axios";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
+import { getCategories } from "../util/getCategories";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -18,18 +19,26 @@ const PublicationForm = () => {
 
   const [loading, setLoading] = useState(false); // Estado para controlar la visibilidad del preloader
 
+  //Traigo el token
+  const token = eliminarComillas(localStorage.getItem("jwt"));
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  };
+
   useEffect(() => {
+    const fetchCategories = async () => {
+      await getCategories(setCategories);
+    };
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/categories");
-      setCategories(response.data.categories); // Asumiendo que response.data es un array de categorías
-    } catch (error) {
-      console.error("Error en la carga de categorias", error);
-    }
-  };
+  function eliminarComillas(cadena) {
+    return cadena.replace(/"/g, "");
+  }
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
@@ -54,18 +63,11 @@ const PublicationForm = () => {
     });
   };
 
-  function eliminarComillas(cadena) {
-    return cadena.replace(/"/g, "");
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setLoading(true);
 
-    const token = eliminarComillas(localStorage.getItem("jwt"));
-
-    console.log(formImg);
     const publication = new FormData();
     formImg.images.forEach((image) => {
       publication.append("images", image);
@@ -75,20 +77,13 @@ const PublicationForm = () => {
       new Blob([JSON.stringify(publi)], { type: "application/json" })
     );
 
-    console.log(publication);
-
     try {
       const response = await axios.post(
         "http://localhost:8080/api/publication/create",
         publication,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
+        headers
       );
-      console.log(response);
+      console.log(response.status, " publicación creada");
       window.location.href = "/";
     } catch (error) {
       console.error("Hubo un error", error);
