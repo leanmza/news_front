@@ -4,6 +4,7 @@ import axios from "axios";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "../assets/PublicationForm.css";
 import { getCategories } from "../util/getCategories";
+import { getToken } from "../util/securityService";
 
 const PublicationEdit = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const PublicationEdit = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
 
-  const token = eliminarComillas(localStorage.getItem("jwt"));
+  const token = getToken();
 
   const headers = {
     headers: {
@@ -50,9 +51,6 @@ const PublicationEdit = () => {
     fetchCategories();
   }, []);
 
-  function eliminarComillas(cadena) {
-    return cadena.replace(/"/g, "");
-  }
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;

@@ -9,9 +9,13 @@ import PublicationForm from "./components/PublicationForm";
 import PublicationDetail from "./components/PublicationDetail";
 import PublicationAdmin from "./components/PublicationAdmin";
 import PublicationEdit from "./components/PublicationEdit";
+import { getRole } from "./util/securityService";
+import Unauthorized from "./components/Unauthorized";
+import ProtectedRoute from "./util/ProtectedRoute";
 
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
+  const role = getRole();
 
   useEffect(() => {
     fetchPublications();
@@ -28,16 +32,19 @@ function App() {
 
   const deletePublication = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/publication/${id}`);
+      const response = await axios.delete(
+        `http://localhost:8080/api/publication/${id}`
+      );
       await fetchPublications();
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.error("Error en la carga de categorias", error);
-
     }
-  
-  }
+  };
 
+  console.log(publicaciones);
+
+  console.log(getRole());
   return (
     <>
       <BrowserRouter>
@@ -47,28 +54,30 @@ function App() {
             path="/"
             element={<Dashboard publicaciones={publicaciones} />}
           ></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route
-            path="/publication/create"
-            element={<PublicationForm />}
-          ></Route>
-          <Route
-            path="/publication/:id"
-            element={<PublicationDetail />}
-          ></Route>
+          <Route path="/login" element={<Login />} />
+
+          <Route element={<ProtectedRoute role={role} />}>
+            {/* DENTRO DE ESTE ROUTE VA TODO LO PROTEGIDO PARA EL ADMIN */}
+            <Route path="/publication/create" element={<PublicationForm />} />
+            <Route
+              path="/publication/admin"
+              element={
+                <PublicationAdmin
+                  publicaciones={publicaciones}
+                  deletePublication={deletePublication}
+                />
+              }
+            />
+            <Route path="/publication/edit/:id" element={<PublicationEdit />} />
+          </Route>
+
+          <Route path="/publication/:id" element={<PublicationDetail />} />
           <Route
             path="/category/:category"
             element={<Dashboard publicaciones={publicaciones} />}
-          ></Route>
-          <Route
-            path="/publication/admin"
-            element={<PublicationAdmin publicaciones={publicaciones} 
-            deletePublication={deletePublication} />}
-          ></Route>
-          <Route
-            path="/publication/edit/:id"
-            element={<PublicationEdit/>}
-          ></Route>
+          />
+
+          <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
       </BrowserRouter>
     </>

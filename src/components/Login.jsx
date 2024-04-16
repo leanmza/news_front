@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
 import "../assets/Login.css";
 import BannerLogin from "./BannerLogin";
@@ -8,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [jwt, setJwt] = useLocalState("", "jwt");
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,8 +32,7 @@ const Login = () => {
       })
       .then(([body, headers]) => {
         setJwt(body.token); // Asignar el token a la variable jwtToken
-        console.log("jwt " + jwt);
-        window.location.href = "/";
+        navigate('/');
       })
       .catch((message) => {
         alert(message);

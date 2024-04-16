@@ -3,6 +3,8 @@ import "../assets/PublicationForm.css";
 import axios from "axios";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import { getCategories } from "../util/getCategories";
+import { getRole, getToken } from "../util/securityService";
+
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -19,8 +21,15 @@ const PublicationForm = () => {
 
   const [loading, setLoading] = useState(false); // Estado para controlar la visibilidad del preloader
 
+  // //Valido si el usuario es un ADMIN
+  // const role = getRole();
+
+  // if (role !== "ADMIN") {
+  //   return <Unauthorized></Unauthorized>;
+  // }
+
   //Traigo el token
-  const token = eliminarComillas(localStorage.getItem("jwt"));
+  const token = getToken();
 
   const headers = {
     headers: {
@@ -35,10 +44,6 @@ const PublicationForm = () => {
     };
     fetchCategories();
   }, []);
-
-  function eliminarComillas(cadena) {
-    return cadena.replace(/"/g, "");
-  }
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
