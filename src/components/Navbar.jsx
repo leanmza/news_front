@@ -3,9 +3,35 @@ import "../assets/Navbar.css";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo-news.png";
 import { getCategories } from "../util/getCategories";
+import {
+  cleanToken,
+  getRole,
+  getToken,
+  validToken,
+} from "../util/securityService";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
+
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    // Verificar si el JWT está almacenado en localStorage
+    const token = getToken();
+    if (token) {
+      setIsLogged(validToken());
+    } else {
+      // No hay token en localStorage, por lo que el usuario no está autenticado
+      setIsLogged(false);
+    }
+  }, []);
+  // console.log(isLogged);
+  console.log(isLogged);
+
+  const logout = () => {
+    cleanToken();
+    setIsLogged(false);
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -13,6 +39,11 @@ const Navbar = () => {
     };
     fetchCategories();
   }, []);
+
+  function handleLogin() {
+    if (validToken != true || validToken === null || validToken === undefined) {
+    }
+  }
 
   return (
     <div>
@@ -68,9 +99,17 @@ const Navbar = () => {
             </div>
 
             <div className="divLogin col-2">
-              <Link to="/login" className="link">
-                <span className="spanLogin"> Iniciar Sesión</span>
-              </Link>
+              {isLogged ? (
+                // Si el usuario está autenticado, mostrar el botón de cerrar sesión
+                <span className="spanLogin" onClick={logout}>
+                  Cerrar Sesión
+                </span>
+              ) : (
+                // Si el usuario no está autenticado, mostrar el enlace para iniciar sesión
+                <Link to="/login" className="link">
+                  <span className="spanLogin">Iniciar Sesión</span>
+                </Link>
+              )}
             </div>
           </nav>
         </div>

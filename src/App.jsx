@@ -16,6 +16,7 @@ import ProtectedRoute from "./util/ProtectedRoute";
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
   const role = getRole();
+  console.log("role", role);
 
   useEffect(() => {
     fetchPublications();
@@ -42,9 +43,7 @@ function App() {
     }
   };
 
-  console.log(publicaciones);
 
-  console.log(getRole());
   return (
     <>
       <BrowserRouter>
@@ -59,9 +58,7 @@ function App() {
           <Route element={<ProtectedRoute role={role} />}>
             {/* DENTRO DE ESTE ROUTE VA TODO LO PROTEGIDO PARA EL ADMIN */}
             <Route path="/publication/create" element={<PublicationForm />} />
-            <Route
-              path="/publication/admin"
-              element={
+            <Route path="/publication/admin"  element={
                 <PublicationAdmin
                   publicaciones={publicaciones}
                   deletePublication={deletePublication}

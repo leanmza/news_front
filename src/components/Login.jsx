@@ -31,10 +31,11 @@ const Login = () => {
         else return Promise.reject("Inicio de sesión fallido");
       })
       .then(([body, headers]) => {
-        setJwt(body.token); // Asignar el token a la variable jwtToken
-        navigate('/');
+        setJwt(body.token);
+        //con navigate("/") se rompía, se redirigía antes de guardar el jwt
+        window.location.href = "/";
       })
-      .catch((message) => {
+       .catch((message) => {
         alert(message);
       });
   }
@@ -46,38 +47,37 @@ const Login = () => {
           <BannerLogin></BannerLogin>
         </div>
         <div className="col-sm-9 col-md-8 col-lg-6 col-xl-5 col-xxl-4  offset-xl-2">
-          <form onSubmit={handleSubmit}  id="formLogin">
+          <form onSubmit={handleSubmit} id="formLogin">
             <div className="form-outline mb-4">
-            <FloatingLabel
-            controlId="floatingInput"
-            label="Email"
-            className="mb-3"
-          >
-            <Form.Control
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FloatingLabel>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Email"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </FloatingLabel>
             </div>
 
             <div className="form-outline mb-3">
-            <FloatingLabel
-            controlId="floatingInput"
-            label="Contraseña"
-            className="mb-3"
-          >
-            <Form.Control
-              type="password"
-              placeholder="Contraseña"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </FloatingLabel>
-
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Contraseña"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="password"
+                  placeholder="Contraseña"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </FloatingLabel>
             </div>
 
             <div className="text-center text-lg-start mt-4 pt-2">
