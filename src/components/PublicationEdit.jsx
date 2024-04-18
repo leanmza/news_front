@@ -8,16 +8,13 @@ import { getToken } from "../util/securityService";
 
 const PublicationEdit = () => {
   const { id } = useParams();
-  console.log(id);
 
   const fetchPublicacion = async (id) => {
     try {
-      console.log("try");
       const response = await axios.get(
         `http://localhost:8080/api/publication/${id}`
       );
 
-      console.log(response.data);
       setPublicacion(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -51,7 +48,6 @@ const PublicationEdit = () => {
     fetchCategories();
   }, []);
 
-
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
 
@@ -75,9 +71,6 @@ const PublicationEdit = () => {
     });
   };
 
-  console.log("publicacion");
-  console.log(publicacion);
-
   const handleDeleteImage = (index) => {
     const updatedImages = [...publicacion.images];
     updatedImages.splice(index, 1);
@@ -86,9 +79,6 @@ const PublicationEdit = () => {
       images: updatedImages,
     });
   };
-
-  console.log("publicacion");
-  console.log(publicacion);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -115,9 +105,6 @@ const PublicationEdit = () => {
       console.error("Hubo un error", error);
     }
   };
-
-  console.log("publicacion");
-  console.log(publicacion);
 
   if (isLoading) {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación

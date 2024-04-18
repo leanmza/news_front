@@ -1,13 +1,10 @@
-import { Navigate, Outlet } from "react-router-dom"
+import { Navigate, Outlet } from "react-router-dom";
 
+const ProtectedRoute = ({ role, redirectPath = "/unauthorized" }) => {
+  if (role !== "ADMIN") {
+    return <Navigate to={redirectPath} replace />;
+  }
+  return <Outlet />;
+};
 
-const ProtectedRoute = ({role, redirectPath ='/unauthorized'}) => {
-
-    if (role !== "ADMIN"){
-        console.log("hola");
-        return <Navigate to={redirectPath} replace/>
-    }
-    return <Outlet/>
-}
-
-export default ProtectedRoute
+export default ProtectedRoute;

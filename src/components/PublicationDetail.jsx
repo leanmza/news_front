@@ -44,7 +44,6 @@ const PublicationDetail = () => {
 
   const fetchPublicacion = async (id) => {
     try {
-      console.log("try");
       const response = await axios.get(
         `http://localhost:8080/api/publication/${id}`,
         headers
