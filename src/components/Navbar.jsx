@@ -10,28 +10,27 @@ import {
   validToken,
 } from "../util/securityService";
 
-const Navbar = () => {
+const Navbar = ({ isLogged, logout }) => {
   const [categories, setCategories] = useState([]);
+  const role = getRole();
 
-  const [isLogged, setIsLogged] = useState(false);
+  //manejar esto desde APP.jsx
+  // const [isLogged, setIsLogged] = useState(false);
 
-  useEffect(() => {
-    // Verificar si el JWT está almacenado en localStorage
-    const token = getToken();
-    if (token) {
-      setIsLogged(validToken());
-    } else {
-      // No hay token en localStorage, por lo que el usuario no está autenticado
-      setIsLogged(false);
-    }
-  }, []);
-  // console.log(isLogged);
-  console.log(isLogged);
+  // useEffect(() => {
+  //   const token = getToken();
+  //   if (token) {
+  //     setIsLogged(validToken());
+  //   } else {
+  //     setIsLogged(false);
+  //   }
+  // }, []);
 
-  const logout = () => {
-    cleanToken();
-    setIsLogged(false);
-  };
+  // const logout = () => {
+  //   cleanToken();
+  //   setIsLogged(false);
+  //   window.location.href = "/";
+  // };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -71,12 +70,13 @@ const Navbar = () => {
                       </Link>
                     </li>
                   ))}
-
-                  <li>
-                    <Link to="/publication/create" className="link">
-                      Cargar
-                    </Link>
-                  </li>
+                  {role === "ADMIN" ? (
+                    <li>
+                      <Link to="/publication/create" className="link">
+                        Cargar
+                      </Link>
+                    </li>
+                  ) : null}
                 </ul>
               </div>
             </div>
@@ -100,13 +100,11 @@ const Navbar = () => {
 
             <div className="divLogin col-2">
               {isLogged ? (
-                // Si el usuario está autenticado, mostrar el botón de cerrar sesión
                 <span className="spanLogin" onClick={logout}>
                   Cerrar Sesión
                 </span>
               ) : (
-                // Si el usuario no está autenticado, mostrar el enlace para iniciar sesión
-                <Link to="/login" className="link">
+                <Link to="user/login" className="link">
                   <span className="spanLogin">Iniciar Sesión</span>
                 </Link>
               )}

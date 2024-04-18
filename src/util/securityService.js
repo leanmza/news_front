@@ -1,14 +1,13 @@
 import { jwtDecode } from "jwt-decode";
 
+let token = null;
+
 export const getToken = () => {
   if (typeof window !== "undefined") {
     const jwt = localStorage.getItem("jwt");
-    let token;
     if (jwt !== null) {
       token = eliminarComillas(jwt);
       return token;
-    } else {
-      return null;
     }
   }
 };
@@ -16,24 +15,23 @@ export const getToken = () => {
 export const cleanToken = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("jwt");
+    token = null;
   }
 };
 
 export const getRole = () => {
-  const token = getToken();
-  let role;
-  if (token !== null) {
-    role = jwtDecode(token).authorities[0];
+  if (token === null || token === "") {
+    return "ANONYMOUS";
   } else {
-    role = "ANONYMOUS";
+    return jwtDecode(token).authorities[0];
   }
-  return role;
 };
 
 export const validToken = () => {
+
   const currentTime = Date.now() / 1000; // Tiempo actual en segundos
 
-  if (jwtDecode(getToken()).exp < currentTime) {
+  if (jwtDecode(token).exp < currentTime) {
     return false;
   } else {
     return true;

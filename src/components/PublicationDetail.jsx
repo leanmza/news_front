@@ -2,12 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import "../assets/PublicationDetail.css";
+import { Modal, Button } from "react-bootstrap";
 
 import { Carousel } from "react-bootstrap";
+import { getRole } from "../util/securityService";
 
 const PublicationDetail = () => {
   const [publicacion, setPublicacion] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  let show = false;
+
+  const role = getRole();
 
   //Seteo index para el carrousel
   const [index, setIndex] = useState(0);
@@ -27,12 +32,11 @@ const PublicationDetail = () => {
 
   //Obtengo el token
   let token = localStorage.getItem("jwt");
-  
+
   if (token !== null) {
     token = token.replace(/"/g, "");
     headers.headers.Authorization = `Bearer ${token}`; // Agrego el token al Authorization del headers
   }
-
 
   useEffect(() => {
     fetchPublicacion(id);
@@ -52,7 +56,14 @@ const PublicationDetail = () => {
       console.error("Error en la carga de la publicación", error);
     }
   };
+  const handleShow = () => (show = true);
+  const handleVolver = () => (window.location.href = "/");
+  // const handleSubscribe = () => window.location.href = "user/form";
 
+  //PONER MODAL CON FONDO DIFUMINADO
+  if (role === "ANONYMOUS" && publicacion.subscriberContent == true) {
+    handleShow();
+  }
 
   if (isLoading) {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
@@ -91,6 +102,22 @@ const PublicationDetail = () => {
         <div className="divBody row">
           <p className="bodyNews">{publicacion.body}</p>
         </div>
+        <Modal show={show}>
+          <Modal.Header>
+            <Modal.Title>EXCLUSIVO PARA SUSCRIPTORES</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Suscribite a nuestro sitio y disfrutá de este contenido y mucho más
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleVolver}>
+              Volver
+            </Button>
+            <Button variant="primary" onClick={handleSubscribe}>
+              Suscribirme
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );
