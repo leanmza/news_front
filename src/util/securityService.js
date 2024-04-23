@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 
 let token = null;
+let role = "ANONYMOUS"
 
 export const getToken = () => {
   if (typeof window !== "undefined") {
@@ -21,9 +22,10 @@ export const cleanToken = () => {
 
 export const getRole = () => {
   if (token === null || token === "") {
-    return "ANONYMOUS";
+    return role;
   } else {
-    return jwtDecode(token).authorities[0];
+    role = jwtDecode(token).authorities[0];
+    return role
   }
 };
 
@@ -37,6 +39,10 @@ export const validToken = () => {
     return true;
   }
 };
+
+export const getUserName = () => {
+  return jwtDecode(token).sub
+}
 
 function eliminarComillas(cadena) {
   return cadena.replace(/"/g, "");

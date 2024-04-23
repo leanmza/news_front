@@ -1,8 +1,9 @@
 import React from "react";
 import Card from "./Card";
 import { useParams } from "react-router-dom";
+import HorizontalCard from "./HorizontalCard";
 
-const Dashboard = ({ publicaciones }) => {
+const Dashboard = ({ ultimas, publicaciones }) => {
 
   const { category } = useParams();
 
@@ -16,6 +17,9 @@ const Dashboard = ({ publicaciones }) => {
 
   return (
     <div className="container-fluid divMain">
+      <div className="horizontalCard row row-cols-1">
+        <HorizontalCard ultimas={ultimas}/>
+      </div>
       <div className="row row-cols-1">
         {publicaciones.map((item) => (
             <Card

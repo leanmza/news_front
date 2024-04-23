@@ -5,7 +5,8 @@ import { Modal, Button } from "react-bootstrap";
 const PublicationAdmin = ({ publicaciones, deletePublication }) => {
   const [showModal, setShowModal] = useState({});
 
-  const handleClose = (itemId) => setShowModal({ ...showModal, [itemId]: false });
+  const handleClose = (itemId) =>
+    setShowModal({ ...showModal, [itemId]: false });
   const handleShow = (itemId) => setShowModal({ ...showModal, [itemId]: true });
 
   return (
@@ -56,14 +57,16 @@ const PublicationAdmin = ({ publicaciones, deletePublication }) => {
               <td>{item.images}</td>
               <td>
                 <div className="col-12">
-                  <Link to={`/publication/edit/${item.id}`} className="link">
-                    <i className="fa-regular fa-pen-to-square"></i>
+                  <Link to={`/publication/edit/${item.id}`} >
+                    <span class="material-symbols-outlined">edit</span>
                   </Link>
 
-                  <i
-                    className="fa-solid fa-trash-can link"
+                  <span
+                    className="material-symbols-outlined link"
                     onClick={() => handleShow(item.id)}
-                  ></i>
+                  >
+                    delete
+                  </span>
                 </div>
                 <Modal
                   show={showModal[item.id]}

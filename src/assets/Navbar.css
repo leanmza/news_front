@@ -1,23 +1,28 @@
 header {
   background-color: rgb(245, 68, 68);
-  min-height: 80px;
-  max-height: 120px;
+  height: 80px;
   justify-content: center;
   display: flex;
 }
+
 .navbar {
   background-color: rgb(245, 68, 68) !important;
+  height: 80px;
+  width: 1400px;
 }
 
 .divHeader {
   align-items: center;
-  max-width: 1200px;
-  width: 100vw;
+  max-width: 1400px;
+}
+
+li{
+  margin-right: 32px;
 }
 
 .divLogo {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   padding-left: 12px;
 }
 
@@ -62,6 +67,8 @@ header {
 }
 
 .searchBar {
+  margin: 0 !important;
+  position: inherit !important;
   background-color: transparent !important;
   color: white !important ;
 }
@@ -83,13 +90,18 @@ header {
   padding-right: 5px;
 }
 
-.categorias{
-  display: flex;
-  justify-content: space-evenly;
-}
 
-.divLogin{
+
+.divLogin {
   display: flex;
   justify-content: end;
 }
 
+.spanLogin{
+  color: white;
+  font-size: 14px;
+}
+
+.nav-link{
+  font-weight: 500 !important;
+}

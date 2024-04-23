@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "../assets/PublicationForm.css";
+import "../../assets/PublicationForm.css";
 import axios from "axios";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
-import { getCategories } from "../util/getCategories";
-import { getToken } from "../util/securityService";
+import { getCategories } from "../../util/getCategories";
+import { getToken } from "../../util/securityService";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -118,6 +118,7 @@ const PublicationForm = () => {
                 as="textarea"
                 placeholder="Cuerpo del artículo"
                 style={{ height: "300px" }}
+                name="body"
                 onChange={handleInputForm}
               />
             </FloatingLabel>

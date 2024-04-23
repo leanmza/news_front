@@ -30,6 +30,9 @@
     display: block;
     animation: animateWords 5s infinite ease;
   }
+  .spanRegis{
+    color: blue;
+  }
   
   @keyframes animateWords {
     0% {

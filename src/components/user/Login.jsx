@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocalState } from "../util/useLocalStorage";
-import "../assets/Login.css";
-import BannerLogin from "./BannerLogin";
+import { useLocalState } from "../../util/useLocalStorage";
+import "../../assets/Login.css";
+import BannerLogin from "../BannerLogin";
 import { FloatingLabel, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [jwt, setJwt] = useLocalState("", "jwt");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -35,7 +36,7 @@ const Login = () => {
         //con navigate("/") se rompía, se redirigía antes de guardar el jwt
         window.location.href = "/";
       })
-       .catch((message) => {
+      .catch((message) => {
         alert(message);
       });
   }
@@ -78,6 +79,15 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </FloatingLabel>
+            </div>
+
+            <div className="form-outline mb-3">
+              <p>
+                ¿No tenés cuenta?{" "}
+                <Link to="/user/form" className="link">
+                  <span className="spanRegis">Registrate acá</span>
+                </Link>{" "}
+              </p>
             </div>
 
             <div className="text-center text-lg-start mt-4 pt-2">

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FloatingLabel, Form } from "react-bootstrap";
-import "../assets/PublicationForm.css";
-import { getCategories } from "../util/getCategories";
-import { getToken } from "../util/securityService";
+import "../../assets/PublicationForm.css";
+import { getCategories } from "../../util/getCategories";
+import { getToken } from "../../util/securityService";
 
 const PublicationEdit = () => {
   const { id } = useParams();

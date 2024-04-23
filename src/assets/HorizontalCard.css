@@ -1,0 +1,27 @@
+.imgHorizontal {
+  aspect-ratio: 2/1 !important;
+  width: 1200px;
+}
+.carousel {
+  width: 1200px;
+  border-radius: 4px;
+}
+.divHorizontalImg {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.titleHorizontal {
+  font-weight: 700 !important;
+  color: white !important;
+  text-shadow: 1px 1px 2px black;
+  font-size: 3em;
+}
+
+.categoryHorizontal {
+  font-size: 16px;
+  font-weight: 500 !important;
+  color: white !important;
+  text-shadow: 1px 1px 2px black;
+}

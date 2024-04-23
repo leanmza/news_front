@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import "../assets/PublicationDetail.css";
+import "../../assets/PublicationDetail.css";
 import { Modal, Button } from "react-bootstrap";
 
 import { Carousel } from "react-bootstrap";
-import { getRole } from "../util/securityService";
+import { getRole } from "../../util/securityService";
 
 const PublicationDetail = () => {
   const [publicacion, setPublicacion] = useState([]);
@@ -30,14 +30,6 @@ const PublicationDetail = () => {
     },
   };
 
-  //Obtengo el token
-  let token = localStorage.getItem("jwt");
-
-  if (token !== null) {
-    token = token.replace(/"/g, "");
-    headers.headers.Authorization = `Bearer ${token}`; // Agrego el token al Authorization del headers
-  }
-
   useEffect(() => {
     fetchPublicacion(id);
   }, [id]);
@@ -57,7 +49,7 @@ const PublicationDetail = () => {
   };
   const handleShow = () => (show = true);
   const handleVolver = () => (window.location.href = "/");
-  // const handleSubscribe = () => window.location.href = "user/form";
+  const handleSubscribe = () => window.location.href = "/user/form";
 
   //PONER MODAL CON FONDO DIFUMINADO
   if (role === "ANONYMOUS" && publicacion.subscriberContent == true) {
