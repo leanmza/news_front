@@ -6,7 +6,7 @@ import { getRole, validToken } from "../../util/securityService";
 
 import MenuReader from "./MenuReader";
 import MenuAdmin from "./MenuAdmin";
-import SearchBar from "../SearchBar";
+// import SearchBar from "../SearchBar";
 
 const Navbar = ({ isLogged, logout }) => {
   const [categories, setCategories] = useState([]);

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./assets/App.css";
-import axios from "axios";
 
 import Login from "./components/user/Login";
 import Dashboard from "./components/Dashboard";
@@ -108,8 +107,7 @@ function App() {
             path="/publication/admin"
             element={
               <PublicationAdmin
-                publicaciones={publicaciones}
-                deletePublication={deletePublication}
+              deletePublication={deletePublication}
               />
             }
           />

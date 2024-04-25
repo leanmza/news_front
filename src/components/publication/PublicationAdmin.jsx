@@ -1,9 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 
-const PublicationAdmin = ({ publicaciones, deletePublication }) => {
+import axiosInstance from "../../util/axiosConfig";
+
+const PublicationAdmin = ({ deletePublication }) => {
   const [showModal, setShowModal] = useState({});
+
+  const [publicaciones, setPublicaciones] = useState([]);
+
+  useEffect(() => {
+    fetchPublications();
+  }, []);
+
+  const fetchPublications = async () => {
+    try {
+      const response = await axiosInstance.get("/api/publication/all");
+      setPublicaciones(response.data.publications);
+    } catch (error) {
+      console.error("Error en la carga de categorías", error);
+    }
+  };
+
 
   const handleClose = (itemId) =>
     setShowModal({ ...showModal, [itemId]: false });
@@ -26,14 +44,17 @@ const PublicationAdmin = ({ publicaciones, deletePublication }) => {
             <th scope="col" className="col- col-md-1">
               Autor
             </th>
-            <th scope="col" className="col-">
+            <th scope="col" className="">
               Fecha
             </th>
-            <th scope="col" className="col-">
+            <th scope="col" className="">
               Suscriptores
             </th>
-            <th scope="col" className="col-">
+            <th scope="col" className="">
               Vistas
+            </th>
+            <th scope="col" className="col">
+              Estado
             </th>
             <th scope="col" className="col-3">
               Imágenes
@@ -54,11 +75,14 @@ const PublicationAdmin = ({ publicaciones, deletePublication }) => {
               <td>{item.creationDate}</td>
               <td>{item.subscriberContent ? "Sí" : "No"}</td>
               <td>{item.visualizations}</td>
+              <td>{item.deleted ? "Oculta" : "Activa"}</td>
               <td>{item.images}</td>
               <td>
                 <div className="col-12">
                   <Link to={`/publication/edit/${item.id}`} >
-                    <span class="material-symbols-outlined">edit</span>
+                  <span class="material-symbols-outlined">
+edit
+</span>
                   </Link>
 
                   <span

@@ -1,4 +1,4 @@
-* {
+body {
   font-family: "Roboto", sans-serif !important;
 }
 .divMain {
@@ -12,7 +12,4 @@
 .colCard {
   margin-bottom: 20px;
 }
-
-
-
 
