@@ -26,6 +26,7 @@ function App() {
   const [publicaciones, setPublicaciones] = useState([]);
   const [isLogged, setIsLogged] = useState(false);
   const [ultimas, setUltimas] = useState([]);
+  
 
   const role = getRole();
 
@@ -78,6 +79,8 @@ function App() {
     window.location.href = "/";
   };
 
+  console.log(publicaciones);
+
   return (
     <>
       <BrowserRouter>
@@ -97,6 +100,10 @@ function App() {
             path="/publication/category/:category"
             element={<Dashboard publicaciones={publicaciones} />}
           />
+          {/* <Route
+            path="/publication/search/:query"
+            element={<Dashboard publicaciones={publicaciones} />}
+          /> */}
           <Route
             path="/publication/search/:query"
             element={<Dashboard publicaciones={publicaciones} />}

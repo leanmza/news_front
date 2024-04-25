@@ -6,7 +6,7 @@ import { getRole, validToken } from "../../util/securityService";
 
 import MenuReader from "./MenuReader";
 import MenuAdmin from "./MenuAdmin";
-// import SearchBar from "../SearchBar";
+import SearchBar from "../SearchBar";
 
 const Navbar = ({ isLogged, logout }) => {
   const [categories, setCategories] = useState([]);
@@ -62,7 +62,7 @@ const Navbar = ({ isLogged, logout }) => {
             </div>
 
             <div className="divSearch col-2">
-              {/* <SearchBar /> */}
+              <SearchBar />
             </div>
             <div className="divLogin col-2">
               {isLogged ? (
