@@ -1,20 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { axiosNoToken } from './../../util/axiosConfig';
 
-import axios from "axios";
-import { getToken } from "./../../util/securityService";
-
-const UserAdmin = () => {
+const UsersAdmin = () => {
   const [userList, setUserList] = useState([]);
   // const [showModal, setShowModal] = useState({});
-
-  const token = getToken();
-
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
-  };
 
   useEffect(() => {
     fetchUserList();
@@ -22,7 +11,7 @@ const UserAdmin = () => {
 
   const fetchUserList = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/users");
+      const response = await axiosNoToken().get("/api/users");
       setUserList(response.data.users);
     } catch (error) {
       console.error("Error en la carga de categorías ", error);
@@ -72,4 +61,4 @@ const UserAdmin = () => {
   );
 };
 
-export default UserAdmin;
+export default UsersAdmin;

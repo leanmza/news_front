@@ -8,8 +8,7 @@ const SearchBar = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      // Llama a la función handleSearch desde aquí
-      window.location.href = `/publication/search/${query}`;
+        window.location.href = `/publication/search/${query}`;
     }
   };
 

@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 
 let token = null;
-let role = "ANONYMOUS"
+let role = "ANONYMOUS";
 
 export const getToken = () => {
   if (typeof window !== "undefined") {
@@ -25,12 +25,11 @@ export const getRole = () => {
     return role;
   } else {
     role = jwtDecode(token).authorities[0];
-    return role
+    return role;
   }
 };
 
 export const validToken = () => {
-
   const currentTime = Date.now() / 1000; // Tiempo actual en segundos
 
   if (jwtDecode(token).exp < currentTime) {
@@ -41,8 +40,8 @@ export const validToken = () => {
 };
 
 export const getUserName = () => {
-  return jwtDecode(token).sub
-}
+  return jwtDecode(token).sub;
+};
 
 function eliminarComillas(cadena) {
   return cadena.replace(/"/g, "");

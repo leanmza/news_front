@@ -4,7 +4,8 @@ import axios from "axios";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import BannerLogin from "../BannerLogin";
 
-import { getUserName, getToken } from "./../../util/securityService";
+import { getUserName } from "./../../util/securityService";
+import { axiosToken } from "../../util/axiosConfig";
 
 const UserEdit = () => {
   const userName = getUserName();
@@ -21,21 +22,9 @@ const UserEdit = () => {
     fetchUser(userName);
   }, []);
 
-  const token = getToken();
-
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
-  };
-
   const fetchUser = async (userName) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/users/${userName}`,
-        headers
-      );
+      const response = await axiosToken().get(`/api/users/${userName}`);
 
       setUserData({
         id: response.data.id,
@@ -69,11 +58,7 @@ const UserEdit = () => {
     console.log("user", user);
 
     try {
-      const response = await axios.patch(
-        `http://localhost:8080/api/users/${user.id}`,
-        user,
-        headers
-      );
+      const response = await axiosToken().patch(`/api/users/${user.id}`, user);
       console.log(response.status, "usuario actualizado");
       window.location.href = "/";
     } catch (error) {
@@ -140,20 +125,20 @@ const UserEdit = () => {
               </FloatingLabel>
             </div>
             <div>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Contraseña"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="password"
-                    placeholder="Contraseña"
-                    name="password"
-                    onChange={handleInputForm}
-                    value={user.password}
-                  />
-                </FloatingLabel>
-              </div>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Contraseña"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="password"
+                  placeholder="Contraseña"
+                  name="password"
+                  onChange={handleInputForm}
+                  value={user.password}
+                />
+              </FloatingLabel>
+            </div>
 
             <div className="divButton">
               <button

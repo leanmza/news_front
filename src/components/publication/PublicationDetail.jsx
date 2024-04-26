@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import "../../assets/PublicationDetail.css";
 import { Modal, Button } from "react-bootstrap";
-
 import { Carousel } from "react-bootstrap";
 import { getRole } from "../../util/securityService";
+import { axiosNoToken } from "../../util/axiosConfig";
 
 const PublicationDetail = () => {
   const [publicacion, setPublicacion] = useState([]);
@@ -23,23 +22,13 @@ const PublicationDetail = () => {
 
   const { id } = useParams();
 
-  //Configuro el header de la solicitud
-  const headers = {
-    headers: {
-      Accept: "application/json",
-    },
-  };
-
   useEffect(() => {
     fetchPublicacion(id);
   }, [id]);
 
   const fetchPublicacion = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/publication/${id}`,
-        headers
-      );
+      const response = await axiosNoToken().get(`/api/publication/${id}`);
 
       setPublicacion(response.data);
       setIsLoading(false);
@@ -49,7 +38,7 @@ const PublicationDetail = () => {
   };
   const handleShow = () => (show = true);
   const handleVolver = () => (window.location.href = "/");
-  const handleSubscribe = () => window.location.href = "/user/form";
+  const handleSubscribe = () => (window.location.href = "/user/form");
 
   //PONER MODAL CON FONDO DIFUMINADO
   if (role === "ANONYMOUS" && publicacion.subscriberContent == true) {

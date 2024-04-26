@@ -5,15 +5,14 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import "../../assets/PublicationForm.css";
 import { getCategories } from "../../util/getCategories";
 import { getToken } from "../../util/securityService";
+import { axiosNoToken, axiosToken } from "../../util/axiosConfig";
 
 const PublicationEdit = () => {
   const { id } = useParams();
 
   const fetchPublicacion = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/publication/${id}`
-      );
+      const response = await axiosNoToken().get(`/api/publication/${id}`);
 
       setPublicacion(response.data);
       setIsLoading(false);
@@ -30,15 +29,6 @@ const PublicationEdit = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-
-  const token = getToken();
-
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
-  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -94,10 +84,9 @@ const PublicationEdit = () => {
     );
 
     try {
-      const response = await axios.patch(
-        `http://localhost:8080/api/publication/${id}`,
-        publication,
-        headers
+      const response = await axiosToken().patch(
+        `/api/publication/${id}`,
+        publication
       );
       console.log(response.data, " publicación editada");
       window.location.href = `/publication/${id}`;

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../../assets/PublicationForm.css";
-import axios from "axios";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import { getCategories } from "../../util/getCategories";
-import { getToken } from "../../util/securityService";
+import { axiosToken } from "../../util/axiosConfig";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -19,16 +18,6 @@ const PublicationForm = () => {
   });
 
   const [loading, setLoading] = useState(false); // Estado para controlar la visibilidad del preloader
-
-  //Traigo el token
-  const token = getToken();
-
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
-  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -75,10 +64,9 @@ const PublicationForm = () => {
     );
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/publication/create",
-        publication,
-        headers
+      const response = await axiosToken().post(
+        "/api/publication/create",
+        publication
       );
       console.log(response.status, " publicación creada");
       window.location.href = "/";

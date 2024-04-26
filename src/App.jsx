@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./assets/App.css";
-
 import Login from "./components/user/Login";
 import Dashboard from "./components/Dashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -19,14 +18,13 @@ import {
   validToken,
   cleanToken,
 } from "./util/securityService";
-import UserAdmin from "./components/user/UserAdmin";
-import axiosInstance from "./util/axiosConfig";
+import UsersAdmin from "./components/user/UsersAdmin";
+import { axiosNoToken } from "./util/axiosConfig";
 
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
   const [isLogged, setIsLogged] = useState(false);
   const [ultimas, setUltimas] = useState([]);
-  
 
   const role = getRole();
 
@@ -38,7 +36,7 @@ function App() {
 
   const fetchPublications = async () => {
     try {
-      const response = await axiosInstance.get("/api/publication");
+      const response = await axiosNoToken().get("/api/publication");
       setPublicaciones(response.data.publications);
     } catch (error) {
       console.error("Error en la carga de categorías", error);
@@ -47,7 +45,7 @@ function App() {
 
   const fetchLastPublications = async () => {
     try {
-      const response = await axiosInstance.get("/api/publication/last");
+      const response = await axiosNoToken().get("/api/publication/last");
       setUltimas(response.data.publications);
     } catch (error) {
       console.error("Error en la carga de categorías", error);
@@ -56,7 +54,7 @@ function App() {
 
   const deletePublication = async (id) => {
     try {
-      const response = await axiosInstance.delete(`/api/publication/${id}`);
+      const response = await axiosNoToken().delete(`/api/publication/${id}`);
       await fetchPublications();
       console.log(response);
     } catch (error) {
@@ -109,20 +107,18 @@ function App() {
             element={<Dashboard publicaciones={publicaciones} />}
           />
 
-          <Route path="user/admin" element={<UserAdmin />} />
-          <Route
-            path="/publication/admin"
-            element={
-              <PublicationAdmin
-              deletePublication={deletePublication}
-              />
-            }
-          />
-          <Route path="/publication/edit/:id" element={<PublicationEdit />} />
-
           <Route element={<ProtectedRoute role={role} />}>
             {/* DENTRO DE ESTE ROUTE VA TODO LO PROTEGIDO PARA EL ADMIN */}
             <Route path="/publication/create" element={<PublicationForm />} />
+
+            <Route path="user/admin" element={<UsersAdmin />} />
+            <Route
+              path="/publication/admin"
+              element={
+                <PublicationAdmin deletePublication={deletePublication} />
+              }
+            />
+            <Route path="/publication/edit/:id" element={<PublicationEdit />} />
           </Route>
 
           <Route path="/unauthorized" element={<Unauthorized />} />

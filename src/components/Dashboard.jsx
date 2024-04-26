@@ -30,7 +30,9 @@ const Dashboard = ({ ultimas, publicaciones }) => {
   return (
     <div className="container-fluid divMain">
       {emptyResult ? (
-        <h5 className="noResult">No se encontraron publicaciones con "{query}" en su título</h5>
+        <h5 className="noResult">
+          No se encontraron publicaciones con "{query}" en su título
+        </h5>
       ) : null}
       <div className="horizontalCard row row-cols-1">
         <HorizontalCard ultimas={ultimas} />

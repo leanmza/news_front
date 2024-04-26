@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
-
-import axiosInstance from "../../util/axiosConfig";
+import { axiosNoToken } from "../../util/axiosConfig";
 
 const PublicationAdmin = ({ deletePublication }) => {
   const [showModal, setShowModal] = useState({});
@@ -15,13 +14,12 @@ const PublicationAdmin = ({ deletePublication }) => {
 
   const fetchPublications = async () => {
     try {
-      const response = await axiosInstance.get("/api/publication/all");
+      const response = await axiosNoToken().get("/api/publication/all");
       setPublicaciones(response.data.publications);
     } catch (error) {
       console.error("Error en la carga de categorías", error);
     }
   };
-
 
   const handleClose = (itemId) =>
     setShowModal({ ...showModal, [itemId]: false });
@@ -79,10 +77,8 @@ const PublicationAdmin = ({ deletePublication }) => {
               <td>{item.images}</td>
               <td>
                 <div className="col-12">
-                  <Link to={`/publication/edit/${item.id}`} >
-                  <span class="material-symbols-outlined">
-edit
-</span>
+                  <Link to={`/publication/edit/${item.id}`}>
+                    <span class="material-symbols-outlined">edit</span>
                   </Link>
 
                   <span
@@ -111,8 +107,9 @@ edit
                     </Button>
                     <Button
                       variant="primary"
-                      onClick={() => {
-                        deletePublication(item.id);
+                      onClick={async () => {
+                        await deletePublication(item.id);
+                        await fetchPublications();
                         handleClose(item.id);
                       }}
                     >

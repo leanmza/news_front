@@ -1,17 +1,16 @@
-import axios from 'axios';
-import { getToken } from './securityService';
+import axios from "axios";
+import { getToken } from "./securityService";
 
 const token = getToken();
 
+export const axiosNoToken = () =>
+  axios.create({
+    baseURL: "http://localhost:8080", // URL base
+    headers: {},
+  });
 
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // URL base
-  headers: {
-    // Authorization: `Bearer ${token}`, // Autorización global
-    // Accept: 'application/json', // Tipo de contenido aceptado
-  },
-});
-
-export default axiosInstance;
-
-
+export const axiosToken = () =>
+  axios.create({
+    baseURL: "http://localhost:8080", // URL base
+    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  });

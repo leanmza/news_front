@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../../assets/PublicationForm.css";
-import axios from "axios";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import BannerLogin from "../BannerLogin";
+import { axiosNoToken } from "../../util/axiosConfig";
 
 const UserForm = () => {
   const [user, setUserData] = useState({
@@ -31,10 +31,7 @@ const UserForm = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/users/create",
-        user
-      );
+      const response = await axiosNoToken().post("/api/users/create", user);
       console.log(response.status, "usuario registrado");
       window.location.href = "/user/login";
     } catch (error) {
