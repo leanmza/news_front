@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import { axiosNoToken } from "../../util/axiosConfig";
+import "../../assets/PublicationAdmin.css";
 
-const PublicationAdmin = ({ deletePublication }) => {
+const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
   const [showModal, setShowModal] = useState({});
 
   const [publicaciones, setPublicaciones] = useState([]);
@@ -23,7 +24,39 @@ const PublicationAdmin = ({ deletePublication }) => {
 
   const handleClose = (itemId) =>
     setShowModal({ ...showModal, [itemId]: false });
-  const handleShow = (itemId) => setShowModal({ ...showModal, [itemId]: true });
+  // const handleShow = (itemId) => setShowModal({ ...showModal, [itemId]: true });
+
+  const handleShow = (itemId, action) => {
+    let message, warning, buttonTxt, buttonVariant, actionFunction;
+    if (action === "delete") {
+      message = `¿Desea eliminar la publicación ${
+        publicaciones.find((pub) => pub.id === itemId).title
+      }?` 
+      warning = `Esta acción NO SE PUEDE DESHACER`;
+      buttonTxt = `ELIMINAR`;
+      buttonVariant = "danger";
+
+      actionFunction = async () => {
+        await deletePublication(itemId);
+        await fetchPublications();
+        handleClose(itemId);
+      };
+    } else if (action === "changeStatus") {
+      message = `¿Desea cambiar el estado de la publicación ${
+        publicaciones.find((pub) => pub.id === itemId).title
+      }?`;
+      warning = null;
+      buttonTxt = `Guardar Cambio`;
+      buttonVariant = "primary";
+
+      actionFunction = async () => {
+        await changeDeletedStatus(itemId);
+        await fetchPublications();
+        handleClose(itemId);
+      };
+    }
+    setShowModal({ ...showModal, [itemId]: { message, warning, buttonTxt, buttonVariant, actionFunction } });
+  };
 
   return (
     <div>
@@ -73,7 +106,23 @@ const PublicationAdmin = ({ deletePublication }) => {
               <td>{item.creationDate}</td>
               <td>{item.subscriberContent ? "Sí" : "No"}</td>
               <td>{item.visualizations}</td>
-              <td>{item.deleted ? "Oculta" : "Activa"}</td>
+              <td>
+                {item.deleted ? (
+                  <span
+                    className="material-symbols-outlined noVisible"
+                    onClick={() => handleShow(item.id, "changeStatus")}
+                  >
+                    visibility_off
+                  </span>
+                ) : (
+                  <span
+                    className="material-symbols-outlined visible"
+                    onClick={() => handleShow(item.id, "changeStatus")}
+                  >
+                    visibility
+                  </span>
+                )}
+              </td>
               <td>{item.images}</td>
               <td>
                 <div className="col-12">
@@ -83,7 +132,7 @@ const PublicationAdmin = ({ deletePublication }) => {
 
                   <span
                     className="material-symbols-outlined link"
-                    onClick={() => handleShow(item.id)}
+                    onClick={() => handleShow(item.id, "delete")}
                   >
                     delete
                   </span>
@@ -95,9 +144,8 @@ const PublicationAdmin = ({ deletePublication }) => {
                   <Modal.Header closeButton>
                     <Modal.Title>Borrar Publicación</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body>
-                    ¿Desea borrar la publicación {item.title}?
-                  </Modal.Body>
+                  <Modal.Body>{showModal[item.id]?.message}
+                  <p className="warning">{showModal[item.id]?.warning}</p></Modal.Body>
                   <Modal.Footer>
                     <Button
                       variant="secondary"
@@ -106,14 +154,10 @@ const PublicationAdmin = ({ deletePublication }) => {
                       Cancelar
                     </Button>
                     <Button
-                      variant="primary"
-                      onClick={async () => {
-                        await deletePublication(item.id);
-                        await fetchPublications();
-                        handleClose(item.id);
-                      }}
+                      variant={showModal[item.id]?.buttonVariant}
+                      onClick={showModal[item.id]?.actionFunction}
                     >
-                      Borrar
+                     {showModal[item.id]?.buttonTxt}
                     </Button>
                   </Modal.Footer>
                 </Modal>

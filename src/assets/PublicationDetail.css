@@ -40,9 +40,7 @@
   font-size: 4em;
 }
 
-.divImage img {
-  max-width: 900px;
-}
+
 
 .divBody {
   padding: 20px 5px;
@@ -67,4 +65,17 @@
 .linkDetail:active {
   text-decoration: none;
   color: black !important;
+}
+.categoryDiv{
+  display: flex;
+  justify-content: space-between;
+}
+
+.categoryDetail{
+  margin: 0;
+}
+
+.deleteIcon{
+  display: flex;
+  justify-content: end;
 }

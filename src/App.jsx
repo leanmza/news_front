@@ -25,8 +25,11 @@ function App() {
   const [publicaciones, setPublicaciones] = useState([]);
   const [isLogged, setIsLogged] = useState(false);
   const [ultimas, setUltimas] = useState([]);
+  
 
   const role = getRole();
+
+  
 
   useEffect(() => {
     fetchPublications();
@@ -55,6 +58,16 @@ function App() {
   const deletePublication = async (id) => {
     try {
       const response = await axiosNoToken().delete(`/api/publication/${id}`);
+      await fetchPublications();
+      console.log(response);
+    } catch (error) {
+      console.error("Error en la carga de categorias", error);
+    }
+  };
+
+  const changeDeletedStatus = async (id) => {
+    try {
+      const response = await axiosNoToken().patch(`/api/publication/status/${id}`);
       await fetchPublications();
       console.log(response);
     } catch (error) {
@@ -93,7 +106,7 @@ function App() {
           <Route path="user/login" element={<Login />} />
           <Route path="user/form" element={<UserForm />} />
           <Route path="user/profile" element={<UserEdit />} />
-          <Route path="/publication/:id" element={<PublicationDetail />} />
+          <Route path="/publication/:id" element={<PublicationDetail deletePublication={deletePublication}/>} />
           <Route
             path="/publication/category/:category"
             element={<Dashboard publicaciones={publicaciones} />}
@@ -115,7 +128,7 @@ function App() {
             <Route
               path="/publication/admin"
               element={
-                <PublicationAdmin deletePublication={deletePublication} />
+                <PublicationAdmin deletePublication={deletePublication} changeDeletedStatus={changeDeletedStatus} />
               }
             />
             <Route path="/publication/edit/:id" element={<PublicationEdit />} />

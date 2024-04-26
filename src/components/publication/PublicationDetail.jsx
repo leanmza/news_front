@@ -6,9 +6,13 @@ import { Carousel } from "react-bootstrap";
 import { getRole } from "../../util/securityService";
 import { axiosNoToken } from "../../util/axiosConfig";
 
-const PublicationDetail = () => {
+const PublicationDetail = ({ deletePublication }) => {
   const [publicacion, setPublicacion] = useState([]);
+
   const [isLoading, setIsLoading] = useState(true);
+
+  const [showModal, setShowModal] = useState({});
+
   let show = false;
 
   const role = getRole();
@@ -49,32 +53,47 @@ const PublicationDetail = () => {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
 
+  const handleCloseModal = (itemId) =>
+    setShowModal({ ...showModal, [itemId]: false });
+  const handleShowModal = (itemId) =>
+    setShowModal({ ...showModal, [itemId]: true });
+
   return (
     <div>
       <div className="container-fluid divNews">
-        <div className="categoryDiv">
+
+        <div className="categoryDiv row">
           <Link
             to={`/category/${publicacion.category.name}`}
-            className="linkDetail"
+            className="linkDetail col-2"
           >
-            <h6>{publicacion.category.name}</h6>
+            <h6 className="categoryDetail">{publicacion.category.name}</h6>
           </Link>
+          {role === "ADMIN" ? (
+            <span
+              className="material-symbols-outlined link deleteIcon col-1"
+              onClick={() => handleShowModal(publicacion.id)}
+            >
+              delete
+            </span>
+          ) : null}
         </div>
 
         <div className="divTitle row">
           <h1>{publicacion.title}</h1>
         </div>
-        <div className="divWriter">
+        <div className="divWriter row">
           <h6>{publicacion.author.name}</h6>
         </div>
-        <div className="divDate col-2">
+        <div className="divDate col-2 row">
           <p>{publicacion.creationDate}</p>
         </div>
+      
         <div className="divImage row">
           <Carousel activeIndex={index} onSelect={handleSelect}>
             {publicacion.images.map((image) => (
               <Carousel.Item>
-                <img className="  " src={image} alt="..." />
+                <img className="imgHorizontal" src={image} alt="..." />
               </Carousel.Item>
             ))}
           </Carousel>
@@ -99,6 +118,35 @@ const PublicationDetail = () => {
           </Modal.Footer>
         </Modal>
       </div>
+      <Modal
+        show={showModal[publicacion.id]}
+        onHide={() => handleCloseModal(publicacion.id)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Borrar Publicación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Desea borrar la publicación {publicacion.title}?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => handleCloseModal(publicacion.id)}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="primary"
+            onClick={async () => {
+              await deletePublication(publicacion.id);
+              handleCloseModal(publicacion.id);
+              window.location.href = "/";
+            }}
+          >
+            Borrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

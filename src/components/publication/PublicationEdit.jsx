@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "../../assets/PublicationForm.css";
 import { getCategories } from "../../util/getCategories";
-import { getToken } from "../../util/securityService";
 import { axiosNoToken, axiosToken } from "../../util/axiosConfig";
 
 const PublicationEdit = () => {
   const { id } = useParams();
-
-  const fetchPublicacion = async (id) => {
-    try {
-      const response = await axiosNoToken().get(`/api/publication/${id}`);
-
-      setPublicacion(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error en la carga de la publicación", error);
-    }
-  };
 
   const [publicacion, setPublicacion] = useState({
     title: "",
@@ -27,16 +14,36 @@ const PublicationEdit = () => {
     category: "",
     subscriberContent: "",
   });
+
+  const [formImg, setFormImg] = useState({
+    images: [],
+  });
+
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      await getCategories(setCategories);
-    };
     fetchPublicacion(id);
     fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    await getCategories(setCategories);
+  };
+
+  const fetchPublicacion = async (id) => {
+    try {
+      const response = await axiosNoToken().get(`/api/publication/${id}`);
+      const { title, body, category, subscriberContent, images } = response.data;
+      const categoryName = category ? category.name : ""; // Si category es null o undefined, asigna una cadena vacía
+      setPublicacion({ title, body, category: categoryName, subscriberContent, images });
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error en la carga de la publicación", error);
+    }
+  };
+
+  console.log("FormImg despues del fetch", formImg);
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
@@ -55,12 +62,13 @@ const PublicationEdit = () => {
     for (let i = 0; i < files.length; i++) {
       imageFiles.push(files[i]);
     }
+    console.log("formImg antes del handle", formImg);
     setFormImg({
-      ...formImg,
       images: imageFiles,
     });
+   
   };
-
+  console.log("formImg despues del handle", formImg);
   const handleDeleteImage = (index) => {
     const updatedImages = [...publicacion.images];
     updatedImages.splice(index, 1);
@@ -73,16 +81,18 @@ const PublicationEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // console.log(formImg);
+    console.log(formImg);
+    console.log(publicacion);
     const publication = new FormData();
-    // formImg.images.forEach((image) => {
-    //   publication.append("images", image);
-    // });
+    formImg.images.forEach((image) => {
+      publication.append("images", image);
+    });
     publication.append(
       "publication",
       new Blob([JSON.stringify(publicacion)], { type: "application/json" })
     );
 
+    
     try {
       const response = await axiosToken().patch(
         `/api/publication/${id}`,

@@ -1,0 +1,12 @@
+.visible{
+    color: green;
+}
+
+.noVisible{
+    color: darkred;
+}
+
+.warning{
+    color: red;
+    font-weight: 700;
+}

@@ -20,11 +20,12 @@ const PublicationForm = () => {
   const [loading, setLoading] = useState(false); // Estado para controlar la visibilidad del preloader
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      await getCategories(setCategories);
-    };
     fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    await getCategories(setCategories);
+  };
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
