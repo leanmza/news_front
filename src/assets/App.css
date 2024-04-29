@@ -16,3 +16,11 @@ body {
 .noResult{
   padding-top: 32px;
 }
+
+.divAdmin {
+  max-width: 1400px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+ 
+}

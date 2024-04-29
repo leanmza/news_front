@@ -1,14 +1,18 @@
 header {
   background-color: rgb(245, 68, 68);
-  height: 80px;
+  height: 60px;
   justify-content: center;
   display: flex;
 }
 
 .navbar {
   background-color: rgb(245, 68, 68) !important;
-  height: 80px;
+  height: 60px;
   width: 1400px;
+}
+
+.logo{
+  margin: 0 !important;
 }
 
 .divHeader {

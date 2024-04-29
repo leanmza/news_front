@@ -31,7 +31,7 @@ const Navbar = ({ isLogged, logout }) => {
           <nav className="navbar navbar-expand-md col-md-10 col-8 ">
             <div className="divLogo col-4 col-md-2">
               <Link to="/" className="link">
-                <h2>DeGeeks</h2>
+                <h2 className="logo">DeGeeks</h2>
               </Link>
             </div>
 

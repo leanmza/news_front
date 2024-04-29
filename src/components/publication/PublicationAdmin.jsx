@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import { axiosNoToken } from "../../util/axiosConfig";
 import "../../assets/PublicationAdmin.css";
+import { sortBy } from "../../util/listSort";
 
 const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
   const [showModal, setShowModal] = useState({});
 
   const [publicaciones, setPublicaciones] = useState([]);
+
+  const [ordenInverso, setOrdenInverso] = useState(false);
 
   useEffect(() => {
     fetchPublications();
@@ -27,11 +30,12 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
   // const handleShow = (itemId) => setShowModal({ ...showModal, [itemId]: true });
 
   const handleShow = (itemId, action) => {
-    let message, warning, buttonTxt, buttonVariant, actionFunction;
+    let title, message, warning, buttonTxt, buttonVariant, actionFunction;
     if (action === "delete") {
+      title = `Eliminar Publicación`;
       message = `¿Desea eliminar la publicación ${
         publicaciones.find((pub) => pub.id === itemId).title
-      }?` 
+      }?`;
       warning = `Esta acción NO SE PUEDE DESHACER`;
       buttonTxt = `ELIMINAR`;
       buttonVariant = "danger";
@@ -42,6 +46,7 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
         handleClose(itemId);
       };
     } else if (action === "changeStatus") {
+      title = `Cambiar Visibilidad de la Publicación`;
       message = `¿Desea cambiar el estado de la publicación ${
         publicaciones.find((pub) => pub.id === itemId).title
       }?`;
@@ -55,39 +60,87 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
         handleClose(itemId);
       };
     }
-    setShowModal({ ...showModal, [itemId]: { message, warning, buttonTxt, buttonVariant, actionFunction } });
+    setShowModal({
+      ...showModal,
+      [itemId]: {
+        title,
+        message,
+        warning,
+        buttonTxt,
+        buttonVariant,
+        actionFunction,
+      },
+    });
+  };
+
+  const handleSort = (e) => {
+    const sortValue = e.target.getAttribute('value');
+    const sortedPublicaciones = sortBy([...publicaciones], sortValue, ordenInverso);
+    setPublicaciones(sortedPublicaciones);
+    // Invierte el estado del orden
+    setOrdenInverso(!ordenInverso);
   };
 
   return (
-    <div>
+    <div className="container-fluid divAdmin">
       <table className="table row-col-12 table-light newsTable" id="newsTable">
         <thead>
           <tr className="row-col-12 titulosTabla">
-            <th scope="col" className="col-2">
+            <th scope="col" className="col" onClick={handleSort} value="title">
               Título
             </th>
-            <th scope="col" clas="col-2">
+            <th scope="col" clas="col-4">
               Cuerpo
             </th>
-            <th scope="col" className="col- col-md-1">
+            <th
+              scope="col"
+              className="col col-md-1"
+              onClick={handleSort}
+              value="category"
+            >
               Categoría
             </th>
-            <th scope="col" className="col- col-md-1">
+            <th
+              scope="col"
+              className="col col-md-1"
+              onClick={handleSort}
+              value="author"
+            >
               Autor
             </th>
-            <th scope="col" className="">
+            <th
+              scope="col"
+              className="col"
+              onClick={handleSort}
+              value="creationDate"
+            >
               Fecha
             </th>
-            <th scope="col" className="">
+            <th
+              scope="col"
+              className="col"
+              onClick={handleSort}
+              value="subscriberContent"
+            >
               Suscriptores
             </th>
-            <th scope="col" className="">
+            <th
+              scope="col"
+              className="col"
+              onClick={handleSort}
+              value="visualizations"
+            >
               Vistas
             </th>
-            <th scope="col" className="col">
+            <th
+              scope="col"
+              className="col"
+              onClick={handleSort}
+              value="deleted"
+            >
               Estado
             </th>
-            <th scope="col" className="col-3">
+            <th scope="col" className="col-2">
               Imágenes
             </th>
             <th scope="col" className="col-1 col-md-1">
@@ -100,7 +153,9 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
           {publicaciones.map((item) => (
             <tr key={item.id}>
               <td>{item.title}</td>
-              <td>{item.body}</td>
+              <td>
+                <p className="tableBody">{item.body}</p>
+              </td>
               <td>{item.category.name}</td>
               <td>{item.author.name}</td>
               <td>{item.creationDate}</td>
@@ -109,25 +164,29 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
               <td>
                 {item.deleted ? (
                   <span
-                    className="material-symbols-outlined noVisible"
+                    className="material-symbols-outlined noVisible icons"
                     onClick={() => handleShow(item.id, "changeStatus")}
                   >
                     visibility_off
                   </span>
                 ) : (
                   <span
-                    className="material-symbols-outlined visible"
+                    className="material-symbols-outlined visible icons"
                     onClick={() => handleShow(item.id, "changeStatus")}
                   >
                     visibility
                   </span>
                 )}
               </td>
-              <td>{item.images}</td>
               <td>
-                <div className="col-12">
+                {item.images.map((image) => (
+                  <img className="miniImg" src={image} alt="..." />
+                ))}
+              </td>
+              <td>
+                <div className="col-12 icons">
                   <Link to={`/publication/edit/${item.id}`}>
-                    <span class="material-symbols-outlined">edit</span>
+                    <span className="material-symbols-outlined">edit</span>
                   </Link>
 
                   <span
@@ -142,10 +201,12 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
                   onHide={() => handleClose(item.id)}
                 >
                   <Modal.Header closeButton>
-                    <Modal.Title>Borrar Publicación</Modal.Title>
+                    <Modal.Title>{showModal[item.id]?.title}</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body>{showModal[item.id]?.message}
-                  <p className="warning">{showModal[item.id]?.warning}</p></Modal.Body>
+                  <Modal.Body>
+                    {showModal[item.id]?.message}
+                    <p className="warning">{showModal[item.id]?.warning}</p>
+                  </Modal.Body>
                   <Modal.Footer>
                     <Button
                       variant="secondary"
@@ -157,7 +218,7 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
                       variant={showModal[item.id]?.buttonVariant}
                       onClick={showModal[item.id]?.actionFunction}
                     >
-                     {showModal[item.id]?.buttonTxt}
+                      {showModal[item.id]?.buttonTxt}
                     </Button>
                   </Modal.Footer>
                 </Modal>

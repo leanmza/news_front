@@ -1,12 +1,44 @@
-.visible{
-    color: green;
+.visible {
+  color: green;
 }
 
-.noVisible{
-    color: darkred;
+.noVisible {
+  color: darkred;
 }
 
-.warning{
-    color: red;
-    font-weight: 700;
+.warning {
+  color: red;
+  font-weight: 700;
 }
+
+.sortIcon {
+  font-size: 16px;
+}
+
+.table {
+  max-width: 1400px;
+}
+
+.miniImg {
+  max-width: auto;
+  height: 70px;
+  padding: 5px;
+  image-resolution: 72dpi;
+}
+
+.tableBody {
+  overflow: auto;
+  white-space: pre-line;
+  height: 5.8rem;
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+}
+
+.ordenar{
+  display: inline-flex;
+  justify-content: end;
+}
+
