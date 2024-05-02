@@ -2,9 +2,10 @@ import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../../util/useLocalStorage";
 import "../../assets/Login.css";
-import BannerLogin from "../BannerLogin";
-import { FloatingLabel, Form } from "react-bootstrap";
+import BannerLogin from "../banners/BannerLogin";
 import { Link } from "react-router-dom";
+import Input from "../common/Input";
+import Button from "../common/Button";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -48,58 +49,45 @@ const Login = () => {
           <BannerLogin></BannerLogin>
         </div>
         <div className="col-sm-9 col-md-8 col-lg-6 col-xl-5 col-xxl-4  offset-xl-2">
-          <form onSubmit={handleSubmit} id="formLogin">
-            <div className="form-outline mb-4">
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Email"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="email"
-                  placeholder="Email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </FloatingLabel>
-            </div>
+          <div className="form-outline mb-4">
+            <Input
+              label={"Email"}
+              type={"email"}
+              name={"email"}
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
+          </div>
 
-            <div className="form-outline mb-3">
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Contraseña"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="password"
-                  placeholder="Contraseña"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </FloatingLabel>
-            </div>
+          <div className="form-outline mb-3">
+            <Input
+              label={"Contraseña"}
+              type={"password"}
+              name={"password"}
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
+          </div>
 
-            <div className="form-outline mb-3">
-              <p>
-                ¿No tenés cuenta?{" "}
-                <Link to="/user/form" className="link">
-                  <span className="spanRegis">Registrate acá</span>
-                </Link>{" "}
-              </p>
-            </div>
+          <div className="form-outline mb-3">
+            <p>
+              ¿No tenés cuenta?{" "}
+              <Link to="/user/form" className="link">
+                <span className="spanRegis">Registrate acá</span>
+              </Link>{" "}
+            </p>
+          </div>
 
-            <div className="text-center text-lg-start mt-4 pt-2">
-              <button
-                type="submit"
-                className="btn btn-primary btn-lg btnSubmit"
-                id="btnSubmit"
-              >
-                Iniciar Sesión
-              </button>
+          <div className="text-center text-lg-start mt-4 pt-2">
+            <div className="divButton">
+              <Button
+                type={"submit"}
+                variant={"primary"}
+                onClick={handleSubmit}
+                text={"Iniciar Sesión"}
+              />
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

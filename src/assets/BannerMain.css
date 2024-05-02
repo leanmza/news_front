@@ -1,0 +1,12 @@
+.divBannerMain{
+    background-color: rgb(245, 68, 68);
+    height: 60px;
+    display: grid;
+    width: 100vw;
+    justify-content: center;
+    align-content: center;
+}
+
+.divBannerMain h3{
+    color: white;
+}

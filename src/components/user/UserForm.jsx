@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../../assets/PublicationForm.css";
-import { FloatingLabel, Form, Spinner } from "react-bootstrap";
-import BannerLogin from "../BannerLogin";
+import { Spinner } from "react-bootstrap";
+import BannerLogin from "../banners/BannerLogin";
 import { axiosNoToken } from "../../util/axiosConfig";
+import Input from "../common/Input";
+import Button from "../common/Button";
 
 const UserForm = () => {
   const [user, setUserData] = useState({
@@ -45,77 +47,52 @@ const UserForm = () => {
     <div className="container-fluid divMain">
       <div className="row rowForm">
         <div className="col-sm-9 col-md-7 col-lg-6 col-xl-5">
-          <BannerLogin></BannerLogin>
+          <BannerLogin/>
         </div>
         <div className="col-sm-9 col-md-8 col-lg-6 col-xl-5 col-xxl-4  offset-xl-2">
           <h1 className="titulo col-12">Crear Cuenta</h1>
 
           <form>
             <div>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Nombre"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Nombre"
-                  name="name"
-                  onChange={handleInputForm}
-                />
-              </FloatingLabel>
+              <Input
+                label={"Nombre"}
+                type={"text"}
+                name={"name"}
+                onChange={handleInputForm}
+              />
             </div>
             <div>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Apellido"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Apellido"
-                  name="lastName"
-                  onChange={handleInputForm}
-                />
-              </FloatingLabel>
+              <Input
+                label={"Apellido"}
+                type={"text"}
+                name={"lastName"}
+                onChange={handleInputForm}
+              />
             </div>
             <div>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Email"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="email"
-                  placeholder="Email"
-                  name="email"
-                  onChange={handleInputForm}
-                />
-              </FloatingLabel>
+              <Input
+                label={"Email"}
+                type={"email"}
+                name={"email"}
+                onChange={handleInputForm}
+              />
             </div>
             <div>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Contraseña"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="password"
-                  placeholder="Contraseña"
-                  name="password"
-                  onChange={handleInputForm}
-                />
-              </FloatingLabel>
+              <Input
+                label={"Contraseña"}
+                type={"password"}
+                name={"password"}
+                onChange={handleInputForm}
+              />
             </div>
 
             <div className="divButton">
-              <button
-                type="submit"
-                className="btn btn-primary btn-lg btnSubmit"
+            <Button
+                type={"submit"}
+                variant={"primary"}
                 onClick={handleSubmit}
-              >
-                Registrame
-              </button>
+                text={"Registrarme"}
+              />
             </div>
             {loading && (
               <div className="text-center mt-3">

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../../assets/PublicationDetail.css";
-import { Modal, Button } from "react-bootstrap";
 import { Carousel } from "react-bootstrap";
 import { getRole } from "../../util/securityService";
 import { axiosNoToken } from "../../util/axiosConfig";
+import ModalExclusive from '../modals/ModalExclusive';
+
 
 const PublicationDetail = ({ deletePublication }) => {
   const [publicacion, setPublicacion] = useState([]);
@@ -101,24 +102,9 @@ const PublicationDetail = ({ deletePublication }) => {
         <div className="divBody row">
           <p className="bodyNews">{publicacion.body}</p>
         </div>
-        <Modal show={show}>
-          <Modal.Header>
-            <Modal.Title>EXCLUSIVO PARA SUSCRIPTORES</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Suscribite a nuestro sitio y disfrutá de este contenido y mucho más
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleVolver}>
-              Volver
-            </Button>
-            <Button variant="primary" onClick={handleSubscribe}>
-              Suscribirme
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <ModalExclusive show={show} handleVolver={handleVolver} handleSubscribe={handleSubscribe}/>
       </div>
-      <Modal
+      {/* <Modal
         show={showModal[publicacion.id]}
         onHide={() => handleCloseModal(publicacion.id)}
       >
@@ -146,7 +132,7 @@ const PublicationDetail = ({ deletePublication }) => {
             Borrar
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

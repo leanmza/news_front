@@ -3,6 +3,8 @@ import "../../assets/PublicationForm.css";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import { getCategories } from "../../util/getCategories";
 import { axiosToken } from "../../util/axiosConfig";
+import Input from "../common/Input";
+import Button from "../common/Button";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
@@ -84,18 +86,12 @@ const PublicationForm = () => {
       <div className="col-md-10 col-lg-8">
         <form>
           <div>
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Título"
-              className="mb-3"
-            >
-              <Form.Control
-                type="text"
-                placeholder="Título"
-                name="title"
-                onChange={handleInputForm}
-              />
-            </FloatingLabel>
+            <Input
+              label={"Título"}
+              type={"text"}
+              name={"title"}
+              onChange={handleInputForm}
+            />
           </div>
           <div>
             <FloatingLabel
@@ -149,18 +145,19 @@ const PublicationForm = () => {
             </div>
           </div>
           <div className="divButton">
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg btnSubmit"
+            <Button
+              type={"submit"}
+              variant={"primary"}
               onClick={handleSubmit}
-            >
-              Guardar Publicación
-            </button>
+              text={"Guardar Publicación"}
+            />
           </div>
           {loading && (
             <div className="text-center mt-3">
               <Spinner animation="border" role="status">
-                <span className="visually-hidden">Guardando publicación</span>
+                <span className="visually-hidden spinner">
+                  Guardando publicación
+                </span>
               </Spinner>
             </div>
           )}

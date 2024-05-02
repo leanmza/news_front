@@ -4,6 +4,8 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import "../../assets/PublicationForm.css";
 import { getCategories } from "../../util/getCategories";
 import { axiosNoToken, axiosToken } from "../../util/axiosConfig";
+import Input from "../common/Input";
+import Button from "../common/Button";
 
 const PublicationEdit = () => {
   const { id } = useParams();
@@ -34,16 +36,21 @@ const PublicationEdit = () => {
   const fetchPublicacion = async (id) => {
     try {
       const response = await axiosNoToken().get(`/api/publication/${id}`);
-      const { title, body, category, subscriberContent, images } = response.data;
+      const { title, body, category, subscriberContent, images } =
+        response.data;
       const categoryName = category ? category.name : ""; // Si category es null o undefined, asigna una cadena vacía
-      setPublicacion({ title, body, category: categoryName, subscriberContent, images });
+      setPublicacion({
+        title,
+        body,
+        category: categoryName,
+        subscriberContent,
+        images,
+      });
       setIsLoading(false);
     } catch (error) {
       console.error("Error en la carga de la publicación", error);
     }
   };
-
-  console.log("FormImg despues del fetch", formImg);
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
@@ -56,20 +63,21 @@ const PublicationEdit = () => {
     });
   }
 
+  //Maneja nuevas imágenes
   const handleImageForm = (event) => {
     const files = event.target.files;
     let imageFiles = [];
     for (let i = 0; i < files.length; i++) {
       imageFiles.push(files[i]);
     }
-    console.log("formImg antes del handle", formImg);
+
     setFormImg({
       images: imageFiles,
     });
-   
   };
-  console.log("formImg despues del handle", formImg);
+
   const handleDeleteImage = (index) => {
+    console.log("DELETE images ", publicacion.images);
     const updatedImages = [...publicacion.images];
     updatedImages.splice(index, 1);
     setPublicacion({
@@ -92,7 +100,6 @@ const PublicationEdit = () => {
       new Blob([JSON.stringify(publicacion)], { type: "application/json" })
     );
 
-    
     try {
       const response = await axiosToken().patch(
         `/api/publication/${id}`,
@@ -116,19 +123,13 @@ const PublicationEdit = () => {
         <div className="col-md-10 col-lg-8">
           <form>
             <div>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Título"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Título"
-                  name="title"
-                  onChange={handleInputForm}
-                  value={publicacion.title}
-                />
-              </FloatingLabel>
+              <Input
+                label={"Título"}
+                type={"text"}
+                name={"title"}
+                onChange={handleInputForm}
+                value={publicacion.title}
+              />
             </div>
             <div>
               <FloatingLabel
@@ -177,10 +178,12 @@ const PublicationEdit = () => {
               {publicacion.images.map((image, index) => (
                 <div className="col-lg-4" key={index}>
                   <img src={image} alt="" className="imgEditForm" />
-                  <i
-                    className="fa-solid fa-trash-can link"
+                  <span
+                    class="material-symbols-outlined link"
                     onClick={() => handleDeleteImage(index)}
-                  ></i>
+                  >
+                    delete
+                  </span>
                 </div>
               ))}
             </div>
@@ -197,13 +200,12 @@ const PublicationEdit = () => {
             </div>
 
             <div className="divButton">
-              <button
-                type="submit"
-                className="btn btn-primary btn-lg btnSubmit"
+              <Button
+                type={"submit"}
+                variant={"primary"}
                 onClick={handleSubmit}
-              >
-                Guardar Cambios
-              </button>
+                text={"Guardar Cambios"}
+              />
             </div>
           </form>
         </div>

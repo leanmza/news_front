@@ -2,6 +2,7 @@ import React from "react";
 import Card from "./Card";
 import { useParams } from "react-router-dom";
 import HorizontalCard from "./HorizontalCard";
+import BannerMain from "./banners/BannerMain";
 
 const Dashboard = ({ ultimas, publicaciones }) => {
   const { category } = useParams();
@@ -29,15 +30,17 @@ const Dashboard = ({ ultimas, publicaciones }) => {
 
   return (
     <div className="container-fluid divMain">
+      
       {emptyResult ? (
         <h5 className="noResult">
           No se encontraron publicaciones con "{query}" en su título
         </h5>
       ) : null}
-      <div className="horizontalCard row row-cols-1">
+      <section className="horizontalCard row row-cols-1">
         <HorizontalCard ultimas={ultimas} />
-      </div>
-      <div className="row row-cols-1">
+      </section>
+      <BannerMain></BannerMain>
+      <section className="cardsMain row">
         {publicaciones.map((item) => (
           <Card
             key={item.id}
@@ -52,7 +55,7 @@ const Dashboard = ({ ultimas, publicaciones }) => {
             image={item.images[0]}
           ></Card>
         ))}
-      </div>
+      </section>
     </div>
   );
 };

@@ -27,7 +27,7 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
 
   const handleClose = (itemId) =>
     setShowModal({ ...showModal, [itemId]: false });
-  // const handleShow = (itemId) => setShowModal({ ...showModal, [itemId]: true });
+
 
   const handleShow = (itemId, action) => {
     let title, message, warning, buttonTxt, buttonVariant, actionFunction;

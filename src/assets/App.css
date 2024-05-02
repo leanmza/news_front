@@ -1,5 +1,6 @@
 body {
   font-family: "Roboto", sans-serif !important;
+  background-color: #EFECE5;
 }
 .divMain {
   max-width: 1400px;
@@ -24,3 +25,10 @@ body {
   justify-content: center;
  
 }
+
+.cardsMain{display: flex;
+  justify-content: center;
+  width: 1400px;
+  margin: 0 auto;
+  margin-top: 20px;
+ }
