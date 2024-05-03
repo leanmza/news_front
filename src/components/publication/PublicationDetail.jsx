@@ -4,15 +4,12 @@ import "../../assets/PublicationDetail.css";
 import { Carousel } from "react-bootstrap";
 import { getRole } from "../../util/securityService";
 import { axiosNoToken } from "../../util/axiosConfig";
-import ModalExclusive from '../modals/ModalExclusive';
-
+import ModalExclusive from "../modals/ModalExclusive";
 
 const PublicationDetail = ({ deletePublication }) => {
   const [publicacion, setPublicacion] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const [showModal, setShowModal] = useState({});
 
   let show = false;
 
@@ -54,15 +51,9 @@ const PublicationDetail = ({ deletePublication }) => {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
 
-  const handleCloseModal = (itemId) =>
-    setShowModal({ ...showModal, [itemId]: false });
-  const handleShowModal = (itemId) =>
-    setShowModal({ ...showModal, [itemId]: true });
-
   return (
     <div>
       <div className="container-fluid divNews">
-
         <div className="categoryDiv row">
           <Link
             to={`/category/${publicacion.category.name}`}
@@ -71,12 +62,9 @@ const PublicationDetail = ({ deletePublication }) => {
             <h6 className="categoryDetail">{publicacion.category.name}</h6>
           </Link>
           {role === "ADMIN" ? (
-            <span
-              className="material-symbols-outlined link deleteIcon col-1"
-              onClick={() => handleShowModal(publicacion.id)}
-            >
-              delete
-            </span>
+            <Link to={`/publication/edit/${publicacion.id}`}>
+              <span className="material-symbols-outlined">edit</span>
+            </Link>
           ) : null}
         </div>
 
@@ -89,7 +77,7 @@ const PublicationDetail = ({ deletePublication }) => {
         <div className="divDate col-2 row">
           <p>{publicacion.creationDate}</p>
         </div>
-      
+
         <div className="divImage row">
           <Carousel activeIndex={index} onSelect={handleSelect}>
             {publicacion.images.map((image) => (
@@ -102,9 +90,12 @@ const PublicationDetail = ({ deletePublication }) => {
         <div className="divBody row">
           <p className="bodyNews">{publicacion.body}</p>
         </div>
-        <ModalExclusive show={show} handleVolver={handleVolver} handleSubscribe={handleSubscribe}/>
+        <ModalExclusive
+          show={show}
+          handleVolver={handleVolver}
+          handleSubscribe={handleSubscribe}
+        />
       </div>
-
     </div>
   );
 };

@@ -1,8 +1,6 @@
 import { Modal, Button } from "react-bootstrap";
 
 const ModalExclusive = ({ show, handleVolver, handleSubscribe }) => {
-
-
   const actionList = {
     exclusive: {
       title: `EXCLUSIVO PARA SUSCRIPTORES`,
@@ -13,14 +11,8 @@ const ModalExclusive = ({ show, handleVolver, handleSubscribe }) => {
     },
   };
 
-  const {
-    title,
-    message,
-    warning,
-    buttonTxt,
-    buttonVariant,
-    // actionFunction,
-  } = actionList["exclusive"];
+  const { title, message, warning, buttonTxt, buttonVariant } =
+    actionList["exclusive"];
 
   return (
     <>

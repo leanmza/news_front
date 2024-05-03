@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
 import { axiosNoToken } from "../../util/axiosConfig";
 import "../../assets/PublicationAdmin.css";
 import { sortBy } from "../../util/listSort";
 import ModalAdmin from "./../modals/ModalAdmin";
 
 const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
+
   const [publicaciones, setPublicaciones] = useState([]);
 
   const [ordenInverso, setOrdenInverso] = useState(false);
 
   const [show, setShow] = useState();
-  const [action, setAction] = useState();
-  const [item, setItem] = useState();
 
-  const [actionFunction, setActionFuntion] = useState();
+  const [action, setAction] = useState();
+  
+  const [item, setItem] = useState();
 
   useEffect(() => {
     fetchPublications();
@@ -166,33 +166,6 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
                     delete
                   </span>
                 </div>
-
-                {/* <Modal
-                  show={showModal[item.id]}
-                  onHide={() => handleClose(item.id)}
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title>{showModal[item.id]?.title}</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    {showModal[item.id]?.message}
-                    <p className="warning">{showModal[item.id]?.warning}</p>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button
-                      variant="secondary"
-                      onClick={() => handleClose(item.id)}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button
-                      variant={showModal[item.id]?.buttonVariant}
-                      onClick={showModal[item.id]?.actionFunction}
-                    >
-                      {showModal[item.id]?.buttonTxt}
-                    </Button>
-                  </Modal.Footer>
-                </Modal> */}
               </td>
             </tr>
           ))}

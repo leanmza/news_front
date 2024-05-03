@@ -2,7 +2,6 @@ import { Modal, Button } from "react-bootstrap";
 
 const ModalAdmin = ({
   show,
-  //   showModal,
   item,
   action,
   handleClose,
@@ -10,9 +9,7 @@ const ModalAdmin = ({
   fetchPublications,
   changeDeletedStatus,
 }) => {
-  console.log("item", item);
-  console.log("action", action);
-
+  
   let data = {
     title: "",
     message: "",
@@ -49,9 +46,8 @@ const ModalAdmin = ({
         },
       },
     };
-    
-    data = actionList[action];
 
+    data = actionList[action];
   }
 
   return (

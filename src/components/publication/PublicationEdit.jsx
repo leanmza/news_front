@@ -76,6 +76,7 @@ const PublicationEdit = () => {
     });
   };
 
+  //TODO Terminar de implementar
   const handleDeleteImage = (index) => {
     console.log("DELETE images ", publicacion.images);
     const updatedImages = [...publicacion.images];
@@ -89,26 +90,42 @@ const PublicationEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formImg);
-    console.log(publicacion);
+    const publicacionData = { ...publicacion };
+    delete publicacionData.images;
+
     const publication = new FormData();
     formImg.images.forEach((image) => {
       publication.append("images", image);
     });
     publication.append(
       "publication",
-      new Blob([JSON.stringify(publicacion)], { type: "application/json" })
+      new Blob([JSON.stringify(publicacionData)], { type: "application/json" })
     );
 
-    try {
-      const response = await axiosToken().patch(
-        `/api/publication/${id}`,
-        publication
-      );
-      console.log(response.data, " publicación editada");
-      window.location.href = `/publication/${id}`;
-    } catch (error) {
-      console.error("Hubo un error", error);
+    if (formImg.images.length === 0) {
+      try {
+      //Si no hay imagenes en la actualizacion se usa este endpoint
+        const response = await axiosToken().patch(
+          `/api/publication/data/${id}`,
+          publication
+        );
+        console.log(response.data, " publicación editada");
+        window.location.href = `/publication/${id}`;
+      } catch (error) {
+        console.error("Hubo un error", error);
+      }
+    } else {
+      try {
+        //Si nuevas imagenes en la actualizacion se usa este endpoint
+        const response = await axiosToken().patch(
+          `/api/publication/${id}`,
+          publication
+        );
+        console.log(response.data, " publicación editada");
+        window.location.href = `/publication/${id}`;
+      } catch (error) {
+        console.error("Hubo un error", error);
+      }
     }
   };
 
@@ -156,7 +173,6 @@ const PublicationEdit = () => {
                     onChange={handleInputForm}
                     value={publicacion.category.name}
                   >
-                    <option>Elegir una categoría</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.name}>
                         {category.name}
@@ -179,7 +195,7 @@ const PublicationEdit = () => {
                 <div className="col-lg-4" key={index}>
                   <img src={image} alt="" className="imgEditForm" />
                   <span
-                    class="material-symbols-outlined link"
+                    className="material-symbols-outlined link"
                     onClick={() => handleDeleteImage(index)}
                   >
                     delete

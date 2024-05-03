@@ -21,7 +21,6 @@ import {
 import UsersAdmin from "./components/user/UsersAdmin";
 import { axiosNoToken } from "./util/axiosConfig";
 
-
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
   const [isLogged, setIsLogged] = useState(false);
@@ -109,7 +108,10 @@ function App() {
           <Route
             path="/publication/:id"
             element={
-              <PublicationDetail deletePublication={deletePublication} />
+              <PublicationDetail
+                deletePublication={deletePublication}
+                changeDeletedStatus={changeDeletedStatus}
+              />
             }
           />
           <Route
