@@ -1,8 +1,7 @@
-import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const ModalExclusive = ({ show, handleVolver, handleSubscribe }) => {
-  //Armo un Array con las posibles acciones y mensajes
+
 
   const actionList = {
     exclusive: {

@@ -104,35 +104,7 @@ const PublicationDetail = ({ deletePublication }) => {
         </div>
         <ModalExclusive show={show} handleVolver={handleVolver} handleSubscribe={handleSubscribe}/>
       </div>
-      {/* <Modal
-        show={showModal[publicacion.id]}
-        onHide={() => handleCloseModal(publicacion.id)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Borrar Publicación</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          ¿Desea borrar la publicación {publicacion.title}?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => handleCloseModal(publicacion.id)}
-          >
-            Cancelar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={async () => {
-              await deletePublication(publicacion.id);
-              handleCloseModal(publicacion.id);
-              window.location.href = "/";
-            }}
-          >
-            Borrar
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
+
     </div>
   );
 };

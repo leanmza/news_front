@@ -4,16 +4,22 @@ import { Modal, Button } from "react-bootstrap";
 import { axiosNoToken } from "../../util/axiosConfig";
 import "../../assets/PublicationAdmin.css";
 import { sortBy } from "../../util/listSort";
+import ModalAdmin from "./../modals/ModalAdmin";
 
 const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
-  const [showModal, setShowModal] = useState({});
-
   const [publicaciones, setPublicaciones] = useState([]);
 
   const [ordenInverso, setOrdenInverso] = useState(false);
 
+  const [show, setShow] = useState();
+  const [action, setAction] = useState();
+  const [item, setItem] = useState();
+
+  const [actionFunction, setActionFuntion] = useState();
+
   useEffect(() => {
     fetchPublications();
+    setShow(false);
   }, []);
 
   const fetchPublications = async () => {
@@ -25,57 +31,21 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
     }
   };
 
-  const handleClose = (itemId) =>
-    setShowModal({ ...showModal, [itemId]: false });
+  const handleClose = () => setShow(false);
 
-
-  const handleShow = (itemId, action) => {
-    let title, message, warning, buttonTxt, buttonVariant, actionFunction;
-    if (action === "delete") {
-      title = `Eliminar Publicación`;
-      message = `¿Desea eliminar la publicación ${
-        publicaciones.find((pub) => pub.id === itemId).title
-      }?`;
-      warning = `Esta acción NO SE PUEDE DESHACER`;
-      buttonTxt = `ELIMINAR`;
-      buttonVariant = "danger";
-
-      actionFunction = async () => {
-        await deletePublication(itemId);
-        await fetchPublications();
-        handleClose(itemId);
-      };
-    } else if (action === "changeStatus") {
-      title = `Cambiar Visibilidad de la Publicación`;
-      message = `¿Desea cambiar el estado de la publicación ${
-        publicaciones.find((pub) => pub.id === itemId).title
-      }?`;
-      warning = null;
-      buttonTxt = `Guardar Cambio`;
-      buttonVariant = "primary";
-
-      actionFunction = async () => {
-        await changeDeletedStatus(itemId);
-        await fetchPublications();
-        handleClose(itemId);
-      };
-    }
-    setShowModal({
-      ...showModal,
-      [itemId]: {
-        title,
-        message,
-        warning,
-        buttonTxt,
-        buttonVariant,
-        actionFunction,
-      },
-    });
+  const handleShow = (item, actionValue) => {
+    setShow(true);
+    setAction(actionValue);
+    setItem(item);
   };
 
   const handleSort = (e) => {
-    const sortValue = e.target.getAttribute('value');
-    const sortedPublicaciones = sortBy([...publicaciones], sortValue, ordenInverso);
+    const sortValue = e.target.getAttribute("value");
+    const sortedPublicaciones = sortBy(
+      [...publicaciones],
+      sortValue,
+      ordenInverso
+    );
     setPublicaciones(sortedPublicaciones);
     // Invierte el estado del orden
     setOrdenInverso(!ordenInverso);
@@ -165,14 +135,14 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
                 {item.deleted ? (
                   <span
                     className="material-symbols-outlined noVisible icons"
-                    onClick={() => handleShow(item.id, "changeStatus")}
+                    onClick={() => handleShow(item, "changeStatus")}
                   >
                     visibility_off
                   </span>
                 ) : (
                   <span
                     className="material-symbols-outlined visible icons"
-                    onClick={() => handleShow(item.id, "changeStatus")}
+                    onClick={() => handleShow(item, "changeStatus")}
                   >
                     visibility
                   </span>
@@ -191,12 +161,13 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
 
                   <span
                     className="material-symbols-outlined link"
-                    onClick={() => handleShow(item.id, "delete")}
+                    onClick={() => handleShow(item, "delete")}
                   >
                     delete
                   </span>
                 </div>
-                <Modal
+
+                {/* <Modal
                   show={showModal[item.id]}
                   onHide={() => handleClose(item.id)}
                 >
@@ -221,12 +192,21 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
                       {showModal[item.id]?.buttonTxt}
                     </Button>
                   </Modal.Footer>
-                </Modal>
+                </Modal> */}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <ModalAdmin
+        show={show}
+        item={item}
+        action={action}
+        handleClose={handleClose}
+        deletePublication={deletePublication}
+        changeDeletedStatus={changeDeletedStatus}
+        fetchPublications={fetchPublications}
+      />
     </div>
   );
 };
