@@ -9,6 +9,7 @@ import Button from "../common/Button";
 
 const PublicationEdit = () => {
   const { id } = useParams();
+  console.log(id);
 
   const [publicacion, setPublicacion] = useState({
     title: "",
@@ -75,21 +76,45 @@ const PublicationEdit = () => {
       images: imageFiles,
     });
   };
+  console.log(publicacion);
 
   //TODO Terminar de implementar
-  const handleDeleteImage = (index) => {
-    console.log("DELETE images ", publicacion.images);
+  const handleDeleteImage = async (index) => {
     const updatedImages = [...publicacion.images];
+    const deletedImage = publicacion.images[index];
+
     updatedImages.splice(index, 1);
     setPublicacion({
       ...publicacion,
       images: updatedImages,
     });
+
+    try {
+      const response = await axiosNoToken().delete(
+        `/api/publication/images/${id}`,
+        {
+          data: { imageUrl: deletedImage },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error en la carga de categorias", error);
+    }
+  };
+
+  const deletePublication = async (id) => {
+    try {
+      const response = await axiosNoToken().delete(`/api/publication/${id}`);
+      await fetchPublications();
+      console.log(response);
+    } catch (error) {
+      console.error("Error en la carga de categorias", error);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    //Armo un nuevo array con solo los datos de publicacion, sin la data de las imagenes
     const publicacionData = { ...publicacion };
     delete publicacionData.images;
 
@@ -104,7 +129,7 @@ const PublicationEdit = () => {
 
     if (formImg.images.length === 0) {
       try {
-      //Si no hay imagenes en la actualizacion se usa este endpoint
+        //Si no hay imagenes en la actualizacion se usa este endpoint
         const response = await axiosToken().patch(
           `/api/publication/data/${id}`,
           publication
