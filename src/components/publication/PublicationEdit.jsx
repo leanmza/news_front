@@ -23,6 +23,8 @@ const PublicationEdit = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [locationImages, setLocationImages] = useState();
+  const [rearrange, setRearrange] = useState(false);
 
   useEffect(() => {
     fetchPublicacion(id);
@@ -47,6 +49,7 @@ const PublicationEdit = () => {
         images,
       });
       setIsLoading(false);
+      await setLocationImages(images);
     } catch (error) {
       console.error("Error en la carga de la publicación", error);
     }
@@ -116,6 +119,9 @@ const PublicationEdit = () => {
     const publicacionData = { ...publicacion };
     delete publicacionData.images;
 
+    console.log("rearrange ", rearrange);
+    const idImages = locationImages.map((image) => image.id);
+
     const publication = new FormData();
     formImg.images.forEach((image) => {
       publication.append("images", image);
@@ -124,9 +130,14 @@ const PublicationEdit = () => {
       "publication",
       new Blob([JSON.stringify(publicacionData)], { type: "application/json" })
     );
+    publication.append(
+      "idImages",
+      new Blob([JSON.stringify(idImages)], { type: "application/json" })
+    );
 
     if (formImg.images.length === 0) {
       try {
+        console.log("HI HI HI");
         //Si no hay imagenes en la actualizacion se usa este endpoint
         const response = await axiosToken().patch(
           `/api/publication/data/${id}`,
@@ -137,7 +148,7 @@ const PublicationEdit = () => {
       } catch (error) {
         console.error("Hubo un error", error);
       }
-    } else {
+       } else {
       try {
         //Si nuevas imagenes en la actualizacion se usa este endpoint
         const response = await axiosToken().patch(
@@ -152,7 +163,7 @@ const PublicationEdit = () => {
     }
   };
 
-  const handleImagePositionChange = (dragIndex, dropIndex) => {
+  const handleImagePositionChange = async (dragIndex, dropIndex) => {
     const updatedImages = [...publicacion.images];
     const draggedImage = updatedImages[dragIndex];
     updatedImages.splice(dragIndex, 1);
@@ -162,13 +173,13 @@ const PublicationEdit = () => {
       images: updatedImages,
     });
 
-    console.log(updatedImages);
-    saveChanges(updatedImages);
+    await setRearrange(true);
+    await setLocationImages(updatedImages);
   };
 
-  const saveChanges = async (updatedImages) => {
+  const saveChanges = async () => {
     const dataForm = new FormData();
-    const idImages = updatedImages.map((image) => image.id);
+    const idImages = locationImages.map((image) => image.id);
 
     console.log(idImages);
     dataForm.append(
@@ -190,7 +201,6 @@ const PublicationEdit = () => {
     } catch (error) {
       console.error("Hubo un error", error);
     }
-    
   };
 
   if (isLoading) {
