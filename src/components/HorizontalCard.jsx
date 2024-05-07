@@ -10,6 +10,9 @@ const HorizontalCard = ({ ultimas }) => {
     setIndex(selectedIndex);
   };
 
+  console.log("ultimas");
+  console.log(ultimas);
+
   return (
     <div className="divHorizontalImg">
       {ultimas && ultimas.length > 0 && (
@@ -33,7 +36,7 @@ const HorizontalCard = ({ ultimas }) => {
               </Carousel.Caption>
               <img
                 className="imgHorizontal"
-                src={publicacion.images[0]}
+                src={publicacion.images[0].imageUrl}
                 alt="..."
               />
             </Carousel.Item>

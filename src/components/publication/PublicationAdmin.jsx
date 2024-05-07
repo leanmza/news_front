@@ -150,7 +150,7 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
               </td>
               <td>
                 {item.images.map((image) => (
-                  <img className="miniImg" src={image} alt="..." />
+                  <img className="miniImg" src={image.imageUrl} alt="..." />
                 ))}
               </td>
               <td>

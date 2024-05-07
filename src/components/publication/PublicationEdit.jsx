@@ -9,7 +9,6 @@ import Button from "../common/Button";
 
 const PublicationEdit = () => {
   const { id } = useParams();
-  console.log(id);
 
   const [publicacion, setPublicacion] = useState({
     title: "",
@@ -76,7 +75,6 @@ const PublicationEdit = () => {
       images: imageFiles,
     });
   };
-  console.log(publicacion);
 
   //TODO Terminar de implementar
   const handleDeleteImage = async (index) => {
@@ -154,6 +152,47 @@ const PublicationEdit = () => {
     }
   };
 
+  const handleImagePositionChange = (dragIndex, dropIndex) => {
+    const updatedImages = [...publicacion.images];
+    const draggedImage = updatedImages[dragIndex];
+    updatedImages.splice(dragIndex, 1);
+    updatedImages.splice(dropIndex, 0, draggedImage);
+    setPublicacion({
+      ...publicacion,
+      images: updatedImages,
+    });
+
+    console.log(updatedImages);
+    saveChanges(updatedImages);
+  };
+
+  const saveChanges = async (updatedImages) => {
+    const dataForm = new FormData();
+    const idImages = updatedImages.map((image) => image.id);
+
+    console.log(idImages);
+    dataForm.append(
+      "publication",
+      new Blob([JSON.stringify(publicacion)], { type: "application/json" })
+    );
+    dataForm.append(
+      "idImages",
+      new Blob([JSON.stringify(idImages)], { type: "application/json" })
+    );
+
+    try {
+      const response = await axiosNoToken().patch(
+        `/api/publication/images/${id}`,
+        dataForm
+      );
+      console.log(response.data, " publicación editada");
+      // window.location.href = `/publication/${id}`;
+    } catch (error) {
+      console.error("Hubo un error", error);
+    }
+    
+  };
+
   if (isLoading) {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
@@ -217,6 +256,41 @@ const PublicationEdit = () => {
             </div>
             <div className="row rowImagenes">
               {publicacion.images.map((image, index) => (
+                <div
+                  className="col-lg-4"
+                  key={index}
+                  draggable
+                  onDragStart={(e) =>
+                    e.dataTransfer.setData("text/plain", index)
+                  }
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const dragIndex = Number(
+                      e.dataTransfer.getData("text/plain")
+                    );
+                    handleImagePositionChange(dragIndex, index);
+                  }}
+                >
+                  <img src={image.imageUrl} alt="" className="imgEditForm" />
+                  <span
+                    className="material-symbols-outlined link"
+                    onClick={() => handleDeleteImage(index)}
+                  >
+                    delete
+                  </span>
+                </div>
+              ))}
+            </div>
+            {/* <div className="row rowImagenes">
+              <Button
+                type={"button"}
+                variant={"warning"}
+                text={"Modificar Imágenes"}
+                // onClick={showIcons}
+              />
+
+              {publicacion.images.map((image, index) => (
                 <div className="col-lg-4" key={index}>
                   <img src={image} alt="" className="imgEditForm" />
                   <span
@@ -227,7 +301,7 @@ const PublicationEdit = () => {
                   </span>
                 </div>
               ))}
-            </div>
+            </div> */}
             <div className="col-md-5 cargaImg">
               <FloatingLabel controlId="floatingFile" label="Cargar imágenes">
                 <Form.Control

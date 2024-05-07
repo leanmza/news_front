@@ -51,6 +51,7 @@ const PublicationDetail = ({ deletePublication }) => {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
 
+  console.log(publicacion);
   return (
     <div>
       <div className="container-fluid divNews">
@@ -82,7 +83,7 @@ const PublicationDetail = ({ deletePublication }) => {
           <Carousel activeIndex={index} onSelect={handleSelect}>
             {publicacion.images.map((image) => (
               <Carousel.Item>
-                <img className="imgHorizontal" src={image} alt="..." />
+                <img className="imgHorizontal" src={image.imageUrl} alt="..." />
               </Carousel.Item>
             ))}
           </Carousel>

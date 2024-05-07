@@ -51,7 +51,7 @@ const Dashboard = ({ ultimas, publicaciones }) => {
             author={item.author.name}
             category={item.category.name}
             subscriberContent={item.subscriberContent}
-            visualization={item.visualization}
+            views={item.views}
             image={item.images[0]}
           ></Card>
         ))}

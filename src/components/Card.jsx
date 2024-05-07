@@ -16,7 +16,7 @@ const Card = ({
   return (
     <div className="col-12 col-sm-6 col-md-4 col-lg-3 colCard">
       <div className="card h-100">
-        <img className="card-img-top cardImg" alt="..." src={image} />
+        <img className="card-img-top cardImg" alt="..." src={image.imageUrl} />
 
         <div className="card-img-overlay">
           {subscriberContent && ( // Verifica si subscriberContent es true

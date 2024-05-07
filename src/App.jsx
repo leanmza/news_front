@@ -141,7 +141,7 @@ function App() {
                 />
               }
             />
-            <Route path="/publication/edit/:id" element={<PublicationEdit />} />
+            <Route path="/publication/edit/:id" element={<PublicationEdit/>} />
           </Route>
 
           <Route path="/unauthorized" element={<Unauthorized />} />
