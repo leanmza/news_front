@@ -126,8 +126,8 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
               <td>
                 <p className="tableBody">{item.body}</p>
               </td>
-              <td>{item.category.name}</td>
-              <td>{item.author.name}</td>
+              <td>{item.category}</td>
+              <td>{item.author}</td>
               <td>{item.creationDate}</td>
               <td>{item.subscriberContent ? "Sí" : "No"}</td>
               <td>{item.visualizations}</td>

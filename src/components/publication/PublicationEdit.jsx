@@ -40,11 +40,10 @@ const PublicationEdit = () => {
       const response = await axiosNoToken().get(`/api/publication/${id}`);
       const { title, body, category, subscriberContent, images } =
         response.data;
-      const categoryName = category ? category.name : ""; // Si category es null o undefined, asigna una cadena vacía
-      setPublicacion({
+       setPublicacion({
         title,
         body,
-        category: categoryName,
+        category,
         subscriberContent,
         images,
       });

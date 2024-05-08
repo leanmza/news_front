@@ -57,10 +57,10 @@ const PublicationDetail = ({ deletePublication }) => {
       <div className="container-fluid divNews">
         <div className="categoryDiv row">
           <Link
-            to={`/category/${publicacion.category.name}`}
+            to={`/publication/category/${publicacion.category}`}
             className="linkDetail col-2"
           >
-            <h6 className="categoryDetail">{publicacion.category.name}</h6>
+            <h6 className="categoryDetail">{publicacion.category}</h6>
           </Link>
           {role === "ADMIN" ? (
             <Link to={`/publication/edit/${publicacion.id}`}>
@@ -73,7 +73,7 @@ const PublicationDetail = ({ deletePublication }) => {
           <h1>{publicacion.title}</h1>
         </div>
         <div className="divWriter row">
-          <h6>{publicacion.author.name}</h6>
+          <h6>{publicacion.author}</h6>
         </div>
         <div className="divDate col-2 row">
           <p>{publicacion.creationDate}</p>

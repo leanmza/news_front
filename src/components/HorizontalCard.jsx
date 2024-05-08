@@ -25,7 +25,7 @@ const HorizontalCard = ({ ultimas }) => {
             <Carousel.Item>
               <Carousel.Caption>
                 <Link to={`/publication/${publicacion.id}`} className="link">
-                  <h6 className="categoryHorizontal">{publicacion.category.name}</h6>
+                  <h6 className="categoryHorizontal">{publicacion.category}</h6>
                   <h2 className="titleHorizontal">{publicacion.title}</h2>
                   {publicacion.subscriberContent && ( // Verifica si subscriberContent es true
                     <span className="subscriber-content-info">

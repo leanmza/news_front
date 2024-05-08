@@ -5,12 +5,8 @@ import "../assets/Card.css";
 const Card = ({
   id,
   title,
-  body,
-  creationDate,
-  author,
   category,
   subscriberContent,
-  visualizations,
   image,
 }) => {   
   return (

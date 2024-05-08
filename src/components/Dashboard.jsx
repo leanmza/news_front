@@ -8,12 +8,12 @@ const Dashboard = ({ ultimas, publicaciones }) => {
   const { category } = useParams();
   const { query } = useParams();
   let emptyResult = false;
+  console.log("DASHBOARD");
+  console.log(category);
 
   if (category !== null && category !== undefined) {
     // Filtrar las publicaciones por categoría si se proporciona una categoría válida
-    publicaciones = publicaciones.filter(
-      (item) => item.category.name === category
-    );
+    publicaciones = publicaciones.filter((item) => item.category === category);
   }
 
   if (query !== null && query !== undefined) {
@@ -30,7 +30,6 @@ const Dashboard = ({ ultimas, publicaciones }) => {
 
   return (
     <div className="container-fluid divMain">
-      
       {emptyResult ? (
         <h5 className="noResult">
           No se encontraron publicaciones con "{query}" en su título
@@ -46,12 +45,8 @@ const Dashboard = ({ ultimas, publicaciones }) => {
             key={item.id}
             id={item.id}
             title={item.title}
-            body={item.body}
-            creationDate={item.creationDate}
-            author={item.author.name}
-            category={item.category.name}
+            category={item.category}
             subscriberContent={item.subscriberContent}
-            views={item.views}
             image={item.images[0]}
           ></Card>
         ))}
