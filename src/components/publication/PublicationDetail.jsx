@@ -3,10 +3,10 @@ import { Link, useParams } from "react-router-dom";
 import "../../assets/PublicationDetail.css";
 import { Carousel } from "react-bootstrap";
 import { getRole } from "../../util/securityService";
-import { axiosNoToken } from "../../util/axiosConfig";
 import ModalExclusive from "../modals/ModalExclusive";
+import { getPublicacion } from "../../util/publicationService";
 
-const PublicationDetail = ({ deletePublication }) => {
+const PublicationDetail = () => {
   const [publicacion, setPublicacion] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -25,19 +25,9 @@ const PublicationDetail = ({ deletePublication }) => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchPublicacion(id);
+    getPublicacion(id, setPublicacion, setIsLoading);
   }, [id]);
 
-  const fetchPublicacion = async (id) => {
-    try {
-      const response = await axiosNoToken().get(`/api/publication/${id}`);
-
-      setPublicacion(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error en la carga de la publicación", error);
-    }
-  };
   const handleShow = () => (show = true);
   const handleVolver = () => (window.location.href = "/");
   const handleSubscribe = () => (window.location.href = "/user/form");
@@ -51,7 +41,7 @@ const PublicationDetail = ({ deletePublication }) => {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
 
-  console.log(publicacion);
+ 
   return (
     <div>
       <div className="container-fluid divNews">

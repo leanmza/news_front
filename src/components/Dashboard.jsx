@@ -4,12 +4,10 @@ import { useParams } from "react-router-dom";
 import HorizontalCard from "./HorizontalCard";
 import BannerMain from "./banners/BannerMain";
 
-const Dashboard = ({ ultimas, publicaciones }) => {
+const Dashboard = ({ lastPublications, publicaciones }) => {
   const { category } = useParams();
   const { query } = useParams();
   let emptyResult = false;
-  console.log("DASHBOARD");
-  console.log(category);
 
   if (category !== null && category !== undefined) {
     // Filtrar las publicaciones por categoría si se proporciona una categoría válida
@@ -36,7 +34,7 @@ const Dashboard = ({ ultimas, publicaciones }) => {
         </h5>
       ) : null}
       <section className="horizontalCard row row-cols-1">
-        <HorizontalCard ultimas={ultimas} />
+        <HorizontalCard lastPublications={lastPublications} />
       </section>
       <BannerMain></BannerMain>
       <section className="cardsMain row">

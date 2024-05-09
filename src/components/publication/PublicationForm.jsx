@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import "../../assets/PublicationForm.css";
 import { FloatingLabel, Form, Spinner } from "react-bootstrap";
 import { getCategories } from "../../util/getCategories";
-import { axiosToken } from "../../util/axiosConfig";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import { postPublication } from "../../util/publicationService";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
-  const [publi, setFormData] = useState({
+  const [formData, setFormData] = useState({
     title: "",
     body: "",
     category: "",
@@ -35,7 +35,7 @@ const PublicationForm = () => {
     const inputValue = type === "checkbox" ? checked : value;
 
     setFormData({
-      ...publi,
+      ...formData,
       [name]: inputValue,
     });
   }
@@ -63,21 +63,10 @@ const PublicationForm = () => {
     });
     publication.append(
       "publication",
-      new Blob([JSON.stringify(publi)], { type: "application/json" })
+      new Blob([JSON.stringify(formData)], { type: "application/json" })
     );
 
-    try {
-      const response = await axiosToken().post(
-        "/api/publication/create",
-        publication
-      );
-      console.log(response.status, " publicación creada");
-      window.location.href = "/";
-    } catch (error) {
-      console.error("Hubo un error", error);
-    } finally {
-      setLoading(false); // Ocultar preloader al finalizar la solicitud
-    }
+    postPublication(publication, setLoading);
   };
 
   return (

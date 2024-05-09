@@ -14,7 +14,7 @@ const SearchBar = () => {
 
 
 
-  console.log(query);
+  // console.log(query);
   return (
     <div>
       <Form.Control

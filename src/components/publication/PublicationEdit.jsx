@@ -6,6 +6,7 @@ import { getCategories } from "../../util/getCategories";
 import { axiosNoToken, axiosToken } from "../../util/axiosConfig";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import { deleteImage, getPublicationEdit } from "../../util/publicationService";
 
 const PublicationEdit = () => {
   const { id } = useParams();
@@ -23,36 +24,13 @@ const PublicationEdit = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [locationImages, setLocationImages] = useState();
+  // const [locationImages, setLocationImages] = useState();
   const [rearrange, setRearrange] = useState(false);
 
   useEffect(() => {
-    fetchPublicacion(id);
-    fetchCategories();
+    getPublicationEdit(id, setPublicacion, setIsLoading);
+    getCategories(setCategories);
   }, []);
-
-  const fetchCategories = async () => {
-    await getCategories(setCategories);
-  };
-
-  const fetchPublicacion = async (id) => {
-    try {
-      const response = await axiosNoToken().get(`/api/publication/${id}`);
-      const { title, body, category, subscriberContent, images } =
-        response.data;
-       setPublicacion({
-        title,
-        body,
-        category,
-        subscriberContent,
-        images,
-      });
-      setIsLoading(false);
-      await setLocationImages(images);
-    } catch (error) {
-      console.error("Error en la carga de la publicación", error);
-    }
-  };
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
@@ -78,38 +56,16 @@ const PublicationEdit = () => {
     });
   };
 
-  //TODO Terminar de implementar
   const handleDeleteImage = async (index) => {
     const updatedImages = [...publicacion.images];
-    const deletedImage = publicacion.images[index];
-
+    const deletedImage = publicacion.images[index].id;
     updatedImages.splice(index, 1);
     setPublicacion({
       ...publicacion,
       images: updatedImages,
     });
 
-    try {
-      const response = await axiosNoToken().delete(
-        `/api/publication/images/${id}`,
-        {
-          data: { imageUrl: deletedImage },
-        }
-      );
-      console.log(response);
-    } catch (error) {
-      console.error("Error en la carga de categorias", error);
-    }
-  };
-
-  const deletePublication = async (id) => {
-    try {
-      const response = await axiosNoToken().delete(`/api/publication/${id}`);
-      await fetchPublications();
-      console.log(response);
-    } catch (error) {
-      console.error("Error en la carga de categorias", error);
-    }
+    deleteImage(id, deletedImage);
   };
 
   const handleSubmit = async (e) => {
@@ -119,7 +75,9 @@ const PublicationEdit = () => {
     delete publicacionData.images;
 
     console.log("rearrange ", rearrange);
-    const idImages = locationImages.map((image) => image.id);
+    // const idImages = locationImages.map((image) => image.id);
+    console.log("handle");
+    // console.log(locationImages);
 
     const publication = new FormData();
     formImg.images.forEach((image) => {
@@ -129,11 +87,12 @@ const PublicationEdit = () => {
       "publication",
       new Blob([JSON.stringify(publicacionData)], { type: "application/json" })
     );
-    publication.append(
-      "idImages",
-      new Blob([JSON.stringify(idImages)], { type: "application/json" })
-    );
+    // publication.append(
+    //   "idImages",
+    //   new Blob([JSON.stringify(idImages)], { type: "application/json" })
+    // );
 
+    console.log(formImg);
     if (formImg.images.length === 0) {
       try {
         console.log("HI HI HI");
@@ -143,11 +102,11 @@ const PublicationEdit = () => {
           publication
         );
         console.log(response.data, " publicación editada");
-        window.location.href = `/publication/${id}`;
+        // window.location.href = `/publication/${id}`;
       } catch (error) {
         console.error("Hubo un error", error);
       }
-       } else {
+    } else {
       try {
         //Si nuevas imagenes en la actualizacion se usa este endpoint
         const response = await axiosToken().patch(
@@ -167,39 +126,16 @@ const PublicationEdit = () => {
     const draggedImage = updatedImages[dragIndex];
     updatedImages.splice(dragIndex, 1);
     updatedImages.splice(dropIndex, 0, draggedImage);
-    setPublicacion({
+
+    console.log("dentro");
+    // console.log(locationImages);
+    await setPublicacion({
       ...publicacion,
       images: updatedImages,
     });
 
     await setRearrange(true);
     await setLocationImages(updatedImages);
-  };
-
-  const saveChanges = async () => {
-    const dataForm = new FormData();
-    const idImages = locationImages.map((image) => image.id);
-
-    console.log(idImages);
-    dataForm.append(
-      "publication",
-      new Blob([JSON.stringify(publicacion)], { type: "application/json" })
-    );
-    dataForm.append(
-      "idImages",
-      new Blob([JSON.stringify(idImages)], { type: "application/json" })
-    );
-
-    try {
-      const response = await axiosNoToken().patch(
-        `/api/publication/images/${id}`,
-        dataForm
-      );
-      console.log(response.data, " publicación editada");
-      // window.location.href = `/publication/${id}`;
-    } catch (error) {
-      console.error("Hubo un error", error);
-    }
   };
 
   if (isLoading) {
