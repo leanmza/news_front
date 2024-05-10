@@ -3,6 +3,7 @@ import { axiosNoToken, axiosToken } from "./axiosConfig";
 //En este servicio se encuentran todos las peticiones GET, DELETE, PATCH Y POST de publication
 
 //        SOLICITUDES GET
+
 export const getPublications = async (setPublicaciones) => {
   //Trae todas las publicaciones con atributo delete false
   try {
@@ -43,7 +44,12 @@ export const getPublicacion = async (id, setPublicacion, setIsLoading) => {
   }
 };
 
-export const getPublicationEdit = async (id, setPublicacion, setIsLoading) => {
+export const getPublicationEdit = async (
+  id,
+  setPublicacion,
+  setIsLoading,
+  setLocationImages
+) => {
   //Se usa en PublicationEdit
   try {
     const publicationData = await fetchPublication(id);
@@ -57,7 +63,7 @@ export const getPublicationEdit = async (id, setPublicacion, setIsLoading) => {
       images,
     });
     setIsLoading(false);
-    // await setLocationImages(images);
+    await setLocationImages(images);
   } catch (error) {
     console.error("Error en la carga de la publicación", error);
   }
@@ -124,4 +130,31 @@ export const changeStatus = async (id, setPublicaciones) => {
   } catch (error) {
     console.error("Error en la carga de categorias", error);
   }
+};
+
+export const patchPublicacion = async (id, publication, setLoading) => {
+  try {
+    const response = await axiosToken().patch(
+      `/api/publication/${id}`,
+      publication
+    );
+    console.log(response.data, " publicación editada");
+   
+  } catch (error) {
+    console.error("Hubo un error", error);
+  } finally {
+    setLoading(false); // Ocultar preloader al finalizar la solicitud
+  }
+};
+
+export const patchNewPositions = async (id, data) => {
+  try {
+    const response = await axiosToken().patch(
+      `/api/publication/images/${id}`,
+      data
+    );
+    console.log(response.data, " nuevas posiciones guardadas");
+    } catch (error) {
+    console.error("Hubo un error", error);
+  } 
 };

@@ -3,10 +3,15 @@ import { useParams } from "react-router-dom";
 import { FloatingLabel, Form } from "react-bootstrap";
 import "../../assets/PublicationForm.css";
 import { getCategories } from "../../util/getCategories";
-import { axiosNoToken, axiosToken } from "../../util/axiosConfig";
+import { axiosToken } from "../../util/axiosConfig";
 import Input from "../common/Input";
 import Button from "../common/Button";
-import { deleteImage, getPublicationEdit } from "../../util/publicationService";
+import {
+  deleteImage,
+  getPublicationEdit,
+  patchNewPositions,
+  patchPublicacion,
+} from "../../util/publicationService";
 
 const PublicationEdit = () => {
   const { id } = useParams();
@@ -23,12 +28,15 @@ const PublicationEdit = () => {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+
   const [categories, setCategories] = useState([]);
-  // const [locationImages, setLocationImages] = useState();
+
+  const [locationImages, setLocationImages] = useState();
+
   const [rearrange, setRearrange] = useState(false);
 
   useEffect(() => {
-    getPublicationEdit(id, setPublicacion, setIsLoading);
+    getPublicationEdit(id, setPublicacion, setIsLoading, setLocationImages);
     getCategories(setCategories);
   }, []);
 
@@ -43,7 +51,6 @@ const PublicationEdit = () => {
     });
   }
 
-  //Maneja nuevas imágenes
   const handleImageForm = (event) => {
     const files = event.target.files;
     let imageFiles = [];
@@ -68,16 +75,30 @@ const PublicationEdit = () => {
     deleteImage(id, deletedImage);
   };
 
+  const handleImagePositionChange = async (dragIndex, dropIndex) => {
+    const updatedImages = [...publicacion.images];
+    const draggedImage = updatedImages[dragIndex];
+    updatedImages.splice(dragIndex, 1);
+    updatedImages.splice(dropIndex, 0, draggedImage);
+
+    console.log("dentro");
+    console.log(locationImages);
+    await setPublicacion({
+      ...publicacion,
+      images: updatedImages,
+    });
+
+    await setRearrange(true);
+    await setLocationImages(updatedImages);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Armo un nuevo array con solo los datos de publicacion, sin la data de las imagenes
     const publicacionData = { ...publicacion };
     delete publicacionData.images;
 
-    console.log("rearrange ", rearrange);
-    // const idImages = locationImages.map((image) => image.id);
-    console.log("handle");
-    // console.log(locationImages);
+    const idImages = locationImages.map((image) => image.id);
 
     const publication = new FormData();
     formImg.images.forEach((image) => {
@@ -87,55 +108,14 @@ const PublicationEdit = () => {
       "publication",
       new Blob([JSON.stringify(publicacionData)], { type: "application/json" })
     );
-    // publication.append(
-    //   "idImages",
-    //   new Blob([JSON.stringify(idImages)], { type: "application/json" })
-    // );
 
-    console.log(formImg);
-    if (formImg.images.length === 0) {
-      try {
-        console.log("HI HI HI");
-        //Si no hay imagenes en la actualizacion se usa este endpoint
-        const response = await axiosToken().patch(
-          `/api/publication/data/${id}`,
-          publication
-        );
-        console.log(response.data, " publicación editada");
-        // window.location.href = `/publication/${id}`;
-      } catch (error) {
-        console.error("Hubo un error", error);
-      }
-    } else {
-      try {
-        //Si nuevas imagenes en la actualizacion se usa este endpoint
-        const response = await axiosToken().patch(
-          `/api/publication/${id}`,
-          publication
-        );
-        console.log(response.data, " publicación editada");
-        window.location.href = `/publication/${id}`;
-      } catch (error) {
-        console.error("Hubo un error", error);
-      }
+    await patchPublicacion(id, publication, setIsLoading);
+
+    if (rearrange === true) {
+      await patchNewPositions(id, idImages);
     }
-  };
 
-  const handleImagePositionChange = async (dragIndex, dropIndex) => {
-    const updatedImages = [...publicacion.images];
-    const draggedImage = updatedImages[dragIndex];
-    updatedImages.splice(dragIndex, 1);
-    updatedImages.splice(dropIndex, 0, draggedImage);
-
-    console.log("dentro");
-    // console.log(locationImages);
-    await setPublicacion({
-      ...publicacion,
-      images: updatedImages,
-    });
-
-    await setRearrange(true);
-    await setLocationImages(updatedImages);
+    // window.location.href = `/publication/${id}`;
   };
 
   if (isLoading) {
@@ -227,26 +207,6 @@ const PublicationEdit = () => {
                 </div>
               ))}
             </div>
-            {/* <div className="row rowImagenes">
-              <Button
-                type={"button"}
-                variant={"warning"}
-                text={"Modificar Imágenes"}
-                // onClick={showIcons}
-              />
-
-              {publicacion.images.map((image, index) => (
-                <div className="col-lg-4" key={index}>
-                  <img src={image} alt="" className="imgEditForm" />
-                  <span
-                    className="material-symbols-outlined link"
-                    onClick={() => handleDeleteImage(index)}
-                  >
-                    delete
-                  </span>
-                </div>
-              ))}
-            </div> */}
             <div className="col-md-5 cargaImg">
               <FloatingLabel controlId="floatingFile" label="Cargar imágenes">
                 <Form.Control
