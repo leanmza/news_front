@@ -6,41 +6,29 @@ import BannerLogin from "../banners/BannerLogin";
 import { Link } from "react-router-dom";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import { login } from "../../util/loginService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [jwt, setJwt] = useLocalState("", "jwt");
+  const [jwt, setJwt] = useLocalState("", "jwt"); //Talvez se pueda mandar directo al servico. MANDAR AL SERVICIO
   // const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const reqBody = {
       email: email,
       password: password,
     };
-    fetch("http://localhost:8080/auth/loginCheck", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(reqBody),
-    })
-      .then((response) => {
-        if (response.status === 200)
-          return Promise.all([response.json(), response.headers]);
-        else return Promise.reject("Inicio de sesión fallido");
-      })
-      .then(([body, headers]) => {
-        setJwt(body.token);
-        //con navigate("/") se rompía, se redirigía antes de guardar el jwt
-        window.location.href = "/";
-      })
-      .catch((message) => {
-        alert(message);
-      });
-  }
+
+    login(reqBody, setJwt, setError);
+  };
 
   return (
     <div className="container-fluid divMain">
@@ -56,6 +44,7 @@ const Login = () => {
               name={"email"}
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              error={error.email}
             />
           </div>
 
@@ -66,6 +55,7 @@ const Login = () => {
               name={"password"}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              error={error.password}
             />
           </div>
 
