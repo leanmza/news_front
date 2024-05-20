@@ -1,3 +1,10 @@
+
+.divAdmin{
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
 .visible {
   color: green;
 }
@@ -15,9 +22,9 @@
   font-size: 16px;
 }
 
-.table {
+/* .table {
   max-width: 1400px;
-}
+} */
 
 .miniImg {
   max-width: auto;
@@ -28,7 +35,6 @@
 
 .tableBody {
   overflow: auto;
-  white-space: pre-line;
   height: 5.8rem;
 }
 

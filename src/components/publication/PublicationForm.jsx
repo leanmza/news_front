@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "../../assets/PublicationForm.css";
-import { FloatingLabel, Form, Spinner } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import { getCategories } from "../../util/getCategories";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import { postPublication } from "../../util/publicationService";
+import TextArea from "../common/TextArea";
+import InputSelect from "./../common/InputSelect";
+import InputImage from "../common/InputImage";
 
 const PublicationForm = () => {
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
+    header: "",
     body: "",
-    category: "",
     subscriberContent: "",
   });
 
@@ -20,6 +23,11 @@ const PublicationForm = () => {
   });
 
   const [loading, setLoading] = useState(false); // Estado para controlar la visibilidad del preloader
+  const [error, setError] = useState({
+    title: "",
+    header: "",
+    body: "",
+  });
 
   useEffect(() => {
     fetchCategories();
@@ -66,71 +74,63 @@ const PublicationForm = () => {
       new Blob([JSON.stringify(formData)], { type: "application/json" })
     );
 
-    postPublication(publication, setLoading);
+    postPublication(publication, setLoading, setError);
   };
+
+  console.log(error);
 
   return (
     <div className="container-fluid form">
       <h1 className="titulo col-12">Nueva Publicación</h1>
       <div className="col-md-10 col-lg-8">
         <form>
-          <div>
-            <Input
-              label={"Título"}
-              type={"text"}
-              name={"title"}
-              onChange={handleInputForm}
-            />
-          </div>
-          <div>
-            <FloatingLabel
-              controlId="floatingTextarea2"
-              label="Cuerpo del articulo"
-              className="mb-3"
-            >
-              <Form.Control
-                as="textarea"
-                placeholder="Cuerpo del artículo"
-                style={{ height: "300px" }}
-                name="body"
-                onChange={handleInputForm}
-              />
-            </FloatingLabel>
-          </div>
+          <Input
+            label={"Título de la publicación"}
+            type={"text"}
+            name={"title"}
+            onChange={handleInputForm}
+            error={error.title}
+          />
+
+          <TextArea
+            label={"Encabezado"}
+            name={"header"}
+            onChange={handleInputForm}
+            maxLength={140}
+            error={error.header}
+          />
+
+          <TextArea
+            label={"Cuerpo del artículo"}
+            name={"body"}
+            onChange={handleInputForm}
+            error={error.body}
+          />
+
           <div className="row dataComplementary">
             <div className="col-md-3">
-              <FloatingLabel controlId="floatingSelect" label="Categoría">
-                <Form.Select
-                  aria-label="Floating label select example"
-                  name="category"
-                  onChange={handleInputForm}
-                >
-                  <option>Elegir una categoría</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </FloatingLabel>
+              <InputSelect
+                label={"Categoría"}
+                name={"category"}
+                onChange={handleInputForm}
+                categories={categories}
+                error={error.category}
+              />
             </div>
             <div className="col-md-4 divSubscribers">
               <Form.Check
+                className="checkFrom"
                 name="subscriberContent"
                 label="¿Exclusivo para suscriptores?"
                 onChange={handleInputForm}
               />
             </div>
             <div className="col-md-5">
-              <FloatingLabel controlId="floatingFile" label="Imágenes">
-                <Form.Control
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageForm}
-                />
-              </FloatingLabel>
+              <InputImage
+                label={"Cargar imágenes"}
+                name={"image"}
+                onChange={handleImageForm}
+              />
             </div>
           </div>
           <div className="divButton">

@@ -1,0 +1,38 @@
+.input{
+    margin-bottom: 1rem;
+}
+
+.labelForm{
+    color: rgba(255, 208, 0, 0.945);
+    margin: 0;
+
+}
+
+.textError{
+    color: rgba(250, 225, 113, 0.945);
+    font-size: 0.8rem;
+    margin-left: 1rem;
+}
+
+.input-form{
+    background-color: #EEEEEE;
+    color: #222831;
+    border-radius: 2px;
+    
+}
+
+.form-control::placeholder{
+    color: #222831 !important;
+}
+
+.header{
+    height: 4rem;
+}
+
+.body{
+    height:18rem;
+}
+
+.checkFrom{
+    color: rgba(255, 208, 0, 0.945)
+}

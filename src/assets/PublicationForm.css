@@ -6,11 +6,6 @@
   justify-items: center;
 }
 
-.btnSubmit {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-}
-
 .form-floating > .form-select {
   padding-bottom: 0.525rem !important;
 }
@@ -32,6 +27,7 @@
 
 .titulo{
   text-align: center;
+  color:  rgba(255, 208, 0, 0.945);
 }
 
 .imgEditForm{

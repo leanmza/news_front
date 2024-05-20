@@ -41,6 +41,8 @@ const PublicationDetail = () => {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
 
+  console.log(publicacion.header.length);
+
  
   return (
     <div>
@@ -77,6 +79,9 @@ const PublicationDetail = () => {
               </Carousel.Item>
             ))}
           </Carousel>
+        </div>
+        <div className="divEncabezado row">
+          <h5 className="encabezadoNews">{publicacion.header}</h5>
         </div>
         <div className="divBody row">
           <p className="bodyNews">{publicacion.body}</p>

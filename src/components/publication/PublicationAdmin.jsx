@@ -56,10 +56,13 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
       <table className="table row-col-12 table-light newsTable" id="newsTable">
         <thead>
           <tr className="row-col-12 titulosTabla">
-            <th scope="col" className="col" onClick={handleSort} value="title">
+            <th scope="col" className="col-2" onClick={handleSort} value="title">
               Título
             </th>
-            <th scope="col" clas="col-4">
+            <th scope="col" className="col-2">
+              Encabezado
+            </th>
+            <th scope="col" className=  "col-3">
               Cuerpo
             </th>
             <th
@@ -123,6 +126,7 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
           {publicaciones.map((item) => (
             <tr key={item.id}>
               <td>{item.title}</td>
+              <td>{item.header}</td>
               <td>
                 <p className="tableBody">{item.body}</p>
               </td>

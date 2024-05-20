@@ -25,62 +25,58 @@ const Navbar = ({ isLogged, logout }) => {
   }
 
   return (
-    <div>
-      <header>
-        <div className="divHeader row">
-          <nav className="navbar navbar-expand-md col-md-10 col-8 ">
-            <div className="divLogo col-4 col-md-2">
-              <Link to="/" className="link">
-                <h2 className="logo">DeGeeks</h2>
-              </Link>
-            </div>
-
-            <div className="divMenu col-6">
-              <div className="row rowCategorias">
-                <ul className="nav categorias">
-                  {categories.map((category) => (
-                    <li>
-                      <Link
-                        to={`/publication/category/${category.name}`}
-                        className="link"
-                        key={category.id}
-                        value={category.name}
-                      >
-                        {category.name}
-                      </Link>
-                    </li>
-                  ))}
-                  {role === "ADMIN" ? (
-                    <li>
-                      <Link to="/publication/create" className="link">
-                        Cargar
-                      </Link>
-                    </li>
-                  ) : null}
-                </ul>
-              </div>
-            </div>
-
-            <div className="divSearch col-2">
-              <SearchBar />
-            </div>
-            <div className="divLogin col-2">
-              {isLogged ? (
-                role === "ADMIN" ? (
-                  <MenuAdmin logout={logout} />
-                ) : (
-                  <MenuReader logout={logout} />
-                )
-              ) : (
-                <Link to="/user/login" className="link">
-                  Iniciar Sesión
-                </Link>
-              )}
-            </div>
-          </nav>
+    <>
+      <nav className="navbar navbar-expand-md col-md-10 col-8 ">
+        <div className="divLogo col-4 col-md-2 col-lg-1">
+          <Link to="/" className="link">
+            <h2 className="logo">DeGeeks</h2>
+          </Link>
         </div>
-      </header>
-    </div>
+
+        {/* <div className="divMenu col-6"> */}
+          <div className="divCategorias categorias col-6">
+            <ul className="nav categorias-ul">
+              {categories.map((category) => (
+                <li>
+                  <Link
+                    to={`/publication/category/${category.name}`}
+                    className="link"
+                    key={category.id}
+                    value={category.name}
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+              {role === "ADMIN" ? (
+                <li>
+                  <Link to="/publication/create" className="link">
+                    Cargar
+                  </Link>
+                </li>
+              ) : null}
+            </ul>
+          </div>
+        {/* </div> */}
+
+        <div className="divSearch col-2 offset-lg-1">
+          <SearchBar />
+        </div>
+        <div className="divLogin col-1 offset-lg-1">
+          {isLogged ? (
+            role === "ADMIN" ? (
+              <MenuAdmin logout={logout} />
+            ) : (
+              <MenuReader logout={logout} />
+            )
+          ) : (
+            <Link to="/user/login" className="link">
+              Iniciar Sesión
+            </Link>
+          )}
+        </div>
+      </nav>
+    </>
   );
 };
 

@@ -2,17 +2,21 @@
     display: flex;
     justify-content: center;
   }
+
+  .login{
+    margin-top: 32px;
+  }
   
   .bannerLogin {
     font-size: 2em;
     text-align: center;
     font-weight: 700;
     padding: 20px 0 20px;
-    border: solid 2px rgb(245, 68, 68);
+    border: solid 2px #344955;
     min-width: 450px;
     max-width: 500px;
     border-radius: 6px;
-    background-color: white;
+    background-color:  rgba(255, 208, 0, 0.945) ;
     color: #3c3c3c !important;
   }
   
@@ -21,7 +25,7 @@
     text-align: center;
     position: relative;
     display: inline-block;
-    color: rgb(245, 68, 68);
+    color: #344955;
     height: 1.25em;
     vertical-align: bottom;
     overflow: hidden;

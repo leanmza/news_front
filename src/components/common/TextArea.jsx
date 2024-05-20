@@ -2,17 +2,19 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import "../../assets/Input.css";
 
-const Input = ({ label, error, type, name, onChange, value }) => {
+const TextArea = ({ label, error, name, onChange, value, maxLength }) => {
   return (
     <div className="input">
       <Form.Label className="labelForm">
         {label}
         {error && <span className="textError">*{error}</span>}
       </Form.Label>
+
       <Form.Control
-        className="input-form"
-        type={type}
-        placeholder={label} //Mismo que label
+        as="textarea"
+        placeholder={label}
+        maxLength={maxLength}
+        className={"input-form " + name}
         name={name}
         onChange={onChange}
         value={value}
@@ -21,4 +23,4 @@ const Input = ({ label, error, type, name, onChange, value }) => {
   );
 };
 
-export default Input;
+export default TextArea;

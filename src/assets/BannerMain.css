@@ -1,12 +1,14 @@
-.divBannerMain{
-    background-color: rgb(245, 68, 68);
-    height: 60px;
-    display: grid;
-    width: 100vw;
-    justify-content: center;
+.bannerMain{
+    background-color: #344955;
+    max-height: 7.5vh;
+    min-height: 55px;
     align-content: center;
+    max-width: 1903px;
+    width: 100vw;
+    margin: 0 auto;
 }
 
-.divBannerMain h3{
-    color: white;
+.bannerMain h3{
+    color:  rgba(255, 208, 0, 0.945) ;
+    text-align: center;
 }

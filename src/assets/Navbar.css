@@ -1,14 +1,13 @@
-header {
-  background-color: rgb(245, 68, 68);
-  height: 60px;
-  justify-content: center;
-  display: flex;
-}
 
 .navbar {
-  background-color: rgb(245, 68, 68) !important;
-  height: 60px;
-  width: 1400px;
+  background-color: #344955 !important;
+  max-height: 7.5vh;
+  min-height: 55px;
+  width: 100%;
+  padding: 0 2rem;
+}
+.divCategorias{
+  padding-left: 2rem;
 }
 
 .logo{
@@ -20,6 +19,10 @@ header {
   max-width: 1400px;
 }
 
+.categorias{
+  margin: 0;
+}
+
 li{
   margin-right: 32px;
 }
@@ -27,18 +30,19 @@ li{
 .divLogo {
   display: flex;
   justify-content: start;
-  padding-left: 12px;
+
 }
 
 .link:link,
 .link:visited,
 .link:active {
   text-decoration: none;
-  color: #fff !important;
+  color:  rgba(255, 208, 0, 0.945)  !important;
+  font-weight: 500
 }
 
 .dropdown-menu {
-  background-color: rgb(245, 68, 68) !important;
+  background-color: #344955 !important;
 }
 
 .nav-link {
@@ -57,7 +61,7 @@ li{
 }
 
 .profilePicture {
-  background-color: white;
+  background-color:  rgba(255, 208, 0, 0.945) ;
   width: 60px; /* ajustar según el tamaño deseado */
   height: 60px; /* ajustar según el tamaño deseado */
   border-radius: 50%;
@@ -74,7 +78,7 @@ li{
   margin: 0 !important;
   position: inherit !important;
   background-color: transparent !important;
-  color: white !important ;
+  color:  rgba(255, 208, 0, 0.945)  !important ;
 }
 
 .searchBar:focus {
@@ -83,7 +87,7 @@ li{
 }
 
 .form-control::placeholder {
-  color: white !important;
+  color:  rgba(255, 208, 0, 0.945)  !important;
 }
 
 .linkLog {
@@ -102,7 +106,7 @@ li{
 }
 
 .spanLogin{
-  color: white;
+  color:  rgba(255, 208, 0, 0.945) ;
   font-size: 14px;
 }
 

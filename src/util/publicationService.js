@@ -53,10 +53,11 @@ export const getPublicationEdit = async (
   //Se usa en PublicationEdit
   try {
     const publicationData = await fetchPublication(id);
-    const { title, body, category, subscriberContent, images } =
+    const { title, body, header, category, subscriberContent, images } =
       publicationData;
     setPublicacion({
       title,
+      header,
       body,
       category,
       subscriberContent,
@@ -77,7 +78,7 @@ const fetchPublication = async (id) => {
 
 //        SOLICITUDES POST
 
-export const postPublication = async (publication, setLoading) => {
+export const postPublication = async (publication, setLoading, setError) => {
   try {
     const response = await axiosToken().post(
       "/api/publication/create",
@@ -86,6 +87,8 @@ export const postPublication = async (publication, setLoading) => {
     console.log(response.status, " publicación creada");
     window.location.href = "/";
   } catch (error) {
+    console.error(error.response.data);
+    setError(error.response.data)
     console.error("Hubo un error", error);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud

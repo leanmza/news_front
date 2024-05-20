@@ -11,12 +11,12 @@ const HorizontalCard = ({ lastPublications }) => {
   };
 
   return (
-    <div className="divHorizontalImg">
+    <div className="ultimas-publicaciones">
       {lastPublications && lastPublications.length > 0 && (
         <Carousel
           activeIndex={index}
           onSelect={handleSelect}
-          className="carrousel"
+          className=" carrousel "
         >
           {lastPublications.map((publicacion) => (
             <Carousel.Item>

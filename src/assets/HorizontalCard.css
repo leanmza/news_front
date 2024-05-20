@@ -1,22 +1,26 @@
-.imgHorizontal {
-  aspect-ratio: 2/1 !important;
-  width: 1400px;
-  overflow: hidden;
-}
 .carousel {
-  width: 1400px;
-  border-radius: 4px;
-  overflow: hidden;
+  margin: 12px 0;
+  width: 100vw;
+  max-width: 1903px;
 }
+
+.imgHorizontal {
+  overflow: hidden;
+  object-fit: cover;
+  width: 100%;
+  height: 85vh;
+}
+
 .divHorizontalImg {
   display: flex;
   justify-content: center;
-  margin-bottom: 32px;
+  margin: 12px 0;
+  width: 100vw;
 }
 
 .titleHorizontal {
   font-weight: 700 !important;
-  color: white !important;
+  color:  rgba(255, 208, 0, 0.945)  !important;
   text-shadow: 1px 1px 2px black;
   font-size: 3em;
 }
@@ -24,10 +28,20 @@
 .categoryHorizontal {
   font-size: 16px;
   font-weight: 500 !important;
-  color: white !important;
+  color:  rgba(255, 208, 0, 0.945)  !important;
   text-shadow: 1px 1px 2px black;
 }
 
 .carousel-inner {
-  border-radius: 4px;
+  width: 100% !important;
+}
+
+.carousel-control-prev {
+  justify-content: start;
+  padding-inline: 2rem;
+}
+
+.carousel-control-next {
+  justify-content: end;
+  padding-inline: 2rem;
 }

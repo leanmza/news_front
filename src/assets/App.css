@@ -1,34 +1,18 @@
 body {
   font-family: "Roboto", sans-serif !important;
-  background-color: #EFECE5;
+  background-color: #1F1F1F;;
 }
 .divMain {
   max-width: 1400px;
   display: grid;
   align-items: center;
   justify-content: center;
-  margin-top: 32px;
-}
-
-.colCard {
-  margin-bottom: 20px;
+  padding: 0;
 }
 
 .noResult{
   padding-top: 32px;
 }
 
-.divAdmin {
-  max-width: 1400px;
-  display: grid;
-  align-items: center;
-  justify-content: center;
- 
-}
 
-.cardsMain{display: flex;
-  justify-content: center;
-  width: 1400px;
-  margin: 0 auto;
-  margin-top: 20px;
- }
+

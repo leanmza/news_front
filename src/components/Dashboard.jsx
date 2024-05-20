@@ -2,11 +2,22 @@ import React from "react";
 import Card from "./Card";
 import { useParams } from "react-router-dom";
 import HorizontalCard from "./HorizontalCard";
+import "../assets/Dashboard.css"
 import BannerMain from "./banners/BannerMain";
 
 const Dashboard = ({ lastPublications, publicaciones }) => {
   const { category } = useParams();
   const { query } = useParams();
+
+  const className = {
+    gridPublications: "col-12 col-sm-6 col-md-4 colCard",
+    lastPublications: "col-12 col-sm-6 ultimas",
+  };
+
+  const classNameImg = {
+    gridCard: "cardImg",
+    lastPublicationCard: "lastPublicationCard cardImg"
+  }
   let emptyResult = false;
 
   if (category !== null && category !== undefined) {
@@ -33,22 +44,20 @@ const Dashboard = ({ lastPublications, publicaciones }) => {
           No se encontraron publicaciones con "{query}" en su título
         </h5>
       ) : null}
-      <section className="horizontalCard row row-cols-1">
-        <HorizontalCard lastPublications={lastPublications} />
-      </section>
-      <BannerMain></BannerMain>
-      <section className="cardsMain row">
-        {publicaciones.map((item) => (
-          <Card
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            category={item.category}
-            subscriberContent={item.subscriberContent}
-            image={item.images[0]}
-          ></Card>
+
+      <div className="lastPublications row">
+        {lastPublications.map((item) => (
+          <Card item={item} className={className.lastPublications} classNameImg={classNameImg.lastPublicationCard}></Card>
         ))}
-      </section>
+      </div>
+      {/* <HorizontalCard lastPublications={lastPublications} /> */}
+
+      <BannerMain></BannerMain>
+      <div className="cardsMain row">
+        {publicaciones.map((item) => (
+          <Card item={item} className={className.gridPublications} classNameImg={classNameImg.gridCard}></Card>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { FloatingLabel, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import "../../assets/PublicationForm.css";
 import { getCategories } from "../../util/getCategories";
-import { axiosToken } from "../../util/axiosConfig";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import {
@@ -13,11 +12,16 @@ import {
   patchPublicacion,
 } from "../../util/publicationService";
 
+import TextArea from "../common/TextArea";
+import InputSelect from "./../common/InputSelect";
+import InputImage from "../common/InputImage";
+
 const PublicationEdit = () => {
   const { id } = useParams();
 
   const [publicacion, setPublicacion] = useState({
     title: "",
+    header: "",
     body: "",
     category: "",
     subscriberContent: "",
@@ -115,7 +119,7 @@ const PublicationEdit = () => {
       await patchNewPositions(id, idImages);
     }
 
-    // window.location.href = `/publication/${id}`;
+    window.location.href = `/publication/${id}`;
   };
 
   if (isLoading) {
@@ -125,53 +129,42 @@ const PublicationEdit = () => {
   return (
     <div>
       <div className="container-fluid form">
-        <h1 className="titulo col-12">Nueva Publicación</h1>
+        <h1 className="titulo col-12">Editar Publicación</h1>
         <div className="col-md-10 col-lg-8">
           <form>
-            <div>
-              <Input
-                label={"Título"}
-                type={"text"}
-                name={"title"}
-                onChange={handleInputForm}
-                value={publicacion.title}
-              />
-            </div>
-            <div>
-              <FloatingLabel
-                controlId="floatingTextarea2"
-                label="Cuerpo del articulo"
-                className="mb-3"
-              >
-                <Form.Control
-                  as="textarea"
-                  placeholder="Cuerpo del artículo"
-                  style={{ height: "300px" }}
-                  onChange={handleInputForm}
-                  name="body"
-                  value={publicacion.body}
-                />
-              </FloatingLabel>
-            </div>
+            <Input
+              label={"Título"}
+              type={"text"}
+              name={"title"}
+              onChange={handleInputForm}
+              value={publicacion.title}
+            />
+            <TextArea
+              label={"Encabezado"}
+              name={"header"}
+              onChange={handleInputForm}
+              maxLength={140}
+              value={publicacion.header}
+            />
+            <TextArea
+              label={"Cuerpo del artículo"}
+              name={"body"}
+              onChange={handleInputForm}
+              value={publicacion.body}
+            />
             <div className="row dataComplementary">
               <div className="col-md-3">
-                <FloatingLabel controlId="floatingSelect" label="Categoría">
-                  <Form.Select
-                    aria-label="Floating label select example"
-                    name="category"
-                    onChange={handleInputForm}
-                    value={publicacion.category.name}
-                  >
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.name}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </FloatingLabel>
+                <InputSelect
+                  label={"Categoría"}
+                  name={"category"}
+                  onChange={handleInputForm}
+                  categories={categories}
+                  value={publicacion.category}
+                />
               </div>
               <div className="col-md-4 divSubscribers">
                 <Form.Check
+                  className="checkFrom"
                   name="subscriberContent"
                   label="¿Exclusivo para suscriptores?"
                   checked={publicacion.subscriberContent}
@@ -208,15 +201,11 @@ const PublicationEdit = () => {
               ))}
             </div>
             <div className="col-md-5 cargaImg">
-              <FloatingLabel controlId="floatingFile" label="Cargar imágenes">
-                <Form.Control
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageForm}
-                />
-              </FloatingLabel>
+              <InputImage
+                label={"Cargar imágenes"}
+                name={"image"}
+                onChange={handleImageForm}
+              />
             </div>
 
             <div className="divButton">
