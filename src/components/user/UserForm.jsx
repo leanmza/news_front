@@ -16,6 +16,13 @@ const UserForm = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [error, setError] = useState({
+    name: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
   function handleInputForm(event) {
     const { name, value } = event.target;
 
@@ -37,11 +44,16 @@ const UserForm = () => {
       console.log(response.status, "usuario registrado");
       window.location.href = "/user/login";
     } catch (error) {
-      console.error("Hubo un error", error);
+      console.log(error.response.data);
+      setError(error.response.data)
+      // console.error("Hubo un error", error);
+     
     } finally {
       setLoading(false); // Ocultar preloader al finalizar la solicitud
     }
   };
+
+  console.log(error);
 
   return (
     <div className="container-fluid divMain">
@@ -59,6 +71,7 @@ const UserForm = () => {
                 type={"text"}
                 name={"name"}
                 onChange={handleInputForm}
+                error={error.name}
               />
             </div>
             <div>
@@ -67,6 +80,7 @@ const UserForm = () => {
                 type={"text"}
                 name={"lastName"}
                 onChange={handleInputForm}
+                error={error.lastName}
               />
             </div>
             <div>
@@ -75,6 +89,7 @@ const UserForm = () => {
                 type={"email"}
                 name={"email"}
                 onChange={handleInputForm}
+                error={error.email}
               />
             </div>
             <div>
@@ -83,6 +98,7 @@ const UserForm = () => {
                 type={"password"}
                 name={"password"}
                 onChange={handleInputForm}
+                error={error.password}
               />
             </div>
 
