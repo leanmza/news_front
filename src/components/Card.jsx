@@ -20,7 +20,7 @@ const Card = ({ item, className}) => {
             </div>
           )}
           <div className="cardTitulo">
-            <Link to="/" {...category} className="link">
+                <Link to={`/publication/category/${category}`} className="link">
               <h6 className="card-category">{category}</h6>
             </Link>
 

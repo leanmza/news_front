@@ -33,31 +33,28 @@ const Navbar = ({ isLogged, logout }) => {
           </Link>
         </div>
 
-        {/* <div className="divMenu col-6"> */}
-          <div className="divCategorias categorias col-6">
-            <ul className="nav categorias-ul">
-              {categories.map((category) => (
-                <li>
-                  <Link
-                    to={`/publication/category/${category.name}`}
-                    className="link"
-                    key={category.id}
-                    value={category.name}
-                  >
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
-              {role === "ADMIN" ? (
-                <li>
-                  <Link to="/publication/create" className="link">
-                    Cargar
-                  </Link>
-                </li>
-              ) : null}
-            </ul>
-          </div>
-        {/* </div> */}
+        <div className="divCategorias categorias col-6">
+          <ul className="nav categorias-ul">
+            {categories.map((category) => (
+              <li key={category.id}>
+                <Link
+                  to={`/publication/category/${category.name}`}
+                  className="link"
+                  value={category.name}
+                >
+                  {category.name}
+                </Link>
+              </li>
+            ))}
+            {role === "ADMIN" ? (
+              <li>
+                <Link to="/publication/create" className="link">
+                  Cargar
+                </Link>
+              </li>
+            ) : null}
+          </ul>
+        </div>
 
         <div className="divSearch col-2 offset-lg-1">
           <SearchBar />

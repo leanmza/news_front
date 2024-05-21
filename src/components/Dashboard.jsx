@@ -45,17 +45,19 @@ const Dashboard = ({ lastPublications, publicaciones }) => {
         </h5>
       ) : null}
 
+  {lastPublications ? (
       <div className="lastPublications row">
         {lastPublications.map((item) => (
-          <Card item={item} className={className.lastPublications} classNameImg={classNameImg.lastPublicationCard}></Card>
+          <Card key={item.id} item={item} className={className.lastPublications} classNameImg={classNameImg.lastPublicationCard}></Card>
         ))}
       </div>
+       ) : null}
       {/* <HorizontalCard lastPublications={lastPublications} /> */}
 
       <BannerMain></BannerMain>
       <div className="cardsMain row">
         {publicaciones.map((item) => (
-          <Card item={item} className={className.gridPublications} classNameImg={classNameImg.gridCard}></Card>
+          <Card key={item.id} item={item} className={className.gridPublications} classNameImg={classNameImg.gridCard}></Card>
         ))}
       </div>
     </div>

@@ -78,6 +78,20 @@ const fetchPublication = async (id) => {
 
 //        SOLICITUDES POST
 
+export const createUser = async (user, setLoading, setError) => {
+  try {
+    const response = await axiosNoToken().post("/api/users/create", user);
+    console.log(response.status, "usuario registrado");
+    window.location.href = "/user/login";
+  } catch (error) {
+    console.log(error.response.data);
+    setError(error.response.data);
+    // console.error("Hubo un error", error);
+  } finally {
+    setLoading(false); // Ocultar preloader al finalizar la solicitud
+  }
+};
+
 export const postPublication = async (publication, setLoading, setError) => {
   try {
     const response = await axiosToken().post(
@@ -87,9 +101,8 @@ export const postPublication = async (publication, setLoading, setError) => {
     console.log(response.status, " publicación creada");
     window.location.href = "/";
   } catch (error) {
-    console.error(error.response.data);
-    setError(error.response.data)
-    console.error("Hubo un error", error);
+    setError(error.response.data);
+    console.error("Hubo un error ", error);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud
   }
@@ -142,7 +155,6 @@ export const patchPublicacion = async (id, publication, setLoading) => {
       publication
     );
     console.log(response.data, " publicación editada");
-   
   } catch (error) {
     console.error("Hubo un error", error);
   } finally {
@@ -157,7 +169,7 @@ export const patchNewPositions = async (id, data) => {
       data
     );
     console.log(response.data, " nuevas posiciones guardadas");
-    } catch (error) {
+  } catch (error) {
     console.error("Hubo un error", error);
-  } 
+  }
 };

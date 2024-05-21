@@ -25,18 +25,25 @@ import {
   getLastPublications,
   getPublications,
 } from "./util/publicationService";
+import { useLocalState } from "./util/useLocalStorage";
 
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
   const [isLogged, setIsLogged] = useState(false);
   const [lastPublications, setLastPublications] = useState([]);
-
-  const role = getRole();
+  const [role, setRole] = useLocalState("", "role");
 
   useEffect(() => {
+    const token = getToken();
+    if (token && validToken()) {
+      setIsLogged(true);
+      setRole(getRole());
+    } else {
+      setIsLogged(false);
+      setRole("");
+    }
     getPublications(setPublicaciones);
     getLastPublications(setLastPublications);
-    checkLoggedIn();
   }, []);
 
   const deletePublication = async (id) => {
@@ -45,15 +52,6 @@ function App() {
 
   const changeDeletedStatus = async (id) => {
     changeStatus(id, setPublicaciones);
-  };
-
-  const checkLoggedIn = () => {
-    const token = getToken();
-    if (token) {
-      setIsLogged(validToken());
-    } else {
-      setIsLogged(false);
-    }
   };
 
   const logout = () => {

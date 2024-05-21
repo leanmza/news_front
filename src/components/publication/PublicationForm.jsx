@@ -77,8 +77,6 @@ const PublicationForm = () => {
     postPublication(publication, setLoading, setError);
   };
 
-  console.log(error);
-
   return (
     <div className="container-fluid form">
       <h1 className="titulo col-12">Nueva Publicación</h1>

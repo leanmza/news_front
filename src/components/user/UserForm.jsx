@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "../../assets/PublicationForm.css";
 import { Spinner } from "react-bootstrap";
 import BannerLogin from "../banners/BannerLogin";
-import { axiosNoToken } from "../../util/axiosConfig";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import { createUser } from "../../util/publicationService";
 
 const UserForm = () => {
   const [user, setUserData] = useState({
@@ -39,27 +39,14 @@ const UserForm = () => {
 
     setLoading(true);
 
-    try {
-      const response = await axiosNoToken().post("/api/users/create", user);
-      console.log(response.status, "usuario registrado");
-      window.location.href = "/user/login";
-    } catch (error) {
-      console.log(error.response.data);
-      setError(error.response.data)
-      // console.error("Hubo un error", error);
-     
-    } finally {
-      setLoading(false); // Ocultar preloader al finalizar la solicitud
-    }
+    createUser(user, setLoading, setError);
   };
-
-  console.log(error);
 
   return (
     <div className="container-fluid divMain">
       <div className="row rowForm">
         <div className="col-sm-9 col-md-7 col-lg-6 col-xl-5">
-          <BannerLogin/>
+          <BannerLogin />
         </div>
         <div className="col-sm-9 col-md-8 col-lg-6 col-xl-5 col-xxl-4  offset-xl-2">
           <h1 className="titulo col-12">Crear Cuenta</h1>
@@ -103,7 +90,7 @@ const UserForm = () => {
             </div>
 
             <div className="divButton">
-            <Button
+              <Button
                 type={"submit"}
                 variant={"primary"}
                 onClick={handleSubmit}
