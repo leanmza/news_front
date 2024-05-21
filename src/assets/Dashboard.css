@@ -24,5 +24,7 @@
 
 .ultimas{
   height: auto;
-  width: 45vw;
+  width: 35vw;
+  padding-inline: 0;
+
 }

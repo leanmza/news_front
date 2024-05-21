@@ -4,31 +4,29 @@ import { axiosNoToken } from "../../util/axiosConfig";
 import "../../assets/PublicationAdmin.css";
 import { sortBy } from "../../util/listSort";
 import ModalAdmin from "./../modals/ModalAdmin";
+import {
+  changeStatus,
+  deletePublicationById,
+  getAllPublications,
+} from "../../util/publicationService";
 
-const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
-
+const PublicationAdmin = () => {
   const [publicaciones, setPublicaciones] = useState([]);
 
   const [ordenInverso, setOrdenInverso] = useState(false);
 
-  const [show, setShow] = useState();
+  const [show, setShow] = useState(false);
 
   const [action, setAction] = useState();
-  
+
   const [item, setItem] = useState();
 
   useEffect(() => {
     fetchPublications();
-    setShow(false);
   }, []);
 
   const fetchPublications = async () => {
-    try {
-      const response = await axiosNoToken().get("/api/publication/all");
-      setPublicaciones(response.data.publications);
-    } catch (error) {
-      console.error("Error en la carga de categorías", error);
-    }
+    getAllPublications(setPublicaciones);
   };
 
   const handleClose = () => setShow(false);
@@ -51,18 +49,35 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
     setOrdenInverso(!ordenInverso);
   };
 
+  const deletePublication = async (id) => {
+    deletePublicationById(id, setPublicaciones);
+    fetchPublications();
+  };
+
+  const changeDeletedStatus = async (id) => {
+    changeStatus(id, setPublicaciones);
+    fetchPublications();
+  };
+
+  console.log(publicaciones);
+
   return (
     <div className="container-fluid divAdmin">
       <table className="table row-col-12 table-light newsTable" id="newsTable">
         <thead>
           <tr className="row-col-12 titulosTabla">
-            <th scope="col" className="col-2" onClick={handleSort} value="title">
+            <th
+              scope="col"
+              className="col-2"
+              onClick={handleSort}
+              value="title"
+            >
               Título
             </th>
             <th scope="col" className="col-2">
               Encabezado
             </th>
-            <th scope="col" className=  "col-3">
+            <th scope="col" className="col-3">
               Cuerpo
             </th>
             <th
@@ -154,7 +169,12 @@ const PublicationAdmin = ({ deletePublication, changeDeletedStatus }) => {
               </td>
               <td>
                 {item.images.map((image) => (
-                  <img className="miniImg" src={image.imageUrl} alt="..." />
+                  <img
+                    key={image.id}
+                    className="miniImg"
+                    src={image.imageUrl}
+                    alt="..."
+                  />
                 ))}
               </td>
               <td>

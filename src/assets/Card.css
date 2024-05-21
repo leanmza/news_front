@@ -22,6 +22,8 @@
   object-fit: cover;
   transition: transform 0.5s ease;
   border-radius: 0px;
+  aspect-ratio: 2/1;
+  max-height: 42.5vh;
 }
 
 .card:hover .cardImg {

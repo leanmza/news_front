@@ -24,14 +24,14 @@ export const getLastPublications = async (setLastPublications) => {
   }
 };
 
-// export const getAllPublications = async (setPublicaciones) => { //Trae todas las publicaciones
-//   try {
-//     const response = await axiosNoToken().get("/api/publication/all");
-//    await setPublicaciones(response.data.publications);
-//   } catch (error) {
-//     console.error("Error en la carga de categorías", error);
-//   }
-// };
+export const getAllPublications = async (setPublicaciones) => { //Trae todas las publicaciones
+  try {
+    const response = await axiosNoToken().get("/api/publication/all");
+   await setPublicaciones(response.data.publications);
+  } catch (error) {
+    console.error("Error en la carga de categorías", error);
+  }
+};
 
 export const getPublicacion = async (id, setPublicacion, setIsLoading) => {
   //Se usa en PublicationDetail
@@ -114,7 +114,7 @@ export const deletePublicationById = async (id, setPublicaciones) => {
   //Elimina una publicación
   try {
     const response = await axiosNoToken().delete(`/api/publication/${id}`);
-    await getPublications(setPublicaciones);
+    await getAllPublications(setPublicaciones);
     console.log(response);
   } catch (error) {
     console.error("Error en la carga de categorias", error);
@@ -141,7 +141,7 @@ export const changeStatus = async (id, setPublicaciones) => {
     const response = await axiosNoToken().patch(
       `/api/publication/status/${id}`
     );
-    await getPublications(setPublicaciones);
+    await getAllPublications(setPublicaciones);
     console.log(response);
   } catch (error) {
     console.error("Error en la carga de categorias", error);

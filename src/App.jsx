@@ -46,14 +46,6 @@ function App() {
     getLastPublications(setLastPublications);
   }, []);
 
-  const deletePublication = async (id) => {
-    deletePublicationById(id, setPublicaciones);
-  };
-
-  const changeDeletedStatus = async (id) => {
-    changeStatus(id, setPublicaciones);
-  };
-
   const logout = () => {
     cleanToken();
     setIsLogged(false);
@@ -77,7 +69,7 @@ function App() {
           <Route path="user/login" element={<Login />} />
           <Route path="user/form" element={<UserForm />} />
           <Route path="user/profile" element={<UserEdit />} />
-          <Route path="/publication/:id" element={<PublicationDetail/>} />
+          <Route path="/publication/:id" element={<PublicationDetail />} />
           <Route
             path="/publication/category/:category"
             element={<Dashboard publicaciones={publicaciones} />}
@@ -96,15 +88,7 @@ function App() {
             <Route path="/publication/create" element={<PublicationForm />} />
 
             <Route path="user/admin" element={<UsersAdmin />} />
-            <Route
-              path="/publication/admin"
-              element={
-                <PublicationAdmin
-                  deletePublication={deletePublication}
-                  changeDeletedStatus={changeDeletedStatus}
-                />
-              }
-            />
+            <Route path="/publication/admin" element={<PublicationAdmin />} />
             <Route path="/publication/edit/:id" element={<PublicationEdit />} />
           </Route>
 

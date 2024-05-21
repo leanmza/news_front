@@ -9,7 +9,6 @@ const ModalAdmin = ({
   fetchPublications,
   changeDeletedStatus,
 }) => {
-  
   let data = {
     title: "",
     message: "",

@@ -46,7 +46,7 @@ const Dashboard = ({ lastPublications, publicaciones }) => {
       ) : null}
 
   {lastPublications ? (
-      <div className="lastPublications row">
+      <div className="lastPublications row col-10">
         {lastPublications.map((item) => (
           <Card key={item.id} item={item} className={className.lastPublications} classNameImg={classNameImg.lastPublicationCard}></Card>
         ))}
