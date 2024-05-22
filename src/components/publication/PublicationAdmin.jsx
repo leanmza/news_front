@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { axiosNoToken } from "../../util/axiosConfig";
+
 import "../../assets/PublicationAdmin.css";
 import { sortBy } from "../../util/listSort";
 import ModalAdmin from "./../modals/ModalAdmin";
@@ -8,6 +8,7 @@ import {
   changeStatus,
   deletePublicationById,
   getAllPublications,
+  formatDate
 } from "../../util/publicationService";
 
 const PublicationAdmin = () => {
@@ -147,7 +148,7 @@ const PublicationAdmin = () => {
               </td>
               <td>{item.category}</td>
               <td>{item.author}</td>
-              <td>{item.creationDate}</td>
+              <td>{formatDate(item.creationDate)}</td>
               <td>{item.subscriberContent ? "Sí" : "No"}</td>
               <td>{item.visualizations}</td>
               <td>

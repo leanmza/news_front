@@ -1,6 +1,6 @@
 body {
-  font-family: "Roboto", sans-serif !important;
-  background-color: #1F1F1F;;
+  font-family: "Montserrat", sans-serif;
+  background-color: #1F1F1F;
 }
 .divMain {
   max-width: 1400px;
@@ -13,6 +13,3 @@ body {
 .noResult{
   padding-top: 32px;
 }
-
-
-

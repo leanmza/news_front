@@ -1,4 +1,5 @@
 import { axiosNoToken, axiosToken } from "./axiosConfig";
+import { format } from "date-fns";
 
 //En este servicio se encuentran todos las peticiones GET, DELETE, PATCH Y POST de publication
 
@@ -24,10 +25,11 @@ export const getLastPublications = async (setLastPublications) => {
   }
 };
 
-export const getAllPublications = async (setPublicaciones) => { //Trae todas las publicaciones
+export const getAllPublications = async (setPublicaciones) => {
+  //Trae todas las publicaciones
   try {
     const response = await axiosNoToken().get("/api/publication/all");
-   await setPublicaciones(response.data.publications);
+    await setPublicaciones(response.data.publications);
   } catch (error) {
     console.error("Error en la carga de categorías", error);
   }
@@ -172,4 +174,8 @@ export const patchNewPositions = async (id, data) => {
   } catch (error) {
     console.error("Hubo un error", error);
   }
+};
+
+export const formatDate = (dateParam) => {
+  return Object.values(dateParam).reverse().slice(3, 6).join("/");
 };

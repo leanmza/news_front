@@ -73,7 +73,7 @@
 
 .cardTitulo{
   align-content: end;
-  padding-left: 1rem;
+  padding-inline: 1rem;
   grid-row: 3;
   height: 8rem;
   background: linear-gradient(0deg, rgb(10, 10, 10,1) 0%, rgba(227,227,227,0) 100%);

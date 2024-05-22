@@ -1,0 +1,24 @@
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 10px; /* Ajusta este valor según sea necesario */
+    font-size: 24px; /* Ajusta el tamaño del icono según sea necesario */
+    pointer-events: none; /* Esto asegura que el icono no interfiera con las interacciones del input */
+    color: rgba(255, 208, 0, 0.945); /* Color del icono */
+  }
+  
+  .searchBar {
+    padding-left: 40px; /* Aumenta el relleno izquierdo para que el texto no se superponga con el icono */
+    border-color: #1F1F1F !important;
+    color: rgba(255, 208, 0, 0.945);
+  }
+
+    .search-container .form-control::placeholder{
+        color: #1F1F1F !important;
+    }
+  

@@ -4,7 +4,7 @@ import "../../assets/PublicationDetail.css";
 import { Carousel } from "react-bootstrap";
 import { getRole } from "../../util/securityService";
 import ModalExclusive from "../modals/ModalExclusive";
-import { getPublicacion } from "../../util/publicationService";
+import { getPublicacion , formatDate } from "../../util/publicationService";
 
 const PublicationDetail = () => {
   const [publicacion, setPublicacion] = useState([]);
@@ -41,21 +41,21 @@ const PublicationDetail = () => {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
 
-  console.log(publicacion.header.length);
-
- 
-  return (
+return (
     <div>
       <div className="container-fluid divNews">
-        <div className="categoryDiv row">
+        <div className="divInfo">
           <Link
             to={`/publication/category/${publicacion.category}`}
             className="linkDetail col-2"
           >
-            <h6 className="categoryDetail">{publicacion.category}</h6>
+            <span className="categoryDetail">{publicacion.category}</span>
           </Link>
+          <span className="author col-3">por: {publicacion.author}</span>
+          <span className="date col-3">{formatDate(publicacion.creationDate)}</span>
+
           {role === "ADMIN" ? (
-            <Link to={`/publication/edit/${publicacion.id}`}>
+            <Link to={`/publication/edit/${publicacion.id}`} className="col-1">
               <span className="material-symbols-outlined">edit</span>
             </Link>
           ) : null}
@@ -64,17 +64,10 @@ const PublicationDetail = () => {
         <div className="divTitle row">
           <h1>{publicacion.title}</h1>
         </div>
-        <div className="divWriter row">
-          <h6>{publicacion.author}</h6>
-        </div>
-        <div className="divDate col-2 row">
-          <p>{publicacion.creationDate}</p>
-        </div>
-
         <div className="divImage row">
           <Carousel activeIndex={index} onSelect={handleSelect}>
             {publicacion.images.map((image) => (
-              <Carousel.Item>
+              <Carousel.Item  key={image.id}>
                 <img className="imgHorizontal" src={image.imageUrl} alt="..." />
               </Carousel.Item>
             ))}
