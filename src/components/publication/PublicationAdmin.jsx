@@ -60,7 +60,6 @@ const PublicationAdmin = () => {
     fetchPublications();
   };
 
-  console.log(publicaciones);
 
   return (
     <div className="container-fluid divAdmin">

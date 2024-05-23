@@ -85,8 +85,6 @@ const PublicationEdit = () => {
     updatedImages.splice(dragIndex, 1);
     updatedImages.splice(dropIndex, 0, draggedImage);
 
-    console.log("dentro");
-    console.log(locationImages);
     await setPublicacion({
       ...publicacion,
       images: updatedImages,
@@ -113,13 +111,14 @@ const PublicationEdit = () => {
       new Blob([JSON.stringify(publicacionData)], { type: "application/json" })
     );
 
+    console.log(idImages);
     await patchPublicacion(id, publication, setIsLoading);
 
     if (rearrange === true) {
       await patchNewPositions(id, idImages);
     }
 
-    window.location.href = `/publication/${id}`;
+    // window.location.href = `/publication/${id}`;
   };
 
   if (isLoading) {

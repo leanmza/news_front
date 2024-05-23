@@ -26,8 +26,7 @@ const Card = ({ item, className}) => {
 
             <Link to={`/publication/${id}`} className="link">
               <h2 className="card-title">{title}</h2>
-              <p className="cardText">{header}</p>
-            </Link>
+             </Link>
           </div>
         </div>
       </div>
