@@ -53,15 +53,17 @@ const Dashboard = ({ lastPublications, publicaciones }) => {
       {/* <HorizontalCard lastPublications={lastPublications} /> */}
 
       <BannerMain></BannerMain>
-      <div className="cardsMain row">
-        {publicaciones.map((item) => (
-          <Card
-            key={item.id}
-            item={item}
-            className={className.gridPublications}
-          ></Card>
-        ))}
-      </div>
+      <section className="categorysCards">
+        <div className="cardsMain row">
+          {publicaciones.map((item) => (
+            <Card
+              key={item.id}
+              item={item}
+              className={className.gridPublications}
+            ></Card>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

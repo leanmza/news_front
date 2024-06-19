@@ -1,5 +1,5 @@
 .bannerMain{
-    background-color: #344955;
+    background-color: #FD7014;
     max-height: 7.5vh;
     min-height: 55px;
     align-content: center;
@@ -9,6 +9,6 @@
 }
 
 .bannerMain h3{
-    color:  rgba(255, 208, 0, 0.945) ;
+    color:  #EEE ;
     text-align: center;
 }

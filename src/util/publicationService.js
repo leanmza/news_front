@@ -1,5 +1,4 @@
 import { axiosNoToken, axiosToken } from "./axiosConfig";
-import { format } from "date-fns";
 
 //En este servicio se encuentran todos las peticiones GET, DELETE, PATCH Y POST de publication
 
@@ -29,7 +28,7 @@ export const getAllPublications = async (setPublicaciones) => {
   //Trae todas las publicaciones
   try {
     const response = await axiosNoToken().get("/api/publication/all");
-    await setPublicaciones(response.data.publications);
+    setPublicaciones(response.data.publications);
   } catch (error) {
     console.error("Error en la carga de categorías", error);
   }
@@ -52,7 +51,6 @@ export const getPublicationEdit = async (
   setIsLoading,
   setLocationImages
 ) => {
-  //Se usa en PublicationEdit
   try {
     const publicationData = await fetchPublication(id);
     const { title, body, header, category, subscriberContent, images } =
@@ -66,7 +64,7 @@ export const getPublicationEdit = async (
       images,
     });
     setIsLoading(false);
-    await setLocationImages(images);
+    setLocationImages(images);
   } catch (error) {
     console.error("Error en la carga de la publicación", error);
   }
@@ -88,7 +86,6 @@ export const createUser = async (user, setLoading, setError) => {
   } catch (error) {
     console.log(error.response.data);
     setError(error.response.data);
-    // console.error("Hubo un error", error);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud
   }
@@ -103,8 +100,8 @@ export const postPublication = async (publication, setLoading, setError) => {
     console.log(response.status, " publicación creada");
     window.location.href = "/";
   } catch (error) {
+    console.log(error.response.data);
     setError(error.response.data);
-    console.error("Hubo un error ", error);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud
   }
@@ -161,18 +158,6 @@ export const patchPublicacion = async (id, publication, setLoading) => {
     console.error("Hubo un error", error);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud
-  }
-};
-
-export const patchNewPositions = async (id, data) => {
-  try {
-    const response = await axiosToken().patch(
-      `/api/publication/images/${id}`,
-      data
-    );
-    console.log(response.data, " nuevas posiciones guardadas");
-  } catch (error) {
-    console.error("Hubo un error", error);
   }
 };
 

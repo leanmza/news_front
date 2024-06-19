@@ -60,7 +60,7 @@ const Login = () => {
           </div>
 
           <div className="form-outline mb-3">
-            <p>
+            <p className="noCuenta">
               ¿No tenés cuenta?{" "}
               <Link to="/user/form" className="link">
                 <span className="spanRegis">Registrate acá</span>

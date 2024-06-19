@@ -6,7 +6,7 @@ const ModalExclusive = ({ show, handleVolver, handleSubscribe }) => {
       title: `EXCLUSIVO PARA SUSCRIPTORES`,
       message: `Suscribite a nuestro sitio y disfrutá de este contenido y mucho más`,
       warning: null,
-      buttonTxt: `Suscribirme`,
+      buttonTxt: `Iniciar Sesión`,
       buttonVariant: "primary",
     },
   };

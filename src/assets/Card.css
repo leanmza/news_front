@@ -2,11 +2,11 @@
   overflow: hidden !important;
   /* aspect-ratio: 2/1.5; */
   border-radius: 0px;
-  border-color: #0F0F0F;
+  border-color: #222831;
 }
 
 .card h5 {
-  color:  rgba(255, 208, 0, 0.945)  !important;
+  color:  #FD7014  !important;
 }
 
 .card:hover {
@@ -40,7 +40,7 @@
 .card h6 {
   font-size: 12px;
   font-weight: 500 !important;
-  color:  rgba(255, 208, 0, 0.945)  !important;
+  color:  #FD7014  !important;
   text-shadow: 1px 1px 2px black;
 }
 
@@ -48,14 +48,15 @@
   display: grid;
   padding: 0;
   align-content: space-between;
+  background: linear-gradient(0deg, rgb(0, 0, 0,0.8) 0%, rgba(254,254,254,0) 50%);
 }
 
 .subscriber-content-info {
-  color: black;
+  color: #EEE;
   font-size: 0.8rem;
   font-weight: 500;
   font-style: italic;
-  background-color: rgba(255, 208, 0, 0.945) ;
+  background-color: #FD7014 ;
   width: 20ch;
   text-align: center;
   align-content: center;
@@ -76,7 +77,7 @@
   padding-inline: 1rem;
   grid-row: 3;
   height: 8rem;
-  background: linear-gradient(0deg, rgb(10, 10, 10,1) 0%, rgba(227,227,227,0) 100%);
+  /* background: linear-gradient(0deg, rgb(10, 10, 10,1) 0%, rgba(227,227,227,0) 100%); */
 }
 
 .cardText{

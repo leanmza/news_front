@@ -1,15 +1,14 @@
 .floatinButton{
-    background-color: rgba(255, 208, 0, 0.945) ;
+    background-color: #FD7014 ;
 	position:fixed;
 	width:60px;
 	height:60px;
 	bottom:40px;
 	right:40px;
-	background-color:#0C9;
-	color:#FFF;
+	color:#EEE;
 	border-radius:50px;
 	text-align:center;
-	box-shadow: 2px 2px 3px #999;
+	box-shadow: 2px 2px 3px #393E46;
     display: flex;
     justify-content: center;
     align-items: center;

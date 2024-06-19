@@ -31,7 +31,7 @@ const PublicationDetail = () => {
 
   const handleShow = () => (show = true);
   const handleVolver = () => (window.location.href = "/");
-  const handleSubscribe = () => (window.location.href = "/user/form");
+  const handleSubscribe = () => (window.location.href = "/user/login");
 
   //PONER MODAL CON FONDO DIFUMINADO
   if (role === "ANONYMOUS" && publicacion.subscriberContent == true) {

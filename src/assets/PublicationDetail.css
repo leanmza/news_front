@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 32px;
-  color: #eeeeee;
+  color: #EEE;
   max-width: 1400px;
 }
 .divInfo {
@@ -46,12 +46,12 @@
 .linkDetail:visited,
 .linkDetail:active {
   text-decoration: none;
-  color: rgba(255, 208, 0, 0.945) !important;
+  color: #FD7014 !important;
   font-size: 0.9rem;
 }
 
 .author {
-  color: rgba(255, 208, 0, 0.945);
+  color: #FD7014;
 }
 
 .categoryDetail {

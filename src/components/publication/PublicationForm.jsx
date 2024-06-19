@@ -128,6 +128,7 @@ const PublicationForm = () => {
                 label={"Cargar imágenes"}
                 name={"image"}
                 onChange={handleImageForm}
+                error={error.images}
               />
             </div>
           </div>

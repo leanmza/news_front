@@ -20,7 +20,7 @@
 
 .titleHorizontal {
   font-weight: 700 !important;
-  color:  rgba(255, 208, 0, 0.945)  !important;
+  color:  #FD7014  !important;
   text-shadow: 1px 1px 2px black;
   font-size: 3em;
 }
@@ -28,7 +28,7 @@
 .categoryHorizontal {
   font-size: 16px;
   font-weight: 500 !important;
-  color:  rgba(255, 208, 0, 0.945)  !important;
+  color:  #FD7014  !important;
   text-shadow: 1px 1px 2px black;
 }
 

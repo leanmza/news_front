@@ -27,7 +27,7 @@
 
 .titulo{
   text-align: center;
-  color:  rgba(255, 208, 0, 0.945);
+  color:  #FD7014;
 }
 
 .imgEditForm{
@@ -46,4 +46,8 @@
 
 .cargaImg{
   padding-top: 20px;
+}
+
+.input .form-control::placeholder {
+  color: #222831 !important;
 }

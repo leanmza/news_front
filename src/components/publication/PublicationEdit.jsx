@@ -8,7 +8,6 @@ import Button from "../common/Button";
 import {
   deleteImage,
   getPublicationEdit,
-  patchNewPositions,
   patchPublicacion,
 } from "../../util/publicationService";
 
@@ -100,6 +99,7 @@ const PublicationEdit = () => {
     const publicacionData = { ...publicacion };
     delete publicacionData.images;
 
+    
     const idImages = locationImages.map((image) => image.id);
 
     const publication = new FormData();
@@ -110,13 +110,16 @@ const PublicationEdit = () => {
       "publication",
       new Blob([JSON.stringify(publicacionData)], { type: "application/json" })
     );
-
-    console.log(idImages);
-    await patchPublicacion(id, publication, setIsLoading);
-
-    if (rearrange === true) {
-      await patchNewPositions(id, idImages);
+    if(rearrange === true){
+    publication.append(
+      "idImages",
+      new Blob([JSON.stringify(idImages)], { type: "application/json" })
+    );
     }
+
+    console.log(publication);
+    console.log(idImages)
+    await patchPublicacion(id, publication, setIsLoading);
 
     // window.location.href = `/publication/${id}`;
   };

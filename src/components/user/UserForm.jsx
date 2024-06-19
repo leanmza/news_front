@@ -44,7 +44,7 @@ const UserForm = () => {
 
   return (
     <div className="container-fluid divMain">
-      <div className="row rowForm">
+      <div className="row rowForm login">
         <div className="col-sm-9 col-md-7 col-lg-6 col-xl-5">
           <BannerLogin />
         </div>
