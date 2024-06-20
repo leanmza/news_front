@@ -60,7 +60,7 @@ const Dashboard = ({ lastPublications, publicaciones }) => {
               key={item.id}
               item={item}
               className={className.gridPublications}
-            ></Card>
+            />
           ))}
         </div>
       </section>

@@ -10,7 +10,7 @@ export const getPublications = async (setPublicaciones) => {
     const response = await axiosNoToken().get("/api/publication");
     setPublicaciones(response.data.publications);
   } catch (error) {
-    console.error("Error en la carga de categorías", error);
+    console.error("Error en la carga de las publicaciones", error);
   }
 };
 
@@ -20,7 +20,7 @@ export const getLastPublications = async (setLastPublications) => {
     const response = await axiosNoToken().get("/api/publication/last");
     setLastPublications(response.data.publications);
   } catch (error) {
-    console.error("Error en la carga de categorías", error);
+    console.error("Error en la carga de las últimas publicaciones", error);
   }
 };
 

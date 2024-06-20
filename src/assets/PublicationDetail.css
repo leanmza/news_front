@@ -8,8 +8,6 @@
   max-width: 1400px;
 }
 .divInfo {
-  display: inline-flex;
-  margin: 0 auto;
   max-width: 1400px;
   text-align: start;
   font-size: 0.8rem;
@@ -77,4 +75,11 @@
 .carousel img {
   max-height: 560px;
   width: 60vw;
+}
+
+.divComentarios{
+  padding: 8px;
+  max-width: 75ch !important;
+  width: 75ch !important;
+  margin: 0 auto;
 }

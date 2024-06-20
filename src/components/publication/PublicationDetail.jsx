@@ -6,22 +6,18 @@ import { getRole } from "../../util/securityService";
 import ModalExclusive from "../modals/ModalExclusive";
 import { getPublicacion, formatDate } from "../../util/publicationService";
 import FloatinButton from "./../common/FloatinButton";
+import Commentary from "../cards/Commentary";
 
 const PublicationDetail = () => {
   const [publicacion, setPublicacion] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  let show = false;
+  const [show, setShow] = useState(false);
 
   const role = getRole();
 
-  //Seteo index para el carrousel
   const [index, setIndex] = useState(0);
-
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
-  };
 
   const { id } = useParams();
 
@@ -29,14 +25,18 @@ const PublicationDetail = () => {
     getPublicacion(id, setPublicacion, setIsLoading);
   }, [id]);
 
-  const handleShow = () => (show = true);
+  useEffect(() => {
+    if (role === "ANONYMOUS" && publicacion.subscriberContent) {
+      setShow(true);
+    }
+  }, [role, publicacion]);
+
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+  };
+
   const handleVolver = () => (window.location.href = "/");
   const handleSubscribe = () => (window.location.href = "/user/login");
-
-  //PONER MODAL CON FONDO DIFUMINADO
-  if (role === "ANONYMOUS" && publicacion.subscriberContent == true) {
-    handleShow();
-  }
 
   if (isLoading) {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
@@ -46,22 +46,22 @@ const PublicationDetail = () => {
     <div>
       <div className="container-fluid divNews">
         <div className="divInfo row">
-        <Link
+          <Link
             to={`/publication/category/${publicacion.category}`}
             className="linkDetail col-2"
           >
             <span className="categoryDetail">{publicacion.category}</span>
           </Link>
-         
+
           <h1>{publicacion.title}</h1>
 
-          <span className=" col-2">por: <span className="author">{publicacion.author}</span></span>
+          <span className=" col-2">
+            por: <span className="author">{publicacion.author}</span>
+          </span>
           <span className="date col-2">
             {formatDate(publicacion.creationDate)}
           </span>
-
         </div>
-
 
         <div className="divImage">
           <Carousel activeIndex={index} onSelect={handleSelect}>
@@ -78,6 +78,13 @@ const PublicationDetail = () => {
         <div className="divBody row">
           <p className="bodyNews">{publicacion.body}</p>
         </div>
+        <div className="divComentarios">
+          {publicacion.commentaries.map((item) => (
+            <Commentary 
+            key={item.id}
+            item={item} />
+          ))}
+        </div>
         <ModalExclusive
           show={show}
           handleVolver={handleVolver}
@@ -85,11 +92,10 @@ const PublicationDetail = () => {
         />
       </div>
       {role === "ADMIN" ? (
-            <Link to={`/publication/edit/${publicacion.id}`} className="col-1">
-                    <FloatinButton />
-            </Link>
-          ) : null}
-
+        <Link to={`/publication/edit/${publicacion.id}`} className="col-1">
+          <FloatinButton />
+        </Link>
+      ) : null}
     </div>
   );
 };
