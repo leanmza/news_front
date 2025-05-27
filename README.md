@@ -1,8 +1,2 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+El proyecto news, rebautizado de DeGeeks, es un proyecto personal para poner en práctica lo aprendido en el curso de Programador Web Full Stack de EGG, el curso de React Js del Argentina Programa 4.0 y mis prácticas en El Semillero. 
+En este repositorio esta el front end donde use React JS con Vite, para estilos la libreria React Bootstap y para las consultas la libreria de Axios.
