@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -45,3 +45,7 @@ const MenuAdmin = ({ logout }) => {
 };
 
 export default MenuAdmin;
+
+MenuAdmin.propTypes = {
+  logout: PropTypes.func.isRequired,
+};

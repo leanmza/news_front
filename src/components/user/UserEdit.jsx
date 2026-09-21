@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import "../../assets/PublicationForm.css";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../styles/PublicationForm.css";
 import { Spinner } from "react-bootstrap";
 import BannerLogin from "../banners/BannerLogin";
 import { getUserName } from "./../../util/securityService";
@@ -9,6 +10,7 @@ import Button from "../common/Button";
 
 const UserEdit = () => {
   const userName = getUserName();
+  const navigate = useNavigate();
 
   const [user, setUserData] = useState({
     id: "",
@@ -18,9 +20,12 @@ const UserEdit = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     fetchUser(userName);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userName]);
 
   const fetchUser = async (userName) => {
     try {
@@ -32,12 +37,12 @@ const UserEdit = () => {
         lastName: response.data.lastName,
         email: response.data.email,
       });
-      setLoading(false);
     } catch (error) {
       console.error("Error en la carga del usuario", error);
+    } finally {
+      setLoading(false);
     }
   };
-  const [loading, setLoading] = useState(false);
 
   function handleInputForm(event) {
     const { name, value } = event.target;
@@ -54,13 +59,17 @@ const UserEdit = () => {
     e.preventDefault();
 
     setLoading(true);
-    console.log("handleSubmit");
-    console.log("user", user);
+
+    // Si el usuario no escribió una nueva contraseña, no la mandamos:
+    // de lo contrario se pisaría la contraseña actual con un valor vacío.
+    const userData = { ...user };
+    if (!userData.password) {
+      delete userData.password;
+    }
 
     try {
-      const response = await axiosToken().patch(`/api/users/${user.id}`, user);
-      console.log(response.status, "usuario actualizado");
-      window.location.href = "/";
+      await axiosToken().patch(`/api/users/${user.id}`, userData);
+      navigate("/");
     } catch (error) {
       console.error("Hubo un error", error);
     } finally {
@@ -107,7 +116,7 @@ const UserEdit = () => {
             </div>
             <div>
               <Input
-                label={"Contraseña"}
+                label={"Contraseña (dejar en blanco para no cambiarla)"}
                 type={"password"}
                 name={"password"}
                 onChange={handleInputForm}

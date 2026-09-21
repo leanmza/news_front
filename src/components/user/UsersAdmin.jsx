@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { axiosNoToken } from './../../util/axiosConfig';
-import "../../assets/UsersAdmin.css";
+import { useState, useEffect } from "react";
+import { axiosToken } from './../../util/axiosConfig';
+import "../../styles/UsersAdmin.css";
 import { sortBy } from "../../util/listSort";
 
 const UsersAdmin = () => {
@@ -14,10 +14,10 @@ const UsersAdmin = () => {
 
   const fetchUserList = async () => {
     try {
-      const response = await axiosNoToken().get("/api/users");
+      const response = await axiosToken().get("/api/users");
       setUserList(response.data.users);
     } catch (error) {
-      console.error("Error en la carga de categorías ", error);
+      console.error("Error en la carga de usuarios", error);
     }
   };
 
@@ -38,7 +38,7 @@ const UsersAdmin = () => {
               value="name">
               Nombre
             </th>
-            <th scope="col" clas="col-2"  onClick={handleSort}
+            <th scope="col" className="col-2"  onClick={handleSort}
               value="lastName">
               Apellido
             </th>

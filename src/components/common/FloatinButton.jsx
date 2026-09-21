@@ -1,5 +1,4 @@
-import React from 'react'
-import "../../assets/FloatinButton.css"
+import "../../styles/FloatinButton.css"
 
 const FloatinButton = () => {
   return (

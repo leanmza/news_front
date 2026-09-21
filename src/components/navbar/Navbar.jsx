@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import "../../assets/Navbar.css";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import "../../styles/Navbar.css";
 import { Link } from "react-router-dom";
 import { getCategories } from "../../util/getCategories";
-import { getRole, validToken } from "../../util/securityService";
+import { getRole } from "../../util/securityService";
 
 import MenuReader from "./MenuReader";
 import MenuAdmin from "./MenuAdmin";
@@ -18,11 +19,6 @@ const Navbar = ({ isLogged, logout }) => {
     };
     fetchCategories();
   }, []);
-
-  function handleLogin() {
-    if (validToken != true || validToken === null || validToken === undefined) {
-    }
-  }
 
   return (
     <>
@@ -78,3 +74,8 @@ const Navbar = ({ isLogged, logout }) => {
 };
 
 export default Navbar;
+
+Navbar.propTypes = {
+  isLogged: PropTypes.bool.isRequired,
+  logout: PropTypes.func.isRequired,
+};

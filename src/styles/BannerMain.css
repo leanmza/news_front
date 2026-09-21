@@ -1,0 +1,14 @@
+.bannerMain{
+    background-color: #FD7014;
+    max-height: 7.5vh;
+    min-height: 55px;
+    align-content: center;
+    max-width: 1903px;
+    width: 100vw;
+    margin: 0 auto;
+}
+
+.bannerMain h3{
+    color:  #EEE ;
+    text-align: center;
+}

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import "./assets/App.css";
+import PropTypes from "prop-types";
+import "./styles/App.css";
 import Login from "./components/user/Login";
 import Dashboard from "./components/Dashboard";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import PublicationForm from "./components/publication/PublicationForm";
 import PublicationDetail from "./components/publication/PublicationDetail";
 import PublicationAdmin from "./components/publication/PublicationAdmin";
@@ -19,13 +20,68 @@ import {
   cleanToken,
 } from "./util/securityService";
 import UsersAdmin from "./components/user/UsersAdmin";
-import {
-  changeStatus,
-  deletePublicationById,
-  getLastPublications,
-  getPublications,
-} from "./util/publicationService";
+import { getLastPublications, getPublications } from "./util/publicationService";
 import { useLocalState } from "./util/useLocalStorage";
+
+// Componente interno: vive dentro de <BrowserRouter />, por eso puede usar
+// useNavigate (el hook necesita el contexto del Router para funcionar).
+const AppContent = ({ publicaciones, lastPublications, isLogged, setIsLogged, role }) => {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    cleanToken();
+    setIsLogged(false);
+    navigate("/");
+  };
+
+  return (
+    <>
+      <Navbar isLogged={isLogged} logout={logout}></Navbar>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Dashboard
+              lastPublications={lastPublications}
+              publicaciones={publicaciones}
+            />
+          }
+        ></Route>
+        <Route path="/user/login" element={<Login />} />
+        <Route path="/user/form" element={<UserForm />} />
+        <Route path="/user/profile" element={<UserEdit />} />
+        <Route path="/publication/:id" element={<PublicationDetail />} />
+        <Route
+          path="/publication/category/:category"
+          element={<Dashboard publicaciones={publicaciones} />}
+        />
+        <Route
+          path="/publication/search/:query"
+          element={<Dashboard publicaciones={publicaciones} />}
+        />
+
+        <Route element={<ProtectedRoute role={role} />}>
+          {/* DENTRO DE ESTE ROUTE VA TODO LO PROTEGIDO PARA EL ADMIN */}
+          <Route path="/publication/create" element={<PublicationForm />} />
+
+          <Route path="/user/admin" element={<UsersAdmin />} />
+          <Route path="/publication/admin" element={<PublicationAdmin />} />
+          <Route path="/publication/edit/:id" element={<PublicationEdit />} />
+        </Route>
+
+        <Route path="/unauthorized" element={<Unauthorized />} />
+      </Routes>
+    </>
+  );
+};
+
+AppContent.propTypes = {
+  publicaciones: PropTypes.arrayOf(PropTypes.object).isRequired,
+  lastPublications: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLogged: PropTypes.bool.isRequired,
+  setIsLogged: PropTypes.func.isRequired,
+  role: PropTypes.string,
+};
 
 function App() {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -44,58 +100,19 @@ function App() {
     }
     getPublications(setPublicaciones);
     getLastPublications(setLastPublications);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const logout = () => {
-    cleanToken();
-    setIsLogged(false);
-    window.location.href = "/";
-  };
-
   return (
-    <>
-      <BrowserRouter>
-        <Navbar isLogged={isLogged} logout={logout}></Navbar>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Dashboard
-                lastPublications={lastPublications}
-                publicaciones={publicaciones}
-              />
-            }
-          ></Route>
-          <Route path="user/login" element={<Login />} />
-          <Route path="user/form" element={<UserForm />} />
-          <Route path="user/profile" element={<UserEdit />} />
-          <Route path="/publication/:id" element={<PublicationDetail />} />
-          <Route
-            path="/publication/category/:category"
-            element={<Dashboard publicaciones={publicaciones} />}
-          />
-          {/* <Route
-            path="/publication/search/:query"
-            element={<Dashboard publicaciones={publicaciones} />}
-          /> */}
-          <Route
-            path="/publication/search/:query"
-            element={<Dashboard publicaciones={publicaciones} />}
-          />
-
-          <Route element={<ProtectedRoute role={role} />}>
-            {/* DENTRO DE ESTE ROUTE VA TODO LO PROTEGIDO PARA EL ADMIN */}
-            <Route path="/publication/create" element={<PublicationForm />} />
-
-            <Route path="user/admin" element={<UsersAdmin />} />
-            <Route path="/publication/admin" element={<PublicationAdmin />} />
-            <Route path="/publication/edit/:id" element={<PublicationEdit />} />
-          </Route>
-
-          <Route path="/unauthorized" element={<Unauthorized />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <AppContent
+        publicaciones={publicaciones}
+        lastPublications={lastPublications}
+        isLogged={isLogged}
+        setIsLogged={setIsLogged}
+        role={role}
+      />
+    </BrowserRouter>
   );
 }
 

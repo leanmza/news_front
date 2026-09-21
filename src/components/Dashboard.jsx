@@ -1,61 +1,56 @@
-import React, { useState } from "react";
+import { useMemo } from "react";
+import PropTypes from "prop-types";
 import Card from "./Card";
 import { useParams } from "react-router-dom";
-import "../assets/Dashboard.css";
+import "../styles/Dashboard.css";
 import BannerMain from "./banners/BannerMain";
+import Carrousel  from "./Carrousel";
+
+const className = {
+  gridPublications: "col-12 col-sm-6 col-md-4 colCard",
+};
 
 const Dashboard = ({ lastPublications, publicaciones }) => {
   const { category } = useParams();
   const { query } = useParams();
-  const [emptyResult, setEmptyResult] = useState(false);
 
-  const className = {
-    gridPublications: "col-12 col-sm-6 col-md-4 colCard",
-    lastPublications: "col-12 col-sm-6 ultimas",
-  };
+  // Se recalcula solo cuando cambian las publicaciones, la categoría o la búsqueda,
+  // en vez de en cada render del componente.
+  const publicacionesFiltradas = useMemo(() => {
+    let filtradas = publicaciones;
 
-  if (category !== null && category !== undefined) {
-    // Filtrar las publicaciones por categoría si se proporciona una categoría válida
-    publicaciones = publicaciones.filter((item) => item.category === category);
-  }
-
-  if (query !== null && query !== undefined) {
-    const queryLowerCase = query.toLowerCase();
-
-    publicaciones = publicaciones.filter((item) =>
-      item.title.toLowerCase().includes(queryLowerCase)
-    );
-
-    if (publicaciones.length === 0) {
-      setEmptyResult(true);
+    if (category !== null && category !== undefined) {
+      filtradas = filtradas.filter((item) => item.category === category);
     }
-  }
+
+    if (query !== null && query !== undefined) {
+      const queryLowerCase = query.toLowerCase();
+      filtradas = filtradas.filter((item) =>
+        item.title.toLowerCase().includes(queryLowerCase)
+      );
+    }
+
+    return filtradas;
+  }, [publicaciones, category, query]);
+
+  // Se calcula en cada render a partir del resultado actual, en vez de guardarse
+  // en un estado que nunca se reseteaba a false una vez que había quedado en true.
+  const emptyResult = query !== null && query !== undefined && publicacionesFiltradas.length === 0;
 
   return (
     <div className="container-fluid divMain">
       {emptyResult ? (
         <h5 className="noResult">
-          No se encontraron publicaciones con "{query}" en su título
+          No se encontraron publicaciones con &quot;{query}&quot; en su título
         </h5>
       ) : null}
 
-      {lastPublications ? (
-        <div className="lastPublications row col-10">
-          {lastPublications.map((item) => (
-            <Card
-              key={item.id}
-              item={item}
-              className={className.lastPublications}
-            ></Card>
-          ))}
-        </div>
-      ) : null}
-      {/* <HorizontalCard lastPublications={lastPublications} /> */}
+      <Carrousel lastPublications={lastPublications} />
 
       <BannerMain></BannerMain>
       <section className="categorysCards">
         <div className="cardsMain row">
-          {publicaciones.map((item) => (
+          {publicacionesFiltradas.map((item) => (
             <Card
               key={item.id}
               item={item}
@@ -69,3 +64,13 @@ const Dashboard = ({ lastPublications, publicaciones }) => {
 };
 
 export default Dashboard;
+
+Dashboard.propTypes = {
+  lastPublications: PropTypes.arrayOf(PropTypes.object),
+  publicaciones: PropTypes.arrayOf(PropTypes.object),
+};
+
+Dashboard.defaultProps = {
+  lastPublications: [],
+  publicaciones: [],
+};

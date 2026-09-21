@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Form } from "react-bootstrap";
-import "../../assets/PublicationForm.css";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "../../styles/PublicationForm.css";
 import { getCategories } from "../../util/getCategories";
 import Input from "../common/Input";
 import Button from "../common/Button";
@@ -23,7 +22,6 @@ const PublicationEdit = () => {
     header: "",
     body: "",
     category: "",
-    subscriberContent: "",
   });
 
   const [formImg, setFormImg] = useState({
@@ -37,11 +35,13 @@ const PublicationEdit = () => {
   const [locationImages, setLocationImages] = useState();
 
   const [rearrange, setRearrange] = useState(false);
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPublicationEdit(id, setPublicacion, setIsLoading, setLocationImages);
     getCategories(setCategories);
-  }, []);
+  }, [id]);
 
   function handleInputForm(event) {
     const { name, value, type, checked } = event.target;
@@ -84,13 +84,13 @@ const PublicationEdit = () => {
     updatedImages.splice(dragIndex, 1);
     updatedImages.splice(dropIndex, 0, draggedImage);
 
-    await setPublicacion({
+    setPublicacion({
       ...publicacion,
       images: updatedImages,
     });
 
-    await setRearrange(true);
-    await setLocationImages(updatedImages);
+    setRearrange(true);
+    setLocationImages(updatedImages);
   };
 
   const handleSubmit = async (e) => {
@@ -99,7 +99,6 @@ const PublicationEdit = () => {
     const publicacionData = { ...publicacion };
     delete publicacionData.images;
 
-    
     const idImages = locationImages.map((image) => image.id);
 
     const publication = new FormData();
@@ -110,18 +109,16 @@ const PublicationEdit = () => {
       "publication",
       new Blob([JSON.stringify(publicacionData)], { type: "application/json" })
     );
-    if(rearrange === true){
-    publication.append(
-      "idImages",
-      new Blob([JSON.stringify(idImages)], { type: "application/json" })
-    );
+    if (rearrange === true) {
+      publication.append(
+        "idImages",
+        new Blob([JSON.stringify(idImages)], { type: "application/json" })
+      );
     }
 
-    console.log(publication);
-    console.log(idImages)
     await patchPublicacion(id, publication, setIsLoading);
 
-    // window.location.href = `/publication/${id}`;
+    navigate(`/publication/${id}`);
   };
 
   if (isLoading) {
@@ -145,7 +142,7 @@ const PublicationEdit = () => {
               label={"Encabezado"}
               name={"header"}
               onChange={handleInputForm}
-              maxLength={140}
+              maxLength={250}
               value={publicacion.header}
             />
             <TextArea
@@ -164,21 +161,13 @@ const PublicationEdit = () => {
                   value={publicacion.category}
                 />
               </div>
-              <div className="col-md-4 divSubscribers">
-                <Form.Check
-                  className="checkFrom"
-                  name="subscriberContent"
-                  label="¿Exclusivo para suscriptores?"
-                  checked={publicacion.subscriberContent}
-                  onChange={handleInputForm}
-                />
-              </div>
+             
             </div>
             <div className="row rowImagenes">
               {publicacion.images.map((image, index) => (
                 <div
                   className="col-lg-4"
-                  key={index}
+                  key={image.id}
                   draggable
                   onDragStart={(e) =>
                     e.dataTransfer.setData("text/plain", index)

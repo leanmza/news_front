@@ -1,6 +1,6 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Form } from "react-bootstrap";
-import "../../assets/Input.css";
+import "../../styles/Input.css";
 
 const InputSelect = ({ label, error, name, onChange, categories, value }) => {
   return (
@@ -25,6 +25,20 @@ const InputSelect = ({ label, error, name, onChange, categories, value }) => {
       </Form.Select>
     </div>
   );
+};
+
+InputSelect.propTypes = {
+  label: PropTypes.string,
+  error: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default InputSelect;

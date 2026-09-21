@@ -1,6 +1,5 @@
-import React from "react";
 import error from "../assets/img/401-error.png";
-import '../assets/Unauthorized.css';
+import '../styles/Unauthorized.css';
 
 const Unauthorized = () => {
   return (

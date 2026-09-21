@@ -1,4 +1,3 @@
-import React from "react";
 import imagen from "../../assets/img/Responsive-cuate.png";
 
 const BannerLogin = () => {

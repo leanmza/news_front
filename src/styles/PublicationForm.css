@@ -1,0 +1,48 @@
+.form {
+  padding: 32px 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  justify-items: center;
+}
+
+.form-floating > .form-select {
+  padding-bottom: 0.525rem !important;
+}
+
+.dataComplementary {
+  align-items: center;
+}
+
+.divButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.titulo{
+  text-align: center;
+  color:  #FD7014;
+}
+
+.imgEditForm{
+  height: auto;
+  width: 100%;
+}
+
+.dataComplementary{
+  padding-bottom: 20px;
+}
+
+.rowImagenes{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.cargaImg{
+  padding-top: 20px;
+}
+
+.input .form-control::placeholder {
+  color: #222831 !important;
+}

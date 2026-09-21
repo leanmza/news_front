@@ -1,8 +1,16 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Form } from "react-bootstrap";
-import "../../assets/Input.css";
+import "../../styles/Input.css";
 
-const Input = ({ label, error, type, name, onChange, value }) => {
+const Input = ({
+  className = "",
+  label,
+  error,
+  type,
+  name,
+  onChange,
+  value,
+}) => {
   return (
     <div className="input">
       <Form.Label className="labelForm">
@@ -10,7 +18,7 @@ const Input = ({ label, error, type, name, onChange, value }) => {
         {error && <span className="textError">*{error}</span>}
       </Form.Label>
       <Form.Control
-        className="input-form"
+        className={`input-form ${className}`}
         type={type}
         placeholder={label} //Mismo que label
         name={name}
@@ -19,6 +27,16 @@ const Input = ({ label, error, type, name, onChange, value }) => {
       />
     </div>
   );
+};
+
+Input.propTypes = {
+  className: PropTypes.string,
+  label: PropTypes.string,
+  error: PropTypes.string,
+  type: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default Input;

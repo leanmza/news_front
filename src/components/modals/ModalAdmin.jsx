@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 
 const ModalAdmin = ({
@@ -6,7 +7,6 @@ const ModalAdmin = ({
   action,
   handleClose,
   deletePublication,
-  fetchPublications,
   changeDeletedStatus,
 }) => {
   let data = {
@@ -28,7 +28,6 @@ const ModalAdmin = ({
         buttonVariant: "danger",
         actionFunction: async () => {
           await deletePublication(item.id);
-          await fetchPublications();
           handleClose(item.id);
         },
       },
@@ -40,7 +39,6 @@ const ModalAdmin = ({
         buttonVariant: "primary",
         actionFunction: async () => {
           await changeDeletedStatus(item.id);
-          await fetchPublications();
           handleClose(item.id);
         },
       },
@@ -70,6 +68,18 @@ const ModalAdmin = ({
       </Modal>
     </>
   );
+};
+
+ModalAdmin.propTypes = {
+  show: PropTypes.bool.isRequired,
+  item: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    title: PropTypes.string,
+  }),
+  action: PropTypes.oneOf(["delete", "changeStatus"]),
+  handleClose: PropTypes.func.isRequired,
+  deletePublication: PropTypes.func.isRequired,
+  changeDeletedStatus: PropTypes.func.isRequired,
 };
 
 export default ModalAdmin;

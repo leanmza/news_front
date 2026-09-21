@@ -1,6 +1,6 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Form } from "react-bootstrap";
-import "../../assets/Input.css";
+import "../../styles/Input.css";
 
 const TextArea = ({ label, error, name, onChange, value, maxLength }) => {
   return (
@@ -21,6 +21,15 @@ const TextArea = ({ label, error, name, onChange, value, maxLength }) => {
       />
     </div>
   );
+};
+
+TextArea.propTypes = {
+  label: PropTypes.string,
+  error: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  maxLength: PropTypes.number,
 };
 
 export default TextArea;

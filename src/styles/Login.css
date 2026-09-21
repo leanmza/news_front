@@ -1,0 +1,90 @@
+.divBanner {
+    display: flex;
+    justify-content: center;
+  }
+
+  .login{
+    margin-top: 32px;
+  }
+  
+  .bannerLogin {
+    font-size: 2em;
+    text-align: center;
+    font-weight: 700;
+    padding: 20px 0 20px;
+    border: solid 2px #393E46;
+    min-width: 450px;
+    max-width: 500px;
+    border-radius: 6px;
+    background-color:  #FD7014 ;
+    color: #3c3c3c !important;
+  }
+  
+  .bannerLogin > span {
+    font-weight: 900;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    color: #EEE;
+    height: 1.25em;
+    vertical-align: bottom;
+    overflow: hidden;
+  }
+  .bannerLogin > span > span {
+    display: block;
+    animation: animateWords 5s infinite ease;
+  }
+  .spanRegis{
+    color: blue;
+  }
+
+  .img-fluid{
+    margin-top: -64px;
+  }
+
+  .input .form-control::placeholder {
+    color: #222831 !important;
+  }
+
+  .noCuenta{
+    color: #EEE
+  }
+
+  .spanRegis{
+    color:#FD7014
+  }
+  
+  @keyframes animateWords {
+    0% {
+      transform: translateY(0%);
+    }
+  
+    33% {
+      transform: translateY(-100%);
+    }
+  
+    66% {
+      transform: translateY(-200%);
+    }
+  
+    100% {
+      transform: translateY(-300%);
+    }
+  }
+  @keyframes animateWords {
+    0% {
+      transform: translateY(0%);
+    }
+  
+    33% {
+      transform: translateY(-100%);
+    }
+  
+    66% {
+      transform: translateY(-200%);
+    }
+  
+    100% {
+      transform: translateY(-300%);
+    }
+  }

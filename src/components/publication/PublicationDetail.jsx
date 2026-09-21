@@ -1,46 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import "../../assets/PublicationDetail.css";
+import { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import "../../styles/PublicationDetail.css";
 import { Carousel } from "react-bootstrap";
 import { getRole } from "../../util/securityService";
 import ModalExclusive from "../modals/ModalExclusive";
 import { getPublicacion, formatDate } from "../../util/publicationService";
 import FloatinButton from "./../common/FloatinButton";
-import Commentary from "../cards/Commentary";
+
 
 const PublicationDetail = () => {
-  const [publicacion, setPublicacion] = useState([]);
+  const [publicacion, setPublicacion] = useState({});
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [show, setShow] = useState(false);
+  // NOTA: "show" queda siempre en false porque nunca se implementó la lógica
+  // que decide cuándo una publicación es exclusiva para suscriptores. El modal
+  // ModalExclusive existe pero no se dispara desde ningún lado. Falta definir
+  // esa regla de negocio (ej: publicacion.exclusive) para terminar la feature.
+  const [show] = useState(false);
 
   const role = getRole();
 
   const [index, setIndex] = useState(0);
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPublicacion(id, setPublicacion, setIsLoading);
   }, [id]);
 
-  useEffect(() => {
-    if (role === "ANONYMOUS" && publicacion.subscriberContent) {
-      setShow(true);
-    }
-  }, [role, publicacion]);
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
 
-  const handleVolver = () => (window.location.href = "/");
-  const handleSubscribe = () => (window.location.href = "/user/login");
+  const handleVolver = () => navigate("/");
+  const handleSubscribe = () => navigate("/user/login");
 
   if (isLoading) {
     return <div>Cargando...</div>; // Puedes mostrar un mensaje de carga mientras se está cargando la publicación
   }
+
+
 
   return (
     <div>
@@ -65,7 +67,7 @@ const PublicationDetail = () => {
 
         <div className="divImage">
           <Carousel activeIndex={index} onSelect={handleSelect}>
-            {publicacion.images.map((image) => (
+            {(publicacion.images || []).map((image) => (
               <Carousel.Item key={image.id}>
                 <img className="imgHorizontal" src={image.imageUrl} alt="..." />
               </Carousel.Item>
@@ -78,13 +80,7 @@ const PublicationDetail = () => {
         <div className="divBody row">
           <p className="bodyNews">{publicacion.body}</p>
         </div>
-        <div className="divComentarios">
-          {publicacion.commentaries.map((item) => (
-            <Commentary 
-            key={item.id}
-            item={item} />
-          ))}
-        </div>
+
         <ModalExclusive
           show={show}
           handleVolver={handleVolver}

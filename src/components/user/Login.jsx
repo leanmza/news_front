@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useLocalState } from "../../util/useLocalStorage";
-import "../../assets/Login.css";
+import "../../styles/Login.css";
 import BannerLogin from "../banners/BannerLogin";
 import { Link } from "react-router-dom";
 import Input from "../common/Input";
@@ -11,8 +10,7 @@ import { login } from "../../util/loginService";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [jwt, setJwt] = useLocalState("", "jwt"); //Talvez se pueda mandar directo al servico. MANDAR AL SERVICIO
-  // const navigate = useNavigate();
+  const [, setJwt] = useLocalState("", "jwt");
 
   const [error, setError] = useState({
     email: "",

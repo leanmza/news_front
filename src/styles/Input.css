@@ -1,0 +1,60 @@
+.input{
+    margin-bottom: 1rem;
+}
+
+.labelForm{
+    color: #FD7014;
+    margin: 0;
+
+}
+
+.textError{
+    color: rgba(250, 225, 113, 0.945);
+    font-size: 0.8rem;
+    margin-left: 1rem;
+}
+
+.input-form{
+    background-color: #EEEEEE;
+    color: #222831;
+    border-radius: 2px;
+    
+}
+
+.form-control::placeholder{
+    color: #222831 !important;
+}
+
+.header{
+    height: 4rem;
+}
+
+.body{
+    height:18rem;
+}
+
+.checkFrom{
+    color: #FD7014
+}
+
+
+.commentInput{
+    background-color: #393e46;
+    border: transparent;
+    color:#EEE;
+    font-size: 14px;
+  }
+  
+  .commentInput:focus {
+    background-color: #393e46 !important;
+    box-shadow: 0 0 .1rem rgba(255,255,255,.95);
+    color:#EEE;
+    font-size: 14px;
+  }
+  
+  .commentInput::placeholder{
+    color: #EEE !important;
+    font-size: 14px;
+  }
+  
+  

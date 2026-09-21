@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -15,9 +15,6 @@ const MenuReader = ({ logout }) => {
             Mis Datos
           </Link>
         </NavDropdown.Item>
-        {/* <NavDropdown.Item className="spanLogin">
-                  Mis Favoritos
-                </NavDropdown.Item> */}
         <NavDropdown.Divider />
         <NavDropdown.Item className="spanLogin" onClick={logout}>
           Cerrar Sesión
@@ -25,6 +22,10 @@ const MenuReader = ({ logout }) => {
       </NavDropdown>
     </div>
   );
+};
+
+MenuReader.propTypes = {
+  logout: PropTypes.func.isRequired,
 };
 
 export default MenuReader;

@@ -1,5 +1,4 @@
-import React from 'react'
-import "../../assets/BannerMain.css"
+import "../../styles/BannerMain.css"
 
 const BannerMain = () => {
   return (

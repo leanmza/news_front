@@ -1,25 +1,19 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import "../assets/Card.css";
+import "../styles/Card.css";
 
 const Card = ({ item, className}) => {
 
-  const {id, title, header, category, subscriberContent, images} = item
+  const {id, title, category, images} = item
+  const coverImage = images && images.length > 0 ? images[0].imageUrl : null;
 
   return (
     <div className={className}>
       <div className="card h-100">
-        <img className="card-img-top cardImg" alt="..." src={images[0].imageUrl} />
+        <img className="card-img-top cardImg" alt="..." src={coverImage} />
 
         <div className="card-img-overlay">
-          {subscriberContent && ( // Verifica si subscriberContent es true
-            <div className="exclusivo">
-              <span className="subscriber-content-info">
-                Exclusivo suscriptores
-              </span>
-            </div>
-          )}
-          <div className="cardTitulo">
+            <div className="cardTitulo">
                 <Link to={`/publication/category/${category}`} className="link">
               <h6 className="card-category">{category}</h6>
             </Link>
@@ -32,6 +26,18 @@ const Card = ({ item, className}) => {
       </div>
     </div>
   );
+};
+
+Card.propTypes = {
+  className: PropTypes.string,
+  item: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+    category: PropTypes.string,
+    images: PropTypes.arrayOf(
+      PropTypes.shape({ imageUrl: PropTypes.string })
+    ),
+  }).isRequired,
 };
 
 export default Card;

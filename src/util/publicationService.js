@@ -7,7 +7,7 @@ import { axiosNoToken, axiosToken } from "./axiosConfig";
 export const getPublications = async (setPublicaciones) => {
   //Trae todas las publicaciones con atributo delete false
   try {
-    const response = await axiosNoToken().get("/api/publication");
+    const response = await axiosNoToken().get("/api/publications");
     setPublicaciones(response.data.publications);
   } catch (error) {
     console.error("Error en la carga de las publicaciones", error);
@@ -17,7 +17,7 @@ export const getPublications = async (setPublicaciones) => {
 export const getLastPublications = async (setLastPublications) => {
   //Trae la última publicación creada de cada categoría
   try {
-    const response = await axiosNoToken().get("/api/publication/last");
+    const response = await axiosNoToken().get("/api/publications/last");
     setLastPublications(response.data.publications);
   } catch (error) {
     console.error("Error en la carga de las últimas publicaciones", error);
@@ -25,9 +25,9 @@ export const getLastPublications = async (setLastPublications) => {
 };
 
 export const getAllPublications = async (setPublicaciones) => {
-  //Trae todas las publicaciones
+  //Trae todas las publicaciones (incluye eliminadas) - uso exclusivo de ADMIN
   try {
-    const response = await axiosNoToken().get("/api/publication/all");
+    const response = await axiosToken().get("/api/publications/all");
     setPublicaciones(response.data.publications);
   } catch (error) {
     console.error("Error en la carga de categorías", error);
@@ -39,9 +39,10 @@ export const getPublicacion = async (id, setPublicacion, setIsLoading) => {
   try {
     const publicationData = await fetchPublication(id);
     setPublicacion(publicationData);
-    setIsLoading(false);
   } catch (error) {
     console.error("Error en la carga de la publicación", error);
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -53,14 +54,13 @@ export const getPublicationEdit = async (
 ) => {
   try {
     const publicationData = await fetchPublication(id);
-    const { title, body, header, category, subscriberContent, images } =
+    const { title, body, header, category, images } =
       publicationData;
     setPublicacion({
       title,
       header,
       body,
       category,
-      subscriberContent,
       images,
     });
     setIsLoading(false);
@@ -72,7 +72,7 @@ export const getPublicationEdit = async (
 
 const fetchPublication = async (id) => {
   //Trae una publicacion por su id
-  const response = await axiosNoToken().get(`/api/publication/${id}`);
+  const response = await axiosNoToken().get(`/api/publications/${id}`);
   return response.data;
 };
 
@@ -80,12 +80,11 @@ const fetchPublication = async (id) => {
 
 export const createUser = async (user, setLoading, setError) => {
   try {
-    const response = await axiosNoToken().post("/api/users/create", user);
-    console.log(response.status, "usuario registrado");
+    await axiosNoToken().post("/api/users", user);
     window.location.href = "/user/login";
   } catch (error) {
-    console.log(error.response.data);
-    setError(error.response.data);
+    console.error("Error al registrar usuario", error);
+    setError(error.response?.data);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud
   }
@@ -93,15 +92,11 @@ export const createUser = async (user, setLoading, setError) => {
 
 export const postPublication = async (publication, setLoading, setError) => {
   try {
-    const response = await axiosToken().post(
-      "/api/publication/create",
-      publication
-    );
-    console.log(response.status, " publicación creada");
+    await axiosToken().post("/api/publications", publication);
     window.location.href = "/";
   } catch (error) {
-    console.log(error.response.data);
-    setError(error.response.data);
+    console.error("Error al crear la publicación", error);
+    setError(error.response?.data);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud
   }
@@ -112,23 +107,20 @@ export const postPublication = async (publication, setLoading, setError) => {
 export const deletePublicationById = async (id, setPublicaciones) => {
   //Elimina una publicación
   try {
-    const response = await axiosNoToken().delete(`/api/publication/${id}`);
+    await axiosToken().delete(`/api/publications/${id}`);
     await getAllPublications(setPublicaciones);
-    console.log(response);
   } catch (error) {
-    console.error("Error en la carga de categorias", error);
+    console.error("Error al eliminar la publicación", error);
   }
 };
 
 export const deleteImage = async (id, deletedImage) => {
   try {
-    const response = await axiosNoToken().delete(
-      `/api/publication/images/${id}`,
-      { data: { imageId: deletedImage } }
-    );
-    console.log(response);
+    await axiosToken().delete(`/api/publications/images/${id}`, {
+      data: { imageId: deletedImage },
+    });
   } catch (error) {
-    console.error("Error en la carga de categorias", error);
+    console.error("Error al eliminar la imagen", error);
   }
 };
 
@@ -137,25 +129,18 @@ export const deleteImage = async (id, deletedImage) => {
 export const changeStatus = async (id, setPublicaciones) => {
   //Cambia el estado de deleted de una publicación
   try {
-    const response = await axiosNoToken().patch(
-      `/api/publication/status/${id}`
-    );
+    await axiosToken().patch(`/api/publications/status/${id}`);
     await getAllPublications(setPublicaciones);
-    console.log(response);
   } catch (error) {
-    console.error("Error en la carga de categorias", error);
+    console.error("Error al cambiar el estado de la publicación", error);
   }
 };
 
 export const patchPublicacion = async (id, publication, setLoading) => {
   try {
-    const response = await axiosToken().patch(
-      `/api/publication/${id}`,
-      publication
-    );
-    console.log(response.data, " publicación editada");
+    await axiosToken().patch(`/api/publications/${id}`, publication);
   } catch (error) {
-    console.error("Hubo un error", error);
+    console.error("Error al editar la publicación", error);
   } finally {
     setLoading(false); // Ocultar preloader al finalizar la solicitud
   }

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "../../assets/PublicationForm.css";
+import { useState } from "react";
+import "../../styles/PublicationForm.css";
 import { Spinner } from "react-bootstrap";
 import BannerLogin from "../banners/BannerLogin";
 import Input from "../common/Input";
@@ -58,6 +58,7 @@ const UserForm = () => {
                 type={"text"}
                 name={"name"}
                 onChange={handleInputForm}
+                value={user.name}
                 error={error.name}
               />
             </div>
@@ -67,6 +68,7 @@ const UserForm = () => {
                 type={"text"}
                 name={"lastName"}
                 onChange={handleInputForm}
+                value={user.lastName}
                 error={error.lastName}
               />
             </div>
@@ -76,6 +78,7 @@ const UserForm = () => {
                 type={"email"}
                 name={"email"}
                 onChange={handleInputForm}
+                value={user.email}
                 error={error.email}
               />
             </div>
@@ -85,6 +88,7 @@ const UserForm = () => {
                 type={"password"}
                 name={"password"}
                 onChange={handleInputForm}
+                value={user.password}
                 error={error.password}
               />
             </div>

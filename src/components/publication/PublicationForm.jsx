@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import "../../assets/PublicationForm.css";
-import { Form, Spinner } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import "../../styles/PublicationForm.css";
+import { Spinner } from "react-bootstrap";
 import { getCategories } from "../../util/getCategories";
 import Input from "../common/Input";
 import Button from "../common/Button";
@@ -15,7 +15,7 @@ const PublicationForm = () => {
     title: "",
     header: "",
     body: "",
-    subscriberContent: "",
+    category: "",
   });
 
   const [formImg, setFormImg] = useState({
@@ -87,6 +87,7 @@ const PublicationForm = () => {
             type={"text"}
             name={"title"}
             onChange={handleInputForm}
+            value={formData.title}
             error={error.title}
           />
 
@@ -94,7 +95,8 @@ const PublicationForm = () => {
             label={"Encabezado"}
             name={"header"}
             onChange={handleInputForm}
-            maxLength={140}
+            maxLength={250}
+            value={formData.header}
             error={error.header}
           />
 
@@ -102,6 +104,7 @@ const PublicationForm = () => {
             label={"Cuerpo del artículo"}
             name={"body"}
             onChange={handleInputForm}
+            value={formData.body}
             error={error.body}
           />
 
@@ -112,15 +115,8 @@ const PublicationForm = () => {
                 name={"category"}
                 onChange={handleInputForm}
                 categories={categories}
+                value={formData.category}
                 error={error.category}
-              />
-            </div>
-            <div className="col-md-4 divSubscribers">
-              <Form.Check
-                className="checkFrom"
-                name="subscriberContent"
-                label="¿Exclusivo para suscriptores?"
-                onChange={handleInputForm}
               />
             </div>
             <div className="col-md-5">

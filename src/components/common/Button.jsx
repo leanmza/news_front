@@ -1,5 +1,5 @@
-import React from "react";
-import "../../assets/Button.css"
+import PropTypes from "prop-types";
+import "../../styles/Button.css"
 
 const Button = ({ type, variant, onClick, text }) => {
   return (
@@ -13,6 +13,13 @@ const Button = ({ type, variant, onClick, text }) => {
       </button>
     </>
   );
+};
+
+Button.propTypes = {
+  type: PropTypes.string,
+  variant: PropTypes.string,
+  onClick: PropTypes.func,
+  text: PropTypes.node,
 };
 
 export default Button;

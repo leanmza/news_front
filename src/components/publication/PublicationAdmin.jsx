@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import "../../assets/PublicationAdmin.css";
+import "../../styles/PublicationAdmin.css";
 import { sortBy } from "../../util/listSort";
 import ModalAdmin from "./../modals/ModalAdmin";
 import {
@@ -51,13 +51,11 @@ const PublicationAdmin = () => {
   };
 
   const deletePublication = async (id) => {
-    deletePublicationById(id, setPublicaciones);
-    fetchPublications();
+    await deletePublicationById(id, setPublicaciones);
   };
 
   const changeDeletedStatus = async (id) => {
-    changeStatus(id, setPublicaciones);
-    fetchPublications();
+    await changeStatus(id, setPublicaciones);
   };
 
 
@@ -104,14 +102,7 @@ const PublicationAdmin = () => {
             >
               Fecha
             </th>
-            <th
-              scope="col"
-              className="col"
-              onClick={handleSort}
-              value="subscriberContent"
-            >
-              Suscriptores
-            </th>
+
             <th
               scope="col"
               className="col"
@@ -148,7 +139,7 @@ const PublicationAdmin = () => {
               <td>{item.category}</td>
               <td>{item.author}</td>
               <td>{formatDate(item.creationDate)}</td>
-              <td>{item.subscriberContent ? "Sí" : "No"}</td>
+             
               <td>{item.visualizations}</td>
               <td>
                 {item.deleted ? (
@@ -202,7 +193,6 @@ const PublicationAdmin = () => {
         handleClose={handleClose}
         deletePublication={deletePublication}
         changeDeletedStatus={changeDeletedStatus}
-        fetchPublications={fetchPublications}
       />
     </div>
   );

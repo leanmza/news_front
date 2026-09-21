@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 
 const ModalExclusive = ({ show, handleVolver, handleSubscribe }) => {
@@ -35,6 +36,12 @@ const ModalExclusive = ({ show, handleVolver, handleSubscribe }) => {
       </Modal>
     </>
   );
+};
+
+ModalExclusive.propTypes = {
+  show: PropTypes.bool.isRequired,
+  handleVolver: PropTypes.func.isRequired,
+  handleSubscribe: PropTypes.func.isRequired,
 };
 
 export default ModalExclusive;

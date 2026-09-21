@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
-import "../assets/SearchBar.css"
+import "../styles/SearchBar.css"
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      window.location.href = `/publication/search/${query}`;
+      navigate(`/publication/search/${query}`);
     }
   };
 
-  // console.log(query);
   return (
     <div className="search-container">
       <span className="material-symbols-outlined search-icon">search</span>
