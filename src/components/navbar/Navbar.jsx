@@ -42,7 +42,7 @@ const Navbar = ({ isLogged, logout }) => {
                 </Link>
               </li>
             ))}
-            {role === "ADMIN" ? (
+            {role === "ROLE_ADMIN" ? (
               <li>
                 <Link to="/publication/create" className="link">
                   Cargar
@@ -57,7 +57,7 @@ const Navbar = ({ isLogged, logout }) => {
         </div>
         <div className="divLogin col-1 offset-lg-1">
           {isLogged ? (
-            role === "ADMIN" ? (
+            role === "ROLE_ADMIN" ? (
               <MenuAdmin logout={logout} />
             ) : (
               <MenuReader logout={logout} />

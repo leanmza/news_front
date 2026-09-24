@@ -87,7 +87,7 @@ const PublicationDetail = () => {
           handleSubscribe={handleSubscribe}
         />
       </div>
-      {role === "ADMIN" ? (
+      {role === "ROLE_ADMIN" ? (
         <Link to={`/publication/edit/${publicacion.id}`} className="col-1">
           <FloatinButton />
         </Link>

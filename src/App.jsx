@@ -34,6 +34,8 @@ const AppContent = ({ publicaciones, lastPublications, isLogged, setIsLogged, ro
     navigate("/");
   };
 
+  
+
   return (
     <>
       <Navbar isLogged={isLogged} logout={logout}></Navbar>
@@ -61,7 +63,7 @@ const AppContent = ({ publicaciones, lastPublications, isLogged, setIsLogged, ro
         />
 
         <Route element={<ProtectedRoute role={role} />}>
-          {/* DENTRO DE ESTE ROUTE VA TODO LO PROTEGIDO PARA EL ADMIN */}
+          {/* DENTRO DE ESTE ROUTE VA TODO LO PROTEGIDO PARA EL ROLE_ADMIN */}
           <Route path="/publication/create" element={<PublicationForm />} />
 
           <Route path="/user/admin" element={<UsersAdmin />} />

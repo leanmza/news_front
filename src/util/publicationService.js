@@ -8,7 +8,8 @@ export const getPublications = async (setPublicaciones) => {
   //Trae todas las publicaciones con atributo delete false
   try {
     const response = await axiosNoToken().get("/api/publications");
-    setPublicaciones(response.data.publications);
+
+    setPublicaciones(response.data);
   } catch (error) {
     console.error("Error en la carga de las publicaciones", error);
   }
@@ -25,7 +26,7 @@ export const getLastPublications = async (setLastPublications) => {
 };
 
 export const getAllPublications = async (setPublicaciones) => {
-  //Trae todas las publicaciones (incluye eliminadas) - uso exclusivo de ADMIN
+  //Trae todas las publicaciones (incluye eliminadas) - uso exclusivo de ROLE_ADMIN
   try {
     const response = await axiosToken().get("/api/publications/all");
     setPublicaciones(response.data.publications);
